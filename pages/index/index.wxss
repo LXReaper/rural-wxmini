@@ -1,0 +1,31 @@
+/* index.wxss - 首页样式 */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+image {
+    width: 200rpx;
+    height: 200rpx;
+    margin-bottom: 20rpx;
+}
+
+button {
+    width: 80%;
+    height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
+    background-color: #07c160;
+    color: #fff;
+    border-radius: 10rpx;
+    margin-bottom: 20rpx;
+}
+
+button:last-child {
+    background-color: #39a3f4;
+}

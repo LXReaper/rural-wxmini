@@ -1,0 +1,7 @@
+<!-- index.wxml - 首页模板 -->
+
+<view class="container">
+    <image src="/images/logo.png"></image>
+    <button bindtap="viewTasks">查看任务</button>
+    <button bindtap="viewVideos">查看教学视频</button>
+</view>

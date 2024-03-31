@@ -1,0 +1,8 @@
+<!-- notices.wxml - 公告页面模板 -->
+<view class="notices-list">
+    <block wx:for="{{noticesList}}">
+        <view class="notices-item">
+
+        </view>
+    </block>
+</view>

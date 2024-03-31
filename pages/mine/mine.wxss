@@ -1,0 +1,32 @@
+/* mine.wxss - 我的页面样式 */
+
+.mine-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20rpx;
+}
+
+.mine-item {
+    width: 45%;
+    margin-bottom: 20rpx;
+    padding: 10rpx;
+    box-sizing: border-box;
+    border: 1rpx solid #ccc;
+    border-radius: 5rpx;
+    text-align: center;
+}
+
+mine {
+    width: 100%;
+    height: auto;
+    border-radius: 5rpx;
+    margin-bottom: 10rpx;
+}
+
+text {
+    display: block;
+    font-size: 14rpx;
+    color: #333;
+    margin-bottom: 5rpx;
+}
