@@ -17,26 +17,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "images/tabBar/首页 (点击前).png",
+        "selectedIconPath": "images/tabBar/首页 (点击后).png"
       },
       {
         "pagePath": "pages/score/score",
         "text": "积分",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "images/tabBar/积分 (点击前).png",
+        "selectedIconPath": "images/tabBar/积分 (点击后).png"
       },
       {
         "pagePath": "pages/notices/notices",
         "text": "公告",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "images/tabBar/公告 (点击前).png",
+        "selectedIconPath": "images/tabBar/公告 (点击后).png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "我的",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "images/tabBar/我的 (点击前).png",
+        "selectedIconPath": "images/tabBar/我的 (点击后).png"
       }
     ]
   }

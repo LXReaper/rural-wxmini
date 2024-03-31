@@ -1,7 +1,5 @@
 {
-  "window": {
-    "navigationBarTitleText": "积分管理系统",
+    "navigationBarTitleText": "首页",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black"
-  }
 }
