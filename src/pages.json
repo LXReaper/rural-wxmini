@@ -1,30 +1,41 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": true
+			}
+		},{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/score/score",
 			"style": {
 				"navigationBarTitleText": "积分",
+				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/notices/notices",
 			"style": {
 				"navigationBarTitleText": "公告",
+				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/mine/mine",
 			"style": {
 				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
 		}
-
+}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
