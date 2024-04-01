@@ -1,9 +1,0 @@
-<!-- score.wxml - 积分模板 -->
-<view class="score-list">
-    <block wx:for="{{scoreList}}">
-        <view class="score-item">
-            <text>{{item.title}}</text>
-            <text>{{item.description}}</text>
-        </view>
-    </block>
-</view>

@@ -1,9 +1,0 @@
-<!-- mine.wxml - 我的页面模板 -->
-<view class="mine-list">
-    <block wx:for="{{mineList}}">
-        <view class="mine-item">
-            <text>{{item.id}}</text>
-            <text>{{item.title}}</text>
-        </view>
-    </block>
-</view>
