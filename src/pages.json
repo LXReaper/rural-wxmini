@@ -3,14 +3,63 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
+			}
+		},{
+			"path": "pages/score/score",
+			"style": {
+				"navigationBarTitleText": "积分",
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/notices/notices",
+			"style": {
+				"navigationBarTitleText": "公告",
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": true
 			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},"tabBar": {
+		"color" : "#555555",
+		"selectedColor" : "#101010",
+		"backgroundColor": "",
+		"list": [
+		{
+			"pagePath": "pages/index/index",
+			"text": "首页",
+			"iconPath": "/static/images/tabBar/首页 (点击前).png",
+			"selectedIconPath": "/static/images/tabBar/首页 (点击后).png"
+		},
+		{
+			"pagePath": "pages/score/score",
+			"text": "积分",
+			"iconPath": "/static/images/tabBar/积分 (点击前).png",
+			"selectedIconPath": "/static/images/tabBar/积分 (点击后).png"
+		},
+		{
+			"pagePath": "pages/notices/notices",
+			"text": "公告",
+			"iconPath": "/static/images/tabBar/公告 (点击前).png",
+			"selectedIconPath": "/static/images/tabBar/公告 (点击后).png"
+		},
+		{
+			"pagePath": "pages/mine/mine",
+			"text": "我的",
+			"iconPath": "/static/images/tabBar/我的 (点击前).png",
+			"selectedIconPath": "/static/images/tabBar/我的 (点击后).png"
+		}
+		]
 	}
 }
