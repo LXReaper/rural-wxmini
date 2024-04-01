@@ -45,7 +45,7 @@
         </view>
 
         <view class="uni-btn-v">
-          <button form-type="submit">提交</button>
+          <button class="button_style" form-type="submit">登录</button>
           <button type="default" form-type="reset">重置</button>
         </view>
       </form>
@@ -76,5 +76,8 @@ export default {
 .uni-form-item .title {
   padding: 20rpx 0;
 }
-
+.button_style{
+  background-color: #4cd964;
+  color: white;
+}
 </style>
