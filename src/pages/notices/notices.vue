@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import UniButton from '@dcloudio/uni-ui/lib/uni-button/uni-button.vue';
+
 export default {
   data() {
     return {
