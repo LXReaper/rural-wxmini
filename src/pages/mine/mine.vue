@@ -1,14 +1,14 @@
 <template>
-  <view>
-    </view>
     <view class="the-information-buttons">
       <view class="half-up">
         <text>用户名：{{userName}}</text>
         <text>\n用户ID：{{userId}}</text>
       </view>
-
-      <view class="down-page">
+      <view class="two-choice">
         <view class="personal-information">个人信息</view>
+        <view class="information">我的信息</view>
+      </view>
+      <view class="down-page">
         <view class="goodgood-bank">美德银行</view>
         <view class="release-task">发布任务</view>
         <view class="record">积分记录</view>
@@ -28,14 +28,17 @@ export default {
 </script>
 
 <style lang="scss">
-.half-up {
-  border: 2px solid black;
-  border-radius: 40rpx; /* 设置圆角使其呈现为椭圆形 */
-  margin-top: 45px;/* 设置距离页面顶部距离 */
-  height: 80px;
-}
 .personal-information {
-  height: 35px;
+  height: 50px;
+  border: 2px solid black;
+  width: 150px;
+  border-radius: 10px;
+}
+.information{
+  height: 50px;
+  border: 2px solid black;
+  width: 150px;
+  border-radius: 10px;
 }
 .goodgood-bank {
   height: 35px;
@@ -61,7 +64,20 @@ export default {
   margin-right: 10%; /* 设置右边距为屏幕宽度的10% */
   margin-bottom: 20px; /* 设置视图之间的间距 */
 }
+.half-up {
+  border: 2px solid black;
+  border-radius: 40rpx; /* 设置圆角使其呈现为椭圆形 */
+  margin-top: 35px;/* 设置距离页面顶部距离 */
+  height: 80px;
+}
+.two-choice{
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  line-height: 40px;
+}
 .down-page{
+  margin-top: 10px;
   text-align: center;
 }
 </style>
