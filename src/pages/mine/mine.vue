@@ -1,19 +1,12 @@
 <template>
   <view>
-    <view class="uni-title uni-common-mt">
-      <text>\n</text>
     </view>
-    <view class="uni-padding-wrap uni-common-mt">
+    <view class="the-information-buttons">
       <view class="half-up">
-        <text>\n用户名：{{userName}}</text>
+        <text>用户名：{{userName}}</text>
         <text>\n用户ID：{{userId}}</text>
       </view>
-      <view class="about-user">
-        <view class="persona">A</view>
-      </view>
-      <view class="uni-title uni-common-mt">
-        <text>\n</text>
-      </view>
+
       <view class="down-page">
         <view class="personal-information">个人信息</view>
         <view class="goodgood-bank">美德银行</view>
@@ -24,7 +17,6 @@
         <view class="setting">设置</view>
       </view>
     </view>
-  </view>
 </template>
 
 <script>
@@ -38,26 +30,38 @@ export default {
 <style lang="scss">
 .half-up {
   border: 2px solid black;
+  border-radius: 40rpx; /* 设置圆角使其呈现为椭圆形 */
+  margin-top: 45px;/* 设置距离页面顶部距离 */
+  height: 80px;
 }
 .personal-information {
-  border: 2px solid black;
+  height: 35px;
 }
 .goodgood-bank {
-  border: 2px solid black;
+  height: 35px;
 }
 .release-task {
-  border: 2px solid black;
+  height: 35px;
 }
 .record {
-  border: 2px solid black;
+  height: 35px;
 }
 .online-service {
-   border: 2px solid black;
+  height: 35px;
  }
 .feedback-consultation {
-  border: 2px solid black;
+  height: 35px;
 }
 .setting {
-  border: 2px solid black;
+  height: 35px;
+}
+.the-information-buttons {
+  width: 80%; /* 设置视图的宽度为屏幕宽度的80% */
+  margin-left: 10%; /* 设置左边距为屏幕宽度的10% */
+  margin-right: 10%; /* 设置右边距为屏幕宽度的10% */
+  margin-bottom: 20px; /* 设置视图之间的间距 */
+}
+.down-page{
+  text-align: center;
 }
 </style>
