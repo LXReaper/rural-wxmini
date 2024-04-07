@@ -35,24 +35,24 @@
       </view>
 
       <uni-section title="推广栏目" type="line">
-        <uni-card v-for="item in promotionItems" :cover="item.url" :key="item.id" @click="onClick">
-<!--          <image :slot='item.url' style="width: 100%;" :src="cover"></image>-->
+        <uni-card v-for="item in promotionItems" :key="item.id" @click="jump">
+          <image cover="item.url" style="width: 100%;cursor: pointer;" :src="item.url" @click="jump"></image>
           <view class="recommend-title">{{item.title}}</view>
           <view class="recommend-description">{{item.description}}</view>
           <view slot="actions" class="card-actions">
-            <view class="card-actions-item" @click="actionsClick('分享')">
-              <uni-icons type="redo" size="18" color="#999" class="card-actions-item-text">分享</uni-icons>
+            <view class="card-actions-item" @click="actionsClick('分享')" style="cursor: pointer">
+              <uni-icons type="redo" size="18" color="#999" class="card-actions-item-text"><text style="cursor: pointer">分享</text></uni-icons>
             </view>
-            <view class="card-actions-item" @click="actionsClick('点赞')">
-              <uni-icons type="heart" size="18" color="#999" class="card-actions-item-text">点赞</uni-icons>
+            <view class="card-actions-item" @click="actionsClick('点赞')" style="cursor: pointer">
+              <uni-icons type="heart" size="18" color="#999" class="card-actions-item-text"><text style="cursor: pointer">点赞</text></uni-icons>
             </view>
-            <view class="card-actions-item" @click="actionsClick('评论')">
-              <uni-icons type="chat" size="18" color="#999" class="card-actions-item-text">评论</uni-icons>
+            <view class="card-actions-item" @click="actionsClick('评论')" style="cursor: pointer">
+              <uni-icons type="chat" size="18" color="#999" class="card-actions-item-text"><text style="cursor: pointer">评论</text></uni-icons>
             </view>
           </view>
         </uni-card>
       </uni-section>
-
+<!--      <view><uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message></view>-->
     </scroll-view>
   </view>
 </template>
@@ -89,6 +89,15 @@ export default {
         icon: 'none'
       })
     },
+    jump(){
+      wx.navigateTo({
+        url: '/pages/webView/webView?url=https//www.baidu.com'
+      });
+      uni.showToast({
+        title:"aaa",
+        icon:'none'
+      })
+    },
     submitData : function (e){
       this.searchData = '';
       uni.showToast({
@@ -101,6 +110,28 @@ export default {
       });
       this.searchData = ''
     },actionsClick(text){
+      if (text === '分享'){
+        uni.showActionSheet({
+          itemList: ['分享到微信', '分享到朋友圈', '复制链接'],
+          success: function(res) {
+            if (!res.cancel) {
+              if (res.tapIndex === 0) {
+                // TODO: 处理分享到微信的逻辑
+                uni.showToast({ title: '分享到微信' });
+              } else if (res.tapIndex === 1) {
+                // TODO: 处理分享到朋友圈的逻辑
+                uni.showToast({ title: '分享到朋友圈' });
+              } else if (res.tapIndex === 2) {
+                // TODO: 处理复制链接的逻辑
+                uni.showToast({ title: '复制链接' });
+              }
+            }
+          }
+        })
+      }else if(text === '点赞'){
+
+      }else {
+      }
       uni.showToast({
         title:text,
         icon:'none'
@@ -141,9 +172,9 @@ export default {
 }
 
 #button2 {
-  border-radius: 30rpx;
   //点击前效果
   .button21 {
+    border-radius: 40rpx;
     background-color: #ffff00;
     padding: 5% 0;
     text-align: center;
@@ -152,6 +183,7 @@ export default {
     box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
   }
   .button22 {
+    border-radius: 40rpx;
     background-color: #04fefc;
     padding: 5% 0;
     text-align: center;
@@ -161,6 +193,7 @@ export default {
   }
   //点击后效果
   .button21:active{
+    border-radius: 40rpx;
     background-color: #cfff00;
     padding: 5% 0;
     text-align: center;
@@ -169,6 +202,7 @@ export default {
     box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
   }
   .button22:active{
+    border-radius: 40rpx;
     background-color: #04cefc;
     padding: 5% 0;
     text-align: center;

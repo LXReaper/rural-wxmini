@@ -7,17 +7,18 @@
           <form @submit="formSubmit" @reset="formReset">
             <view class="uni-btn-v">
               <button class="phoneLogin" form-type="submit">手机登录</button>
-              <button class="weChatLogin">微信登录</button>
+              <button class="weChatLogin" @click="login">微信登录</button>
             </view>
           </form>
         </uni-col>
       </uni-row>
 
       <uni-row>
-        <view style="margin-top: 100%"></view>
+        <view style="margin-top: 0"></view>
       </uni-row>
     </view>
   </view>
+
 </template>
 
 <script>
@@ -26,6 +27,38 @@ export default {
     return {}
   },
   methods: {
+    login() {//微信登录
+      uni.login({
+        provider: 'weixin',
+        success: res => {
+          // 获取登录凭证 res.code
+          this.getPhoneNumber();
+        },
+        fail: err => {
+          console.log('登录失败', err);
+        }
+      });
+    },getPhoneNumber() {
+      uni.getSetting({
+        success: res => {
+          if (res.authSetting['scope.userInfo'] && res.authSetting['scope.userLocation']) {
+            // 已经授权，可以直接调用获取手机号的方法
+            this.handleGetPhoneNumber();
+          } else {
+            // 需要引导用户进行手机号授权
+          }
+        }
+      });
+    },
+    handleGetPhoneNumber() {
+      uni.getUserInfo({
+        provider: 'weixin',
+        success: userInfo => {
+          // 获取到用户信息后，可以处理手机号相关逻辑
+          // ...
+        }
+      });
+    },
     formSubmit: function (e) {
       e.preventDefault();//阻止表单提交
       uni.switchTab({url: '/pages/index/index'})
@@ -125,36 +158,36 @@ export default {
   margin-top: 120%;
   //手机登录
   .phoneLogin {
-    background-color: #4cd964;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.4);
-  }
-
-  .phoneLogin:active {
-    background-color: #4cdf74;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.4);
-  }
-
-  //微信登录
-  .weChatLogin {
     background-color: #ffffff;
     width: 300rpx;
     border-radius: 20rpx;
     color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.4);
+    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
   }
 
-  .weChatLogin:active {
+  .phoneLogin:active {
     background-color: #fffaef;
     width: 300rpx;
     border-radius: 20rpx;
     color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.4);
+    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
+  }
+
+  //微信登录
+  .weChatLogin {
+    background-color: #4cd964;
+    width: 300rpx;
+    border-radius: 20rpx;
+    color: #297fff;
+    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
+  }
+
+  .weChatLogin:active {
+    background-color: #4cdf74;
+    width: 300rpx;
+    border-radius: 20rpx;
+    color: #297fff;
+    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
   }
 }
 

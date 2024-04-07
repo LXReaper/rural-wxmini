@@ -43,6 +43,13 @@
 				"enablePullDownRefresh": true
 			}
 		},{
+			"path": "pages/webView/webView",
+			"style": {
+				"navigationBarTitleText": "网页",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
+		},{
 			"path": "pages/mine/mine",
 			"style": {
 				"navigationBarTitleText": "我的",
