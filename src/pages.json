@@ -5,7 +5,22 @@
 			"style": {
 				"navigationBarTitleText": "登录",
 				"enablePullDownRefresh": true
-			}
+			},
+			"children": [//这块需要想下
+				{
+					"path": "pages/user/register/register",
+					"style": {
+						"navigationBarTitleText": "注册",
+						"enablePullDownRefresh": true
+					}
+				},{
+					"path": "pages/user/login/login",
+					"style": {
+						"navigationBarTitleText": "登录",
+						"enablePullDownRefresh": true
+					}
+				}
+			]
 		},{
 			"path": "pages/index/index",
 			"style": {
@@ -24,6 +39,13 @@
 			"path": "pages/notices/notices",
 			"style": {
 				"navigationBarTitleText": "公告",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/webView/webView",
+			"style": {
+				"navigationBarTitleText": "网页",
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
