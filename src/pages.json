@@ -6,7 +6,7 @@
 				"navigationBarTitleText": "登录",
 				"enablePullDownRefresh": true
 			},
-			"children": [
+			"children": [//这块需要想下
 				{
 					"path": "pages/user/register/register",
 					"style": {
