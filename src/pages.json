@@ -34,7 +34,7 @@
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
-
+		}
 }
 	],
 	"globalStyle": {
