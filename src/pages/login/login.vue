@@ -1,24 +1,66 @@
 <!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
-  <view id="login">
-    <view class="bg">
-      <uni-row>
-        <uni-col>
-          <form @submit="formSubmit" @reset="formReset">
-            <view class="uni-btn-v">
-              <button class="phoneLogin" form-type="submit">手机登录</button>
-              <button class="weChatLogin" @click="login">微信登录</button>
-            </view>
-          </form>
-        </uni-col>
-      </uni-row>
+<!--  <view id="login">-->
+<!--    <view class="bg">-->
+<!--      <uni-row>-->
+<!--        <uni-col>-->
+<!--          <form @submit="formSubmit" @reset="formReset">-->
+<!--            <view class="uni-btn-v">-->
+<!--              <button class="phoneLogin" form-type="submit">手机登录</button>-->
+<!--              <button class="weChatLogin" @click="login">微信登录</button>-->
+<!--            </view>-->
+<!--          </form>-->
+<!--        </uni-col>-->
+<!--      </uni-row>-->
 
-      <uni-row>
-        <view style="margin-top: 0"></view>
-      </uni-row>
+<!--      <uni-row>-->
+<!--        <view style="margin-top: 0"></view>-->
+<!--      </uni-row>-->
+<!--    </view>-->
+<!--  </view>-->
+  <view id="content">
+    <view class="bg">
+      <view class="loginBox">
+        <h3>登录</h3>
+        <view class="inputBox">
+          <view class="ipt">
+            <uni-icons type="contact" size="24" color="rgb(247,120,172)"></uni-icons>
+            <input type="text" value="" placeholder="请输入账号或手机号"/>
+          </view>
+          <view class="ipt">
+            <uni-icons type="eye" size="24" color="rgb(247,120,172)"></uni-icons>
+            <input type="passsword" value="" placeholder="请输入密码"/>
+          </view>
+          <view class="ipt">
+            <uni-icons type="checkmarkempty" size="24" color="rgb(66,157,250)"></uni-icons>
+            <input type="text" value="" placeholder="请输入验证码"/>
+            <view class="yzm" style="cursor: pointer">
+              验证码
+            </view>
+          </view>
+          <view class="forgetPwd">
+            <span style="cursor: pointer">忘记密码</span>
+            <span style="cursor: pointer">没有账号，去注册</span>
+          </view>
+          <button @click="formSubmit">登录</button>
+        </view>
+        <view class="tipbox">
+          <view class="txt">
+            —— 其他账号登录 ——
+          </view>
+          <view class="otherUser">
+            <uni-icons type="phone-filled" size="40" color="rgb(111,111,250)"></uni-icons>
+            <uni-icons type="qq" size="40" color="rgb(66,157,250)"></uni-icons>
+            <uni-icons type="weixin" size="40" color="rgb(2,187,17)"></uni-icons>
+          </view>
+        </view>
+      </view>
+
+      <view class="tip">
+        乡村治理小程序 by 102 2024
+      </view>
     </view>
   </view>
-
 </template>
 
 <script>
@@ -60,7 +102,6 @@ export default {
       });
     },
     formSubmit: function (e) {
-      e.preventDefault();//阻止表单提交
       uni.switchTab({url: '/pages/index/index'})
     },
 // 点击登录按钮时触发的方法
@@ -125,12 +166,14 @@ export default {
 </script>
 
 <style lang="scss">
-#login {
+/**
+* TODO
+*/
+#content{
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000;
   overflow: hidden;
   .bg {
     width: 100%;
@@ -148,47 +191,104 @@ export default {
   75% {background-position: 50% 0;}
   100% {background-position: 0 50%;}
 }
-
-.uni-form-item .title {
-  padding: 20rpx 0;
+.loginBox{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-60%);
+  width: 90%;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 60rpx;
+  box-sizing: border-box;
+}
+h3{
+  color: rgb(247,120,172);
+  font-size: 40rpx;
+  letter-spacing: 10rpx;
+  margin-bottom: 40rpx;
+}
+.inputBox{
+//以后再加点东西吧
+}
+.ipt{
+  height: 86rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 10rpx;
+  padding-left: 10rpx;
+}
+.ipt input{
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+.ipt input{
+  margin-left: 20rpx;
+}
+.yzm{
+  font-size: 24rpx;
+  background: linear-gradient(to right,rgb(66,157,250),rgb(0, 170, 127));
+  height: 60rpx;
+  width: 150rpx;
+  line-height: 60rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  color: #fff;
+}
+.forgetPwd{
+  font-size: 26rpx;
+  color: #b5b5b5;
+  text-align: end;
+  padding:0 10rpx;
+  display: flex;
+  justify-content: space-between;
+}
+button{
+  line-height: 85rpx;
+  text-align: center;
+  animation: cool 5s infinite;
+  background: linear-gradient(to right,rgb(255, 170, 127),rgb(247,120,172),#23A6D5, #23D5AB);
+  background-size: 400% 400%;
+  border-radius: 40rpx;
+  color: #fff;
+  margin-top: 40rpx;
+}
+@keyframes cool {
+  0% {background-position: 0 50%;}
+  50% {background-position: 100% 0;}
+  100% {background-position: 0 50%;}
 }
 
-.uni-btn-v {
+.tip{
+  text-align: center;
+  font-size: 28rpx;
+  position: fixed;
+  bottom: 50rpx;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: #f4f4f4;
+}
+.tipbox {
+  text-align: center;
+  margin-top: 100rpx;
+}
+
+.otherUser {
+  margin-top: 30rpx;
   display: flex;
-  margin-top: 120%;
-  //手机登录
-  .phoneLogin {
-    background-color: #ffffff;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
-  }
+  justify-content: center;
+}
 
-  .phoneLogin:active {
-    background-color: #fffaef;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
-  }
+.txt {
+  font-size: 28rpx;
+  color: #cbcbcb;
+}
 
-  //微信登录
-  .weChatLogin {
-    background-color: #4cd964;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
-  }
-
-  .weChatLogin:active {
-    background-color: #4cdf74;
-    width: 300rpx;
-    border-radius: 20rpx;
-    color: #297fff;
-    box-shadow: 0 10rpx 30rpx 0 rgba(41, 0, 255, 0.5);
-  }
+.otherUser .uni-icons {
+  margin-left: 20rpx;
 }
 
 </style>
