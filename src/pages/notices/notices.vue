@@ -26,16 +26,22 @@
       </button>
 
       <view style="display: flex" id="button2">
-        <button class="button21">
-          <uni-icons type="history">历史公告</uni-icons>
+        <button class="button21" @click="showDrawer('showLeft')">
+          <uni-icons type="calendar" size="21" @click="openDrawer">历史公告</uni-icons>
         </button>
+        <uni-drawer ref="drawer" mode="left" :show="showDrawer" @close="closeDrawer">
+          <!-- 抽屉中的内容 -->
+          <view style="padding: 10px;">
+            这是抽屉内容
+          </view>
+        </uni-drawer>
         <button class="button22">
-          <uni-icons>调查问卷</uni-icons>
+          <uni-icons type="compose" size="21">调查问卷</uni-icons>
         </button>
       </view>
 
       <uni-section title="推广栏目" type="line">
-        <uni-card v-for="item in promotionItems" :key="item.id" @click="jump">
+        <uni-card v-for="item in promotionItems" :key="item.id">
           <image cover="item.url" style="width: 100%;cursor: pointer;" :src="item.url" @click="jump"></image>
           <view class="recommend-title">{{item.title}}</view>
           <view class="recommend-description">{{item.description}}</view>
@@ -80,24 +86,35 @@ export default {
       ],
       imageList: [],
       searchData : '',
-      noticeInfo : '环境整治活动：本周六（日期），我们将组织环境整治活动，希望能够共同清理村庄周边的垃圾，美化我们的家园。活动时间为上午9点至中午12点，地点集合在村委会大门口，请各位村民准时参加。'
+      noticeInfo : '环境整治活动：本周六（日期），我们将组织环境整治活动，希望能够共同清理村庄周边的垃圾，美化我们的家园。活动时间为上午9点至中午12点，地点集合在村委会大门口，请各位村民准时参加。',
+      showDrawer: false
     };
-  },methods: {
+  },
+  onLoad() {
+    this.getImagesFromFolder();
+  },
+  methods: {
     search(res) {
       uni.showToast({
         title: '搜索：' + res.value,
         icon: 'none'
       })
+    },openDrawer() {
+      this.showDrawer = true;
     },
-    jump(){
-      wx.navigateTo({
-        url: '/pages/webView/webView?url=https//www.baidu.com'
-      });
-      uni.showToast({
-        title:"aaa",
-        icon:'none'
-      })
+    // 关闭抽屉触发的事件
+    closeDrawer() {
+      this.showDrawer = false;
     },
+    // jump(){
+    //   wx.navigateTo({
+    //     url: 'view/inews/qq/com'
+    //   });
+    //   uni.showToast({
+    //     title:"aaa",
+    //     icon:'none'
+    //   })
+    // },
     submitData : function (e){
       this.searchData = '';
       uni.showToast({
@@ -136,6 +153,28 @@ export default {
         title:text,
         icon:'none'
       })
+    },getImagesFromFolder() {
+      // 假设 images 文件夹下存放了图片
+      const folderPath = 'src/static/images/notices/advertisements';
+
+      // 使用 uni.glob() 方法获取文件夹下的所有文件
+      uni.glob({
+        pattern: `${folderPath}/*`,
+        success: res => {
+          if (res.files) {
+            // 遍历文件列表，获取图片信息
+            res.files.forEach(file => {
+              uni.getImageInfo({
+                src: file.uri, // 图片路径
+                success: info => {
+                  this.imageList.push(info); // 将图片信息添加到 imageList 数组中
+                  console.log(info.path);
+                }
+              });
+            });
+          }
+        }
+      });
     }
   },
 }
