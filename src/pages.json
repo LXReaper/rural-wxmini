@@ -18,7 +18,7 @@
 			"style": {
 				"navigationBarTitleText": "积分",
 				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
 			}
 		},{
 			"path": "pages/notices/notices",
@@ -33,6 +33,13 @@
 				"navigationBarTitleText": "我的",
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/score/scoreHomePage",
+			"style": {
+				"navigationBarTitleText": "积分商城",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true,
 			}
 		}
 	],

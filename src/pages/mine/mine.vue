@@ -21,19 +21,25 @@
         <view class="information">我的信息</view>
       </view>
       <view class="down-page">
-        <view class="goodgood-bank">美德银行</view>
+        <view class="goodgood-bank">
+          <image class="icon" src="./static/mine/record.png"></image> <!-- 图标放在文本左边 -->
+          美德银行
+        </view>
         <view class="release-task">发布任务</view>
         <view class="record">积分记录</view>
         <view class="online-service">在线客服</view>
         <view class="feedback-consultation">咨询和反馈</view>
-        <view class="setting" >设置</view>
+        <view class="setting">设置</view>
       </view>
     </view>
 
 </template>
 
 <script>
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+
 export default {
+  components: {UniIcons},
   data() {
     return {};
   }
@@ -53,7 +59,11 @@ export default {
   width: 200rpx;
   height: 50rpx
 }
-
+.icon {
+  width: 50rpx; /* 设置图标宽度 */
+  height: 50rpx; /* 设置图标高度 */
+  margin-top: 10rpx; /* 调整图标与上方元素的间距 */
+}
 .head{
   border: white;
   border-radius: 160rpx;
@@ -62,18 +72,19 @@ export default {
   margin-left: 4rpx;
   margin-top: 4rpx;
 }
-.index-record {
-  margin-top: 25rpx;
-  height: 75rpx;
-  border-right: 4rpx solid #EFF3FF;
-  width: 300rpx;
-}
+//.index-record {
+//  margin-top: 20rpx;
+//  height: 75rpx;
+//  border-right: 4rpx solid #EFF3FF;
+//  width: 300rpx;
+//}
 .information{
   margin-top: 25rpx;
   height: 75rpx;
   width: 300rpx;
   border-radius: 20rpx;
 }
+
 .goodgood-bank {
   height: 85rpx;
   line-height: 85rpx;
@@ -134,5 +145,13 @@ export default {
   margin-top: 20rpx;
   text-align: center;
   background-color: white;
+}
+//.down-page {
+//  display: flex;
+//  align-items: center; /* 垂直居中对齐 */
+//}
+
+.icon {
+  margin-right: 10px; /* 调整图标与文本之间的间距 */
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+
   <view class="index-store">
 
     <view class="store-top">
@@ -20,14 +21,18 @@
     </view>
 
   </view>
+  <button class="custom-button" @click="onClick">点击按钮</button>
 </template>
 
-<script>
-export default {
-  data() {
-    return {};
-  }
-}
+<script setup>
+const onClick = () => {
+  uni.navigateTo({
+    url: "/pages/score/scoreHomePage",
+  });
+};
+
+
+
 </script>
 
 <style lang="scss">
@@ -64,5 +69,14 @@ export default {
   background-color: grey;
   border-radius: 10rpx;
   font-size: 32rpx;
+}
+.custom-button {
+  margin-top: 20px; /* 调整按钮与上方元素的间距 */
+  background-color: blue; /* 按钮背景颜色 */
+  color: white; /* 按钮文字颜色 */
+  border: none; /* 移除按钮边框 */
+  border-radius: 5px; /* 设置按钮圆角 */
+  padding: 10px 20px; /* 设置按钮内边距 */
+  font-size: 20px; /* 设置按钮文字大小 */
 }
 </style>
