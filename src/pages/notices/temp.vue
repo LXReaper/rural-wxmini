@@ -42,7 +42,7 @@
 
       <uni-section title="推广栏目" type="line">
         <uni-card v-for="item in promotionItems" :key="item.id">
-<!--          <image :cover="item.url" style="width: 100%;cursor: pointer;" :src="item.url"></image>-->
+          <image :cover="item.url" style="width: 100%;cursor: pointer;" :src="require('' + item.url)"></image>
           <view class="recommend-title">{{item.title}}</view>
           <view class="recommend-description">{{item.description}}</view>
           <view slot="actions" class="card-actions">
