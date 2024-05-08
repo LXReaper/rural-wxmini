@@ -1,11 +1,23 @@
 <template>
-    <view class="the-information-buttons">
-      <view class="half-up">
-        <text>用户名：{{userName}}</text>
-        <text>\n用户ID：{{userId}}</text>
+
+      <view class="contact-background">
+        <uni-icons class="uniui-person" type="contact" size="17" color="green">个人中心</uni-icons>
       </view>
+
+    <view class="the-information-buttons">
+
+      <view class="half-up">
+        <image class="head" src="/static/logo.png"></image>
+        <view class="the-text">
+          <text>用户名：102yes{{userName}}</text>
+          <text>\n用户ID：114514{{userId}}</text>
+          <text>\n我的积分：114514{{userIndex}}</text>
+        </view>
+
+      </view>
+
       <view class="two-choice">
-        <view class="personal-information">个人信息</view>
+        <view class="index-record">积分记录</view>
         <view class="information">我的信息</view>
       </view>
       <view class="down-page">
@@ -14,9 +26,10 @@
         <view class="record">积分记录</view>
         <view class="online-service">在线客服</view>
         <view class="feedback-consultation">咨询和反馈</view>
-        <view class="setting">设置</view>
+        <view class="setting" >设置</view>
       </view>
     </view>
+
 </template>
 
 <script>
@@ -28,56 +41,98 @@ export default {
 </script>
 
 <style lang="scss">
-.personal-information {
-  height: 50px;
-  border: 2px solid black;
-  width: 150px;
-  border-radius: 10px;
+.uniui-person{
+  color: green;
+}
+.contact-background{
+  margin-top: 10rpx;
+  margin-left: 10rpx;
+  border: 2rpx solid grey;
+  border-radius: 20rpx;
+  background-color: white;
+  width: 200rpx;
+  height: 50rpx
+}
+
+.head{
+  border: white;
+  border-radius: 160rpx;
+  width:  150rpx;
+  height: 150rpx;
+  margin-left: 4rpx;
+  margin-top: 4rpx;
+}
+.index-record {
+  margin-top: 25rpx;
+  height: 75rpx;
+  border-right: 4rpx solid #EFF3FF;
+  width: 300rpx;
 }
 .information{
-  height: 50px;
-  border: 2px solid black;
-  width: 150px;
-  border-radius: 10px;
+  margin-top: 25rpx;
+  height: 75rpx;
+  width: 300rpx;
+  border-radius: 20rpx;
 }
 .goodgood-bank {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
 }
 .release-task {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
+  border-top: 4rpx solid #EFF3FF;
 }
 .record {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
+  border-top: 4rpx solid #EFF3FF;
 }
 .online-service {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
+  border-top: 4rpx solid #EFF3FF;
  }
 .feedback-consultation {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
+  border-top: 4rpx solid #EFF3FF;
 }
 .setting {
-  height: 35px;
+  height: 85rpx;
+  line-height: 85rpx;
+  border-top: 4rpx solid #EFF3FF;
 }
 .the-information-buttons {
-  width: 80%; /* 设置视图的宽度为屏幕宽度的80% */
   margin-left: 10%; /* 设置左边距为屏幕宽度的10% */
   margin-right: 10%; /* 设置右边距为屏幕宽度的10% */
-  margin-bottom: 20px; /* 设置视图之间的间距 */
+  margin-bottom: 40rpx; /* 设置视图之间的间距 */
 }
 .half-up {
-  border: 2px solid black;
-  border-radius: 40rpx; /* 设置圆角使其呈现为椭圆形 */
-  margin-top: 35px;/* 设置距离页面顶部距离 */
-  height: 80px;
+  border-radius: 50rpx; /* 设置圆角使其呈现为椭圆形 */
+  margin-top: 20rpx;/* 设置距离页面顶部距离 */
+  height: 220rpx;
+  display: flex;
+  background-color: white;
+  border: 2rpx solid grey;
+}
+.the-text{
+  margin-top: 40rpx;
+  margin-left: 20rpx;
+  font-size: 35rpx;
 }
 .two-choice{
-  margin-top: 10px;
+  margin-top: 20rpx;
   text-align: center;
   display: flex;
-  line-height: 40px;
+  line-height: 75rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  height: 125rpx
 }
 .down-page{
-  margin-top: 10px;
+  margin-top: 20rpx;
   text-align: center;
+  background-color: white;
 }
 </style>
