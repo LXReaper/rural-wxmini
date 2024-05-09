@@ -9,9 +9,10 @@
 
     <view class="firstline">
         <view class="goods">
-          <text>\n商品名称：</text>
-          <text>\n价格：</text>
-          <text>\n剩余个数：</text>
+          <image class="clown" src="./static/store/lqj.jpg"></image>
+          <text>\n商品名称：练庆锦</text>
+          <text>\n价格：1000元</text>
+          <text>\n剩余个数：1</text>
         </view>
         <view class="goods">
           <text>\n商品名称：</text>
@@ -70,6 +71,15 @@ const onClick = () => {
   border-radius: 10rpx;
   font-size: 32rpx;
 }
+.clown{
+  margin-left: 10rpx;   margin-top: 10rpx;
+  width: 280rpx;
+  height: 280rpx;
+}
+
+
+
+
 .custom-button {
   margin-top: 20px; /* 调整按钮与上方元素的间距 */
   background-color: blue; /* 按钮背景颜色 */

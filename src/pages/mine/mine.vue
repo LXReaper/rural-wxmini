@@ -72,12 +72,12 @@ export default {
   margin-left: 4rpx;
   margin-top: 4rpx;
 }
-//.index-record {
-//  margin-top: 20rpx;
-//  height: 75rpx;
-//  border-right: 4rpx solid #EFF3FF;
-//  width: 300rpx;
-//}
+.index-record {
+  margin-top: 20rpx;
+  height: 75rpx;
+  border-right: 4rpx solid #EFF3FF;
+  width: 300rpx;
+}
 .information{
   margin-top: 25rpx;
   height: 75rpx;
@@ -146,12 +146,7 @@ export default {
   text-align: center;
   background-color: white;
 }
-//.down-page {
-//  display: flex;
-//  align-items: center; /* 垂直居中对齐 */
-//}
-
 .icon {
-  margin-right: 10px; /* 调整图标与文本之间的间距 */
+  margin-right: 10rpx; /* 调整图标与文本之间的间距 */
 }
 </style>
