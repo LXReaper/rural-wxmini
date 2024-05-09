@@ -1,5 +1,5 @@
 <template>
-
+  <scroll-view scroll-y="true" bindscroll="handleScroll" scroll-with-animation="true">
   <view class="index-store">
 
     <view class="store-top">
@@ -20,8 +20,8 @@
           <text>\n剩余个数：</text>
         </view>
     </view>
-
   </view>
+  </scroll-view>
   <button class="custom-button" @click="onClick">点击按钮</button>
 </template>
 
