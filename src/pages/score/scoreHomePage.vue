@@ -1,88 +1,113 @@
 <template>
-  <scroll-view scroll-y="true" bindscroll="handleScroll" scroll-with-animation="true"><!--可滑动页面-->
-    <!-- 圆角矩形容器 -->
-    <view class="rounded-container">
-      <!-- 六个小按钮 -->
-      <view class="button" style="background-color: #ff0000;">总览</view>
-      <view class="button" style="background-color: #00ff00;">卫生</view>
-      <view class="button" style="background-color: #0000ff;">贡献</view>
-      <view class="button" style="background-color: #ffff00;">任务</view>
-      <view class="button" style="background-color: #ff00ff;">签到</view>
-      <view class="button" style="background-color: #00ffff;">考察</view>
+  <view class="uni-container">
+    <uni-card is-full>
+      <text class="uni-h6"> uni-goods-nav 组件主要用于电商类应用底部导航，可自定义加入购物车，购买等操作</text>
+    </uni-card>
+<!--    <uni-section title="基础用法" type="line">-->
+<!--      <uni-goods-nav @click="onClick" />-->
+<!--    </uni-section>-->
+<!--    <uni-section title="自定义用法" type="line">-->
+<!--      <uni-goods-nav :fill="true" :options="options" :button-group="customButtonGroup" @click="onClick"-->
+<!--                     @buttonClick="buttonClick" />-->
+<!--      <uni-goods-nav :fill="true" :options="options" :button-group="customButtonGroup1" @click="onClick"-->
+<!--                     @buttonClick="buttonClick" style="margin-top: 20px;" />-->
+<!--    </uni-section>-->
+    <view class="goods-carts">
+      <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick"
+                     @buttonClick="buttonClick" />
     </view>
-    <!--下方四个按钮-->
-    <view style="display:flex" id="button2">
-      <button class="button1" style="background-color: #04cefc" @click="LearningCenter">学习中心</button>
-      <button class="button2" style="background-color: #4cd964">任务中心</button>
-      <button class="button3" style="background-color: #007aff">排行榜</button>
-      <button class="button4" style="background-color: #04fefc">文明家庭</button>
-    </view>
-  </scroll-view>
+
+  </view>
 </template>
 
-<script setup >
-const  LearningCenter = () =>{
-uni.navigateTo({
-  url:"/pages/score/LearningCenter"
-});
-};
+<script>
+import UniSection from "../../uni_modules/uni-section/components/uni-section/uni-section.vue";
+import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
+import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+
+export default {
+  components: {UniGoodsNav, UniCard, UniSection},
+  data() {
+    return {
+      options: [{
+        icon: 'chat',
+        text: '客服'
+      }, {
+        icon: 'shop',
+        text: '店铺',
+        info: 2,
+        infoBackgroundColor: '#007aff',
+        infoColor: "#f5f5f5"
+      }, {
+        icon: 'cart',
+        text: '购物车',
+        info: 2
+      }],
+      buttonGroup: [{
+        text: '加入购物车',
+        backgroundColor: 'linear-gradient(90deg, #FFCD1E, #FF8A18)',
+        color: '#fff'
+      },
+        {
+          text: '立即购买',
+          backgroundColor: 'linear-gradient(90deg, #FE6035, #EF1224)',
+          color: '#fff'
+        }
+      ],
+      customButtonGroup: [{
+        text: '加入购物车',
+        backgroundColor: 'linear-gradient(90deg, #1E83FF, #0053B8)',
+        color: '#fff'
+      },
+        {
+          text: '立即购买',
+          backgroundColor: 'linear-gradient(90deg, #60F3FF, #088FEB)',
+          color: '#fff'
+        }
+      ],
+      customButtonGroup1: [{
+        text: '立即购买',
+        backgroundColor: 'linear-gradient(90deg, #FE6035, #EF1224)',
+        color: '#fff'
+      }]
+    }
+  },
+  onLoad() {},
+  methods: {
+    onClick(e) {
+      uni.showToast({
+        title: `点击${e.content.text}`,
+        icon: 'none'
+      })
+    },
+    buttonClick(e) {
+      console.log(e)
+      this.options[2].info++
+    }
+  }
+}
 </script>
 
-<style scoped lang="scss">
-.rounded-container {
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 10px;
-  display: flex; /* 使用 Flex 布局 */
+<style lang="scss">
+.example-body {
+  padding: 0;
+  /* #ifndef APP-NVUE */
+  display: block;
+  /* #endif */
 }
 
-.button {
-  width: auto; /* 自适应宽度 */
-  height: 30px;
-  margin-right: 10px;
-  border-radius: 10px;
+.goods-carts {
+  /* #ifndef APP-NVUE */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8em; /* 使用相对单位设置文本大小 */
+  /* #endif */
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* #ifdef H5 */
+  left: var(--window-left);
+  right: var(--window-right);
+  /* #endif */
+  bottom: 0;
 }
-
-
-#button2 {
-  display: flex;
-}
-.button1,
-.button2,
-.button3,
-.button4 {
-  flex: 1;
-  height: 30px;
-  margin-right: 10px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #04cefc; /* 默认背景颜色 */
-  color: white; /* 文本颜色 */
-  font-size: 0.8em; /* 使用相对单位设置文本大小 */
-  white-space: nowrap; /* 防止文本换行 */
-  overflow: hidden; /* 隐藏溢出部分文本 */
-  text-overflow: ellipsis; /* 显示省略号 */
-}
-
-.button2 {
-  background-color: #4cd964;
-}
-
-.button3 {
-  background-color: #007aff;
-}
-
-.button4 {
-  background-color: #04fefc;
-}
-
 </style>
-
-}
