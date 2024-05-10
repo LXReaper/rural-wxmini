@@ -35,7 +35,6 @@
 
 <script setup>
 import { ref } from 'vue';
-
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
 const products = ref([
