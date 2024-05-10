@@ -18,7 +18,7 @@
 			"style": {
 				"navigationBarTitleText": "积分",
 				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/notices/notices",
@@ -39,14 +39,14 @@
 			"style": {
 				"navigationBarTitleText": "积分商城",
 				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/layout/LearningCenterLayout",
 			"style": {
 				"navigationBarTitleText": "学习中心",
 				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": true
 			}
 		}
 	],
