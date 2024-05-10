@@ -1,6 +1,3 @@
-<template>
-  <router-view />
-</template>
 <script>
 export default {
   onLaunch: function () {
@@ -17,4 +14,7 @@ export default {
 
 <style>
 /*每个页面公共css */
+page{
+  background-color: #EFF3FF;
+}
 </style>

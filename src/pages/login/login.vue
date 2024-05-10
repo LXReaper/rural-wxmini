@@ -65,6 +65,7 @@
 
 <script setup>
 import {ref, onMounted, getCurrentInstance} from 'vue';
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 
 const {proxy} = getCurrentInstance();
 const userAccount = ref("");
