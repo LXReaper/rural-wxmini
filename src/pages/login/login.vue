@@ -93,6 +93,30 @@ const userLogin = () => {
 //钩子函数,在初始化登录页面时触发
 onMounted(() => {
   userLogin();
+  // wx.login({
+  //   success: function (res) {
+  //     if (res.code) {
+  //       // 将获取的code发送给后端服务器
+  //       wx.request({
+  //         url: `${proxy.$backendBaseUrl}/api/user/login`, // 后端登录接口
+  //         method: 'POST',
+  //         data: {
+  //           code: res.code
+  //         },
+  //         success: function (response) {
+  //           console.log(response.data); // 处理后端返回的数据
+  //         },
+  //         fail: function (error) {
+  //           console.error('请求失败：', error);
+  //         }
+  //       });
+  //     } else {
+  //       console.log('登录失败！' + res.errMsg);
+  //     }
+  //   }, complete(res: any) {
+  //     console.log("com," + res)
+  //   }
+  // });
 });
 //执行登录
 const loginHandle = function () {
