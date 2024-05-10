@@ -21,22 +21,26 @@
   <view id="content">
     <view class="bg">
       <view class="loginBox">
-        <h3>登录</h3>
+        <h3 style="text-align: center;font-weight: bolder;font-size: 50rpx">登 录</h3>
         <view class="inputBox">
           <view class="ipt">
-            <uni-icons type="contact" size="24" color="rgb(247,120,172)"></uni-icons>
-            <input type="text" v-model="userAccount" placeholder="请输入账号或手机号"/>
+            <uni-easyinput :prefixIcon="'contact'" type="text" v-model="userAccount"
+                           class="inputEasy"
+                           placeholder="请输入账号或手机号"/>
           </view>
           <view class="ipt">
-            <uni-icons type="eye" size="24" color="rgb(247,120,172)"></uni-icons>
-            <input type="safe-password" v-model="userPassword" placeholder="请输入密码"/>
+            <uni-easyinput :prefixIcon="'eye'" type="password" v-model="userPassword" class="inputEasy"
+                           placeholder="请输入密码"/>
           </view>
           <view class="ipt">
-            <uni-icons type="checkmarkempty" size="24" color="rgb(66,157,250)"></uni-icons>
-            <input type="text" value="" placeholder="请输入验证码"/>
-            <view class="yzm" style="cursor: pointer" @click="formSubmit">
-              验证码
-            </view>
+            <uni-easyinput :prefixIcon="'checkmarkempty'" type="text" value="" class="inputEasy"
+                           placeholder="请输入验证码">
+              <template #right>
+                <text class="yzm" style="cursor: pointer" @click="formSubmit">
+                  验证码
+                </text>
+              </template>
+            </uni-easyinput>
           </view>
           <view class="forgetPwd">
             <span style="cursor: pointer">忘记密码</span>
@@ -66,6 +70,7 @@
 <script setup>
 import {ref, onMounted, getCurrentInstance} from 'vue';
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import {debounce} from "../../utils/debounce_Throttle";
 
 const {proxy} = getCurrentInstance();
 const userAccount = ref("");
@@ -91,13 +96,38 @@ const userLogin = () => {
     }
   });
 };
+const userLoginDebounce = debounce(userLogin, 500);//防抖
 //钩子函数,在初始化登录页面时触发
 onMounted(() => {
   userLogin();
+  // wx.login({
+  //   success: function (res) {
+  //     if (res.code) {
+  //       // 将获取的code发送给后端服务器
+  //       wx.request({
+  //         url: `${proxy.$backendBaseUrl}/api/user/login`, // 后端登录接口
+  //         method: 'POST',
+  //         data: {
+  //           code: res.code
+  //         },
+  //         success: function (response) {
+  //           console.log(response.data); // 处理后端返回的数据
+  //         },
+  //         fail: function (error) {
+  //           console.error('请求失败：', error);
+  //         }
+  //       });
+  //     } else {
+  //       console.log('登录失败！' + res.errMsg);
+  //     }
+  //   }, complete(res: any) {
+  //     console.log("com," + res)
+  //   }
+  // });
 });
 //执行登录
 const loginHandle = function () {
-  userLogin();
+  userLoginDebounce();
 };
 
 //直接登录
@@ -106,7 +136,7 @@ const formSubmit = () => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /**
 * TODO
 */
@@ -151,7 +181,8 @@ const formSubmit = () => {
   left: 50%;
   transform: translate(-50%, -60%);
   width: 90%;
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.4);
+  //background-color: #fff;
   border-radius: 20rpx;
   padding: 60rpx;
   box-sizing: border-box;
@@ -170,30 +201,28 @@ h3 {
 }
 
 .ipt {
-  height: 86rpx;
+  height: 7vh;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20rpx;
-  background-color: #f5f5f5;
+  background: rgba(245, 245, 245, 0);
   border-radius: 10rpx;
   padding-left: 10rpx;
 }
 
-.ipt input {
+.ipt .inputEasy {
   margin-left: 20rpx;
   font-size: 28rpx;
-}
-
-.ipt input {
-  margin-left: 20rpx;
+  width: 67vw;
+  box-shadow: 5px 5px 3px rgba(8, 8, 8, 0.25);
 }
 
 .yzm {
   font-size: 24rpx;
   background: linear-gradient(to right, rgb(66, 157, 250), rgb(0, 170, 127));
   height: 60rpx;
-  width: 150rpx;
+  width: 15vw;
   line-height: 60rpx;
   text-align: center;
   border-radius: 10rpx;
@@ -202,7 +231,8 @@ h3 {
 
 .forgetPwd {
   font-size: 26rpx;
-  color: #b5b5b5;
+  //color: #b5b5b5;
+  color: #c5f5c5;
   text-align: end;
   padding: 0 10rpx;
   display: flex;
@@ -255,7 +285,8 @@ button {
 
 .txt {
   font-size: 28rpx;
-  color: #cbcbcb;
+  //color: #cbcbcb;
+  color: #c5f5c5;
 }
 
 .otherUser .uni-icons {

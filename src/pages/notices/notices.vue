@@ -65,6 +65,11 @@
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
+import UniNoticeBar from "../../uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar.vue";
+import UniSection from "../../uni_modules/uni-section/components/uni-section/uni-section.vue";
+import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
 
 declare const uni: any;
 /**
@@ -98,7 +103,7 @@ const showDrawer = ref(false);
  * */
 function onLoad() {
   this.getImagesFromFolder();
-};
+}
 const search = (res) => {
   uni.showToast({
     title: '搜索：' + res.value,
