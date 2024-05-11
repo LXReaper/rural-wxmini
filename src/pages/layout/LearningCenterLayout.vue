@@ -6,6 +6,7 @@
           {{ category }}
         </view>
       </view>
+      <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" @click="search"></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
           <image :src="product.image" class="product-image" />
@@ -35,8 +36,15 @@
 
 <script setup>
 import { ref } from 'vue';
+import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
+const search =(res)=>{
+  uni.showToast({
+    title:"搜索"+res.value,icon:"none"
+      }
+  )
+}
 const products = ref([
   {
     image: '/static/images/notices/advertisements/大米.jpg',
@@ -46,7 +54,7 @@ const products = ref([
     price: '1'
   },
   {
-    image: 'path/to/image2.jpg',
+    image: '/static/images/notices/advertisements/金龙鱼油.jpg',
     name: '2',
     type: '2',
     time: '2',
@@ -115,4 +123,5 @@ const loadProducts = (category) => {
   flex: 1;
   color: #333;
 }
+
 </style>
