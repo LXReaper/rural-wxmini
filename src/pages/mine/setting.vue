@@ -29,6 +29,8 @@
   </view>
 
   <view class="number">版本号：{{number}}</view>
+
+
 </template>
 
 <script>
@@ -38,9 +40,11 @@
 
 <style scoped lang="scss">
 .all-settings{
-  font-size: 45rpx;
+  margin-bottom: 510rpx;
 }
+
 .number{
-  bottom: 0;
+  text-align: center; font-size: 34rpx;
+
 }
 </style>
