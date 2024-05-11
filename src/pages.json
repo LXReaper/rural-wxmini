@@ -49,7 +49,23 @@
 				"enablePullDownRefresh": true
 			}
 		}
-	],
+      ,
+      {
+  "path": "pages/mine/setting",
+  "style": {
+    "navigationBarTitleText": "setting",
+    "enablePullDownRefresh": true
+  }
+}
+      ,
+      {
+  "path": "pages/mine/personal-information",
+  "style": {
+    "navigationBarTitleText": "个人信息",
+    "enablePullDownRefresh": true
+  }
+}
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
