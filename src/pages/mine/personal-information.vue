@@ -3,7 +3,7 @@
   <view class="user">
 
     <view class="yourhead">
-      <image class="head" @click="open" src="./static/store/lqj.jpg">
+      <image class="head" ref="is" @click="open" src="./static/store/lqj.jpg">
       </image>
 
       <uni-popup ref="a00" type="bottom">
