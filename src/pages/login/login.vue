@@ -26,6 +26,7 @@
           <view class="ipt">
             <uni-easyinput :prefixIcon="'contact'" type="text" v-model="userAccount"
                            class="inputEasy"
+                           maxlength="50"
                            placeholder="请输入账号或手机号"/>
           </view>
           <view class="ipt">
@@ -75,6 +76,33 @@ import {debounce} from "../../utils/debounce_Throttle";
 const {proxy} = getCurrentInstance();
 const userAccount = ref("");
 const userPassword = ref("");
+//微信登录
+setTimeout(() => {
+  wx.login({
+    success: function (res) {
+      if (res.code) {
+        // 将获取的code发送给后端服务器
+        wx.request({
+          url: `${proxy.$backendBaseUrl}/api/user/login`, // 后端登录接口
+          method: 'POST',
+          data: {
+            code: res.code
+          },
+          success: function (response) {
+            console.log(response.data); // 处理后端返回的数据
+          },
+          fail: function (error) {
+            console.error('请求失败：', error);
+          }
+        });
+      } else {
+        console.log('登录失败！' + res.errMsg);
+      }
+    }, fail(res) {
+      console.log("错误," + res.errMsg);
+    }
+  });
+}, 100)
 //登录函数
 const userLogin = () => {
   uni.request({
@@ -100,30 +128,6 @@ const userLoginDebounce = debounce(userLogin, 500);//防抖
 //钩子函数,在初始化登录页面时触发
 onMounted(() => {
   userLogin();
-  // wx.login({
-  //   success: function (res) {
-  //     if (res.code) {
-  //       // 将获取的code发送给后端服务器
-  //       wx.request({
-  //         url: `${proxy.$backendBaseUrl}/api/user/login`, // 后端登录接口
-  //         method: 'POST',
-  //         data: {
-  //           code: res.code
-  //         },
-  //         success: function (response) {
-  //           console.log(response.data); // 处理后端返回的数据
-  //         },
-  //         fail: function (error) {
-  //           console.error('请求失败：', error);
-  //         }
-  //       });
-  //     } else {
-  //       console.log('登录失败！' + res.errMsg);
-  //     }
-  //   }, complete(res: any) {
-  //     console.log("com," + res)
-  //   }
-  // });
 });
 //执行登录
 const loginHandle = function () {
@@ -216,6 +220,7 @@ h3 {
   font-size: 28rpx;
   width: 67vw;
   box-shadow: 5px 5px 3px rgba(8, 8, 8, 0.25);
+  border-radius: 20%;
 }
 
 .yzm {
