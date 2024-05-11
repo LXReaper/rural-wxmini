@@ -1,6 +1,7 @@
 <template>
   <view>
-    <scroll-view scroll-x="true" bindscroll="handlescroll" scroll-with-animation="true">
+    <scroll-view scroll-y="true" bindscorll="handscroll" scroll-with-animation="true">
+<!--    <scroll-view scroll-x="true" bindscroll="handlescroll" scroll-with-animation="true">-->
       <view class="category-bar">
         <view v-for="(category, index) in categories" :key="index" @click="loadProducts(category)">
           {{ category }}
@@ -31,17 +32,9 @@
         </view>
       </view>
     </scroll-view>
+<!--    </scroll-view>-->
   </view>
   <view class="uni-container">
-<!--    <uni-section title="基础用法" type="line">-->
-<!--      <uni-goods-nav @click="onClick" />-->
-<!--    </uni-section>-->
-<!--    <uni-section title="自定义用法" type="line">-->
-<!--      <uni-goods-nav :fill="true" :options="options" :button-group="customButtonGroup" @click="onClick"-->
-<!--                     @buttonClick="buttonClick" />-->
-<!--      <uni-goods-nav :fill="true" :options="options" :button-group="customButtonGroup1" @click="onClick"-->
-<!--                     @buttonClick="buttonClick" style="margin-top: 20px;" />-->
-<!--    </uni-section>-->
     <view class="goods-carts">
       <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick"
                      @buttonClick="buttonClick" />

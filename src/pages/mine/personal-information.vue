@@ -27,21 +27,16 @@
 
 </template>
 
-<script setup lang="ts">
-export default{
-  data(){
-    return
+<script setup>
+const data = {};
+const methods = {
+  open() {
+    this.$refs.a00.open('bottom');
   },
-  methods:{
-    open(){
-    this.$refs.popup.open('bottom')
-    },
-    close(){
-    this.$refs.popup.close()
-    }
+  close() {
+    this.$refs.a00.close();
   }
-}
-
+};
 </script>
 
 <style scoped lang="scss">
