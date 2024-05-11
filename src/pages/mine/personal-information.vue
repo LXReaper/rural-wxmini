@@ -28,6 +28,8 @@
 </template>
 
 <script setup>
+import UniPopup from "../../uni_modules/uni-popup/components/uni-popup/uni-popup.uvue";
+
 const data = {};
 const methods = {
   open() {

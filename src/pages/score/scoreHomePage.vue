@@ -43,15 +43,15 @@
   </view>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="js">
+import { ref ,reactive} from 'vue';
 import UniSection from "../../uni_modules/uni-section/components/uni-section/uni-section.vue";
 import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
 import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
-const products = ref([
+const products = reactive([
   {
     image: '/static/images/notices/advertisements/大米.jpg',
     name: '1',
@@ -65,15 +65,29 @@ const products = ref([
     type: '2',
     time: '2',
     price: '2'
-  },
-  // 添加更多商品数据
+  }
 ]);
 
 const loadProducts = (category) => {
   selectedCategory.value = category;
+  // 模拟从后端获取商品数据
   // 根据选定的类别加载相应的商品
-  // 这里可以调用相应的方法或接口来加载商品数据
+// 这里可以调用相应的方法或接口来加载商品数据
+  const newProducts = [
+    {
+      image: '/static/images/notices/advertisements/金龙鱼油.jpg',
+      name: '新商品',
+      type: '新类型',
+      time: '新时间',
+      price: '新价格'
+    },
+    // 添加更多新商品数据
+  ];
+
+  // 将新商品数据添加到products数组中
+  products.push(...newProducts);
 };
+
 const options = ref([
   {
     icon: 'chat',
