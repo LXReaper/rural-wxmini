@@ -16,7 +16,7 @@
 
     </view>
 
-    <view class="yourname">
+    <view class="yourname" style="font-size: 30rpx">
       用户名在此处
     </view>
 
