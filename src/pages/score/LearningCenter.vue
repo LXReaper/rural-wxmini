@@ -47,7 +47,7 @@ const products = ref([
     price: '1'
   },
   {
-    image: 'path/to/image2.jpg',
+    image: '/static/images/notices/advertisements/金龙鱼油.jpg',
     name: '2',
     type: '2',
     time: '2',
