@@ -35,6 +35,12 @@
 
 <script>
 
+import {defineComponent} from "vue";
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+
+export default defineComponent({
+  components: {UniIcons}
+})
 </script>
 
 
