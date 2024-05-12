@@ -44,7 +44,7 @@
             </uni-easyinput>
           </view>
           <view class="forgetPwd">
-            <span style="cursor: pointer">忘记密码</span>
+            <span style="cursor: pointer" @click="losePassword">忘记密码</span>
             <span style="cursor: pointer">没有账号，去注册</span>
           </view>
           <button @tap="loginHandle">登录</button>
@@ -54,9 +54,9 @@
             —— 其他账号登录 ——
           </view>
           <view class="otherUser">
-            <uni-icons type="phone-filled" size="40" color="rgb(111,111,250)"></uni-icons>
-            <uni-icons type="qq" size="40" color="rgb(66,157,250)"></uni-icons>
-            <uni-icons type="weixin" size="40" color="rgb(2,187,17)"></uni-icons>
+            <uni-icons type="phone-filled" size="40" color="rgb(111,111,250)"/>
+            <uni-icons type="qq" size="40" color="rgb(66,157,250)"/>
+            <uni-icons type="weixin" size="40" color="rgb(2,187,17)" @click="getUserProfile"/>
           </view>
         </view>
       </view>
@@ -72,38 +72,17 @@
 import {ref, onMounted, getCurrentInstance} from 'vue';
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {debounce} from "../../utils/debounce_Throttle";
+import {readStorageData, setStorageData} from "../../utils/storage/storageUtils";
+import {useStore} from "vuex";
+import {makeRequest} from "../../utils/request/requestUtil";
 
 const {proxy} = getCurrentInstance();
+const store = useStore();
+const code = ref("");//当前appId拿到的临时code
+const userData = ref([]);
 const userAccount = ref("");
 const userPassword = ref("");
-//微信登录
-setTimeout(() => {
-  wx.login({
-    success: function (res) {
-      if (res.code) {
-        // 将获取的code发送给后端服务器
-        wx.request({
-          url: `${proxy.$backendBaseUrl}/api/user/login`, // 后端登录接口
-          method: 'POST',
-          data: {
-            code: res.code
-          },
-          success: function (response) {
-            console.log(response.data); // 处理后端返回的数据
-          },
-          fail: function (error) {
-            console.error('请求失败：', error);
-          }
-        });
-      } else {
-        console.log('登录失败！' + res.errMsg);
-      }
-    }, fail(res) {
-      console.log("错误," + res.errMsg);
-    }
-  });
-}, 100)
-//登录函数
+//账号密码登录函数
 const userLogin = () => {
   uni.request({
     url: `${proxy.$backendBaseUrl}/api/user/login`,
@@ -125,18 +104,87 @@ const userLogin = () => {
   });
 };
 const userLoginDebounce = debounce(userLogin, 500);//防抖
-//钩子函数,在初始化登录页面时触发
+//钩子函数,在初始化登录页面时触发 tip:如果不需要一进入小程序就执行微信登录操作，可以将以下函数中的内容注释掉
 onMounted(() => {
-  userLogin();
+  // 调用函数以读取存储数据
+  readStorageData();
 });
-//执行登录
+/**
+ * 执行登录
+ */
+//账号密码登录
 const loginHandle = function () {
   userLoginDebounce();
 };
 
+/**
+ * 微信登录
+ */
+const getUserProfile = () => {
+  //调用微信获取code
+  uni.login({
+    provider: 'weixin',
+    success: (logRes) => {
+      console.log(logRes.code)
+      code.value = logRes.code
+    }
+  });
+  uni.getUserProfile({//打开微信登录的下方抽屉
+    desc: 'WeiXin'
+  }).then(res => {
+    //用户点击允许按钮后的操作
+    if (res) {
+      // let userMsgHave = JSON.parse(res.rawData);//用户数据拿到对象
+      // console.log(userMsgHave);
+      uni.showLoading({
+        title: '登录加载中'
+      });
+      if (res.errMsg.includes("getUserProfile:ok")) {
+        // console.log("codeLogin", code.value);//显示code
+        let url = `${proxy.$backendBaseUrl}/api/user/login/wx_miniApp`;
+        //请求后端微信登录接口
+        makeRequest(url, "GET", {code: code.value}).then(res => {
+          if (res.data.code === 0) {
+            /**登录成功*/
+            // 将Proxy类中的数据转成一个新的JavaScript对象赋值给userData.value
+            userData.value = JSON.parse(JSON.stringify(res.data.data));
+            // console.log(userData.value)//userData中的数据
+            uni.hideLoading();//关闭加载
+
+            //将数据保存到本地
+            setStorageData(userData);
+          } else {
+            uni.showToast({
+              title: '微信登录失败',
+              icon: 'none'
+            })
+            uni.hideLoading();//关闭加载
+          }
+        })
+      } else {
+        uni.showToast({
+          title: '登录失败请重试',
+          icon: 'error',
+          duration: 2000
+        })
+        uni.hideLoading();
+      }
+    }
+  }).catch(err => {//拒绝微信登录显示错误信息
+    console.log(err);
+  });
+}
+
 //直接登录
 const formSubmit = () => {
   uni.switchTab({url: '/pages/index/index'});
+};
+
+//忘记密码
+const losePassword = () => {
+  uni.navigateTo({
+    url: '/pages/login/losePassword'
+  });
 };
 </script>
 

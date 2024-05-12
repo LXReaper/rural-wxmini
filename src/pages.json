@@ -48,8 +48,14 @@
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
-		}
-      ,
+		},{
+			"path": "pages/login/losePassword",
+			"style": {
+				"navigationBarTitleText": "忘记密码",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
+		},
       {
   "path": "pages/mine/setting",
   "style": {
