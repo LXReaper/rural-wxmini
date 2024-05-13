@@ -75,7 +75,7 @@ const bindWechat = () => {
           })
         } else {
           uni.showToast({
-            title: '绑定失败',
+            title: e.data.message,
             icon: 'error',
             duration: 2000,
           })
