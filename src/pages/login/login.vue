@@ -81,7 +81,7 @@ const code = ref("");//当前appId拿到的临时code
 const userData = ref([]);
 const userAccount = ref("");
 const userPassword = ref("");
-//账号密码登录函数
+//账号密码登录函数。。。
 const userLogin = () => {
   if (!userAccount.value || !userPassword.value) {
     uni.showToast({
