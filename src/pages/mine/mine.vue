@@ -12,7 +12,7 @@
       <image class="head" :src="userAvatar" @click="updateAvatar"/>
       <view class="the-text">
         <text>用户名：{{ userName }}</text>
-        <view style="white-space: nowrap;">
+        <view>
           <text>用户ID:</text>
           <text class="userId">{{ userId }}</text>
         </view>
@@ -89,7 +89,7 @@ const updateAvatar = () => {
   margin: auto 0 auto 12rpx;
 }
 .userId{
-  font-size: 10px;
+  font-size: 3vw;//这里相对窗口的大小
   font-weight: bold;
 }
 .index-record {
@@ -158,9 +158,8 @@ const updateAvatar = () => {
 }
 
 .the-text {
-  margin-top: 40rpx;
-  margin-left: 20rpx;
-  font-size: 35rpx;
+  margin: auto 0 auto 20rpx;
+  font-size: 4vw;//这里相对窗口的大小
 }
 
 .two-choice {
