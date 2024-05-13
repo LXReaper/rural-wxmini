@@ -31,6 +31,7 @@
           </view>
         </view>
       </view>
+
     </scroll-view>
 <!--    </scroll-view>-->
   </view>
@@ -39,16 +40,16 @@
       <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick"
                      @buttonClick="buttonClick" />
     </view>
-
   </view>
 </template>
 
 <script setup lang="js">
-import { ref ,reactive} from 'vue';
+import {ref, reactive} from 'vue';
 import UniSection from "../../uni_modules/uni-section/components/uni-section/uni-section.vue";
 import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
 import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
+
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
 const products = reactive([
@@ -87,6 +88,7 @@ const loadProducts = (category) => {
   // 将新商品数据添加到products数组中
   products.push(...newProducts);
 };
+
 
 const options = ref([
   {
@@ -152,6 +154,7 @@ const buttonClick = (e) => {
   console.log(e);
   options.value[2].info++;
 };
+
 </script>
 
 <style lang="scss">
@@ -228,4 +231,5 @@ const buttonClick = (e) => {
   /* #endif */
   bottom: 0;
 }
+
 </style>

@@ -9,12 +9,12 @@
   <view class="the-information-buttons">
 
     <view class="half-up">
-      <image class="head" :src="userAvatar"/>
+      <image class="head" :src="userAvatar" @click="updateAvatar"/>
       <view class="the-text">
         <text>用户名：{{ userName }}</text>
-        <view>
-          \n用户ID:
-          <text style="font-size: 16px;font-weight: bold">{{ userId }}</text>
+        <view style="white-space: nowrap;">
+          <text>用户ID:</text>
+          <text class="userId">{{ userId }}</text>
         </view>
         <text>我的积分：114514{{ userIndex }}</text>
       </view>
@@ -42,9 +42,10 @@
 <script setup>
 import {ref} from "vue"
 import {useStore} from "vuex";
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 
 const store = useStore();
-const userAvatar = ref(store.state.user.loginUser.avatar || "./static/store/lqj.jpg");
+const userAvatar = ref(store.state.user.loginUser.avatar || "https://tse1-mm.cn.bing.net/th/id/OIP-C.Wt7U7ijKxRCz4NIIpHzBRAHaHm?rs=1&pid=ImgDetMain");
 const userName = ref(store.state.user.loginUser.villager_name);
 const userId = ref(store.state.user.loginUser.villager_id);
 const settingClick = () => {
@@ -57,6 +58,11 @@ const personal = () => {
     url: "/pages/mine/personal-information",
   });
 };
+
+//修改头像
+const updateAvatar = () => {
+  console.log()
+}
 </script>
 
 <style lang="scss">
@@ -77,13 +83,15 @@ const personal = () => {
 
 .head {
   border: white;
-  border-radius: 160rpx;
+  border-radius: 50%;
   width: 150rpx;
   height: 150rpx;
-  margin-left: 12rpx;
-  margin-top: 12rpx;
+  margin: auto 0 auto 12rpx;
 }
-
+.userId{
+  font-size: 10px;
+  font-weight: bold;
+}
 .index-record {
   width: 300rpx;
   border-radius: 20rpx;

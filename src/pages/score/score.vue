@@ -17,8 +17,9 @@
       <button class="button3" style="background-color: #007aff">排行榜</button>
       <button class="button4" style="background-color: #04fefc">文明家庭</button>
     </view>
+    <button class="custom-button" @click="onClick">积分商城</button>
+    <view class="recommend-text">{{ recommendMessage }}</view>
   </scroll-view>
-  <button class="custom-button" @click="onClick">积分商城</button>
 </template>
 
 <script setup >
@@ -32,6 +33,7 @@ const  LearningCenter = () =>{
     url:"/pages/layout/LearningCenterLayout"
   });
 };
+const recommendMessage = '以下是推荐商品';
 </script>
 
 <style scoped lang="scss">
@@ -96,6 +98,11 @@ const  LearningCenter = () =>{
   border-radius: 5px; /* 设置按钮圆角 */
   padding: 10px 20px; /* 设置按钮内边距 */
   font-size: 20px; /* 设置按钮文字大小 */
+}
+.recommend-text {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px; /* 根据需要调整上边距 */
 }
 </style>
 

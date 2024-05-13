@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import {getCurrentInstance, onMounted, ref} from "vue";
 import {onLoad} from "@dcloudio/uni-app";
+import NotLoginAvatar from "../../components/mine/notLoginAvatar.vue";
 
 const code = ref("");
 const hasLogin = ref(false);
