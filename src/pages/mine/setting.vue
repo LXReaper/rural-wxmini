@@ -1,7 +1,7 @@
 <template>
 
   <view class="all-settings">
-    <button class="b00">
+    <button class="b00" @click="bindWechat">
       账号与安全
       <uni-icons type="right" size="20"></uni-icons>
     </button>
@@ -28,29 +28,80 @@
 
   </view>
 
-  <view class="number">版本号：{{number}}</view>
+  <view class="number">版本号：{{ number }}</view>
 
 
 </template>
 
-<script>
-
-import {defineComponent} from "vue";
+<script setup>
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import {ref} from "vue";
+import {getCode, makeRequest} from "../../utils/request/requestUtil"
+import {useStore} from "vuex";
 
-export default defineComponent({
-  components: {UniIcons}
-})
+const store = useStore();
+const number = ref(2024);
+const code = ref("");
+
+/**
+ * 绑定微信号
+ */
+const bindWechat = () => {
+  // todo 这块要用的vueX来存放http://localhost:8121，后续只需全局调用模块来使用就行，不需要而外再写
+  const url = `http://localhost:8121/api/user/update/miniOpenId`;
+  //先调用微信获取code
+  getCode("weixin").then((res)=>{
+    code.value = res.code;
+  }).catch(()=>{
+    console.log("code获取失败")
+  });
+  uni.getUserProfile({
+    desc: 'WeiXin'
+  }).then(res => {
+    //用户点击允许按钮后的操作
+    if (res){
+      uni.showLoading({
+        title: '登录加载中'
+      });
+      //再向后端发送请求
+      makeRequest(url, "Post", {
+        userId: store.state.user.loginUser.villager_id,
+        code: code.value,
+      }).then((e) => {
+        if (e.data.code === 0) {
+          uni.showToast({
+            title: '绑定成功',
+            icon: 'success',
+          })
+        } else {
+          uni.showToast({
+            title: '绑定失败',
+            icon: 'error',
+            duration: 2000,
+          })
+        }
+      }).catch(()=>{
+        console.log("后端请求失败");
+      });
+    }
+  }).catch(err => {//拒绝微信登录显示错误信息
+    console.log(err);
+  });
+  uni.hideLoading();//关闭加载
+}
+
+
 </script>
 
 
 <style scoped lang="scss">
-.all-settings{
+.all-settings {
   margin-bottom: 510rpx;
 }
 
-.number{
-  text-align: center; font-size: 34rpx;
+.number {
+  text-align: center;
+  font-size: 34rpx;
 
 }
 </style>

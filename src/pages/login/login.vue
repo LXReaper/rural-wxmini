@@ -74,7 +74,7 @@ import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons
 import {debounce} from "../../utils/debounce_Throttle";
 import {readStorageData, setStorageData} from "../../utils/storage/storageUtils";
 import {useStore} from "vuex";
-import {makeRequest} from "../../utils/request/requestUtil";
+import {getCode, makeRequest} from "../../utils/request/requestUtil";
 
 const {proxy} = getCurrentInstance();
 const store = useStore();
@@ -125,11 +125,13 @@ const getUserProfile = () => {
   uni.login({
     provider: 'weixin',
     success: (logRes) => {
-      console.log(logRes.code)
       code.value = logRes.code
+    },fail: (error) =>{
+      console.log("code获取失败:",error);
     }
   });
-  uni.getUserProfile({//打开微信登录的下方抽屉
+  //再打开微信登录的下方抽屉
+  uni.getUserProfile({
     desc: 'WeiXin'
   }).then(res => {
     //用户点击允许按钮后的操作

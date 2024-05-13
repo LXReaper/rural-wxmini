@@ -28,6 +28,7 @@ export function setStorageData(userData){
     wx.setStorage({
         key: 'userInfo', // 设置一个键名
         data: {
+            villager_id: userData.value.villager_id,
             villager_name: userData.value.villager_name,
             avatar: userData.value.avatar,
             userRole: userData.value.userRole,
@@ -39,15 +40,7 @@ export function setStorageData(userData){
         success: function () {
             console.log('数据保存成功');
             // 从本地存储中读取数据
-            wx.getStorage({
-                key: 'userInfo', // 要读取的键名
-                success: function (res) {
-                    console.log('读取数据成功', res.data);
-                },
-                fail: function (res) {
-                    console.log('读取数据失败');
-                },
-            });
+            readStorageData();
             //跳转到主页
             uni.switchTab({
                 url: "/pages/index/index"

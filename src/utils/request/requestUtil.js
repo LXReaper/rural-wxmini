@@ -17,3 +17,13 @@ export const makeRequest = (url, method, data) => {
         });
     });
 }
+
+export const getCode = (provider) => {
+    return new Promise((resolve, reject) => {
+        uni.login({
+            provider: provider,
+            success: logRes => resolve(logRes),//返回正确响应数据
+            fail: error => reject(error)//返回错误响应数据
+        });
+    });
+};
