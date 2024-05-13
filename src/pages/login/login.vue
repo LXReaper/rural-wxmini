@@ -69,38 +69,45 @@
 </template>
 
 <script setup>
-import {ref, onMounted, getCurrentInstance} from 'vue';
+import {ref, onMounted} from 'vue';
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {debounce} from "../../utils/debounce_Throttle";
 import {readStorageData, setStorageData} from "../../utils/storage/storageUtils";
-import {useStore} from "vuex";
-import {getCode, makeRequest} from "../../utils/request/requestUtil";
+import {store} from "../../store";
+import {makeRequest} from "../../utils/request/requestUtil";
 
-const {proxy} = getCurrentInstance();
-const store = useStore();
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const code = ref("");//当前appId拿到的临时code
 const userData = ref([]);
 const userAccount = ref("");
 const userPassword = ref("");
 //账号密码登录函数
 const userLogin = () => {
-  uni.request({
-    url: `${proxy.$backendBaseUrl}/api/user/login`,
-    method: 'POST',
-    data: {
-      userAccount: userAccount.value,
-      userPassword: userPassword.value
-    },
-    header: {
-      'Content-Type': 'application/json'
-    },
-    success: (res) => {
-      console.log(res.data);
-      if (res.data.code === 0) uni.switchTab({url: '/pages/index/index'});
-    },
-    fail: (error) => {
-      console.error('请求错误:', error);
+  if (!userAccount.value || !userPassword.value) {
+    uni.showToast({
+      title: "用户账号或密码为空!",
+      icon: "error"
+    })
+    return;
+  }
+  makeRequest(`${backendBaseInfo}/api/user/login`, 'POST', {
+    userAccount: userAccount.value,
+    userPassword: userPassword.value
+  }).then((res) => {
+    //请求成功
+    userData.value = res.data.data;
+    if (res.data.code === 0) {
+      //登录成功
+      setStorageData(userData);
+    } else {
+      uni.showToast({
+        title: res.data.message,
+        icon: "error"
+      })
     }
+  }).catch((error) => {
+    //请求失败
+    console.error('请求错误:', error);
   });
 };
 const userLoginDebounce = debounce(userLogin, 500);//防抖
@@ -126,8 +133,8 @@ const getUserProfile = () => {
     provider: 'weixin',
     success: (logRes) => {
       code.value = logRes.code
-    },fail: (error) =>{
-      console.log("code获取失败:",error);
+    }, fail: (error) => {
+      console.log("code获取失败:", error);
     }
   });
   //再打开微信登录的下方抽屉
@@ -137,13 +144,13 @@ const getUserProfile = () => {
     //用户点击允许按钮后的操作
     if (res) {
       // let userMsgHave = JSON.parse(res.rawData);//用户数据拿到对象
-      // console.log(userMsgHave);
+      // console.log(userMsgHave.avatarUrl);//显示头像微信url
       uni.showLoading({
         title: '登录加载中'
       });
       if (res.errMsg.includes("getUserProfile:ok")) {
         // console.log("codeLogin", code.value);//显示code
-        let url = `${proxy.$backendBaseUrl}/api/user/login/wx_miniApp`;
+        let url = `${backendBaseInfo}/api/user/login/wx_miniApp`;
         //请求后端微信登录接口
         makeRequest(url, "GET", {code: code.value}).then(res => {
           if (res.data.code === 0) {

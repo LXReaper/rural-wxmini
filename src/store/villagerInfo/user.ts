@@ -1,7 +1,7 @@
 // initial state
 /* eslint-disable */
 import {StoreOptions} from "vuex";
-import AuthorityCtrl from "../access/authorityCtrl";
+import AuthorityCtrl from "../../access/authorityCtrl";
 
 /**
  * 用户模块

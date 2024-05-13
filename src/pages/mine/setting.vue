@@ -40,15 +40,15 @@ import {getCode, makeRequest} from "../../utils/request/requestUtil"
 import {useStore} from "vuex";
 
 const store = useStore();
-const number = ref(2024);
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+const number = ref("1.0.0");
 const code = ref("");
 
 /**
  * 绑定微信号
  */
 const bindWechat = () => {
-  // todo 这块要用的vueX来存放http://localhost:8121，后续只需全局调用模块来使用就行，不需要而外再写
-  const url = `http://localhost:8121/api/user/update/miniOpenId`;
+  const url = `${backendBaseInfo}/api/user/update/miniOpenId`;
   //先调用微信获取code
   getCode("weixin").then((res)=>{
     code.value = res.code;
