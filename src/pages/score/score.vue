@@ -19,10 +19,24 @@
     </view>
     <button class="custom-button" @click="onClick">积分商城</button>
     <view class="recommend-text">{{ recommendMessage }}</view>
+<!--    热门商品推荐-->
+    <view class="recommend-section">
+      <text class="recommend-title">热门商品推荐</text>
+      <!-- 商品卡片 -->
+<!--      点击卡片就进入积分商城页面-->
+      <view class="product-card" @click="navigateToScorePage">
+        <image class="product-image" src="/static/images/notices/advertisements/金龙鱼油.jpg"></image>
+        <text class="product-title">商品标题</text>
+        <text class="product-description">商品描述</text>
+        <text class="product-price">￥99.99</text>
+      </view>
+      <!-- 添加更多商品卡片 -->
+    </view>
   </scroll-view>
 </template>
 
 <script setup >
+// 点击商品卡片跳转到积分商城页面
 const onClick = () => {
   uni.navigateTo({
     url: "/pages/score/scoreHomePage",
@@ -34,6 +48,14 @@ const  LearningCenter = () =>{
   });
 };
 const recommendMessage = '以下是推荐商品';
+// 跳转到积分商城页面
+const navigateToScorePage =()=>{
+  uni.navigateTo(
+      {
+        url:"/pages/score/scoreHomePage"
+      }
+  )
+}
 </script>
 
 <style scoped lang="scss">
@@ -103,6 +125,52 @@ const recommendMessage = '以下是推荐商品';
   text-align: center;
   font-size: 18px;
   margin-top: 20px; /* 根据需要调整上边距 */
+}
+.recommend-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* 热门商品推荐标题 */
+.recommend-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 商品卡片 */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 16px;
+  color: #f00;
 }
 </style>
 
