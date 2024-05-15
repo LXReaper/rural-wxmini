@@ -3,7 +3,7 @@
   <view class="user">
 
     <view class="yourhead">
-      <image class="head" ref="is" @click="open" src="./static/store/lqj.jpg">
+      <image class="head" @click="open" src="./static/store/lqj.jpg">
       </image>
 
       <uni-popup ref="popup" type="bottom">
@@ -28,19 +28,12 @@
 
 </template>
 
-<script>
-export default{
-  data(){
-  },
-  methods:{
-    open(){
-    this.$refs.popup.open('bottom')
-    },
-    close(){
-    this.$refs.popup.close()
-    }
-  }
-}
+<script setup>
+import {ref} from "vue"
+
+const popup = ref();
+const open = () => popup.value.open('bottom');
+const close = () => popup.value.close();
 </script>
 
 <style scoped lang="scss">

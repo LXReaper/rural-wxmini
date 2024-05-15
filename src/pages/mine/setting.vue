@@ -48,7 +48,7 @@ const code = ref("");
  * 绑定微信号
  */
 const bindWechat = () => {
-  const url = `${backendBaseInfo}/api/user/update/miniOpenId`;
+  const url = `${backendBaseInfo}/api/user/bind/miniOpenId`;
   //先调用微信获取code
   getCode("weixin").then((res)=>{
     code.value = res.code;

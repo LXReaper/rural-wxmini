@@ -43,8 +43,11 @@
 import {ref} from "vue"
 import {useStore} from "vuex";
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import {makeRequest} from "../../utils/request/requestUtil";
 
 const store = useStore();
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+const url = `${backendBaseInfo}/api/user/unBind/miniOpenId`;//解除绑定请求后端url
 const userAvatar = ref(store.state.user.loginUser.avatar || "https://tse1-mm.cn.bing.net/th/id/OIP-C.Wt7U7ijKxRCz4NIIpHzBRAHaHm?rs=1&pid=ImgDetMain");
 const userName = ref(store.state.user.loginUser.villager_name);
 const userId = ref(store.state.user.loginUser.villager_id);
@@ -62,6 +65,28 @@ const personal = () => {
 //修改头像
 const updateAvatar = () => {
   console.log()
+}
+
+//微信解除绑定
+const unBindWechat = () => {
+  const id = store.state.user.loginUser.villager_id;
+  makeRequest(url, "Get", {
+    userId: id,
+  }).then((res) => {
+    if (res.data.code === 0) {
+      uni.showToast({
+        title: "成功解除绑定",
+        icon: "success"
+      })
+    } else {
+      uni.showToast({
+        title: res.data.message,
+        icon: "error",
+      })
+    }
+  }).catch((error) => {
+    console.log("请求失败，" + error);
+  });
 }
 </script>
 
@@ -88,10 +113,12 @@ const updateAvatar = () => {
   height: 150rpx;
   margin: auto 0 auto 12rpx;
 }
-.userId{
-  font-size: 3vw;//这里相对窗口的大小
+
+.userId {
+  font-size: 3vw; //这里相对窗口的大小
   font-weight: bold;
 }
+
 .index-record {
   width: 300rpx;
   border-radius: 20rpx;
@@ -159,7 +186,7 @@ const updateAvatar = () => {
 
 .the-text {
   margin: auto 0 auto 20rpx;
-  font-size: 4vw;//这里相对窗口的大小
+  font-size: 4vw; //这里相对窗口的大小
 }
 
 .two-choice {

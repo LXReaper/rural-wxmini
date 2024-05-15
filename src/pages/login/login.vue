@@ -1,23 +1,5 @@
 <!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
-  <!--  <view id="login">-->
-  <!--    <view class="bg">-->
-  <!--      <uni-row>-->
-  <!--        <uni-col>-->
-  <!--          <form @submit="formSubmit" @reset="formReset">-->
-  <!--            <view class="uni-btn-v">-->
-  <!--              <button class="phoneLogin" form-type="submit">手机登录</button>-->
-  <!--              <button class="weChatLogin" @click="login">微信登录</button>-->
-  <!--            </view>-->
-  <!--          </form>-->
-  <!--        </uni-col>-->
-  <!--      </uni-row>-->
-
-  <!--      <uni-row>-->
-  <!--        <view style="margin-top: 0"></view>-->
-  <!--      </uni-row>-->
-  <!--    </view>-->
-  <!--  </view>-->
   <view id="content">
     <view class="bg">
       <view class="loginBox">
@@ -33,21 +15,11 @@
             <uni-easyinput :prefixIcon="'eye'" type="password" v-model="userPassword" class="inputEasy"
                            placeholder="请输入密码"/>
           </view>
-          <view class="ipt">
-            <uni-easyinput :prefixIcon="'checkmarkempty'" type="text" value="" class="inputEasy"
-                           placeholder="请输入验证码">
-              <template #right>
-                <text class="yzm" style="cursor: pointer" @click="formSubmit">
-                  验证码
-                </text>
-              </template>
-            </uni-easyinput>
-          </view>
           <view class="forgetPwd">
             <span style="cursor: pointer" @click="losePassword">忘记密码</span>
             <span style="cursor: pointer">没有账号，去注册</span>
           </view>
-          <button @tap="loginHandle">登录</button>
+          <button @tap="loginHandle" class="loginButton">登录</button>
         </view>
         <view class="tipBox">
           <view class="txt">
@@ -299,6 +271,9 @@ h3 {
   padding: 0 10rpx;
   display: flex;
   justify-content: space-between;
+  :hover{
+    color: #a5e5c5;
+  }
 }
 
 button {
