@@ -44,7 +44,7 @@ const onClick = () => {
 };
 const  LearningCenter = () =>{
   uni.navigateTo({
-    url:"/pages/layout/LearningCenterLayout"
+    url:"/pages/score/LearningCenter"
   });
 };
 const recommendMessage = '以下是推荐商品';

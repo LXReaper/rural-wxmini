@@ -42,7 +42,7 @@
 				"enablePullDownRefresh": true
 			}
 		},{
-			"path": "pages/layout/LearningCenterLayout",
+			"path": "pages/score/LearningCenter",
 			"style": {
 				"navigationBarTitleText": "学习中心",
 				"navigationBarBackgroundColor": "#ADFF2F",

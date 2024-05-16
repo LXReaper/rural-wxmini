@@ -7,7 +7,7 @@
           {{ category }}
         </view>
       </view>
-      <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" @click="search"></uni-search-bar>
+      <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" cancelButton="none" @click="search"></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
           <image :src="product.image" class="product-image" />
@@ -164,7 +164,21 @@ const buttonClick = (e) => {
   padding: 10px;
   background-color: #f8f8f8;
 }
-
+//轮播图
+.swiper-style {
+  height: 200rpx; // 减小轮播图的高度
+  padding: 0 20px;
+  .item {
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    image {
+      border-radius: 10rpx;
+      width: 100%; // 图片宽度保持100%以适应容器
+      height: 100%; // 图片高度设置为100%以适应容器
+      object-fit: cover; // 使用object-fit确保图片保持宽高比并覆盖整个容器
+    }
+  }
+}
 .category-bar > view {
   cursor: pointer;
 }
@@ -174,7 +188,7 @@ const buttonClick = (e) => {
   flex-wrap: wrap;
   padding: 10px;
 }
-
+//商品卡片
 .product-card {
   width: calc(50% - 10px); /* 让商品卡片占据一行的一半，并留有间隔 */
   margin-right: 10px;
@@ -183,7 +197,7 @@ const buttonClick = (e) => {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+//图片样式
 .product-image {
   width: 100%;
   height: 150px; /* 调整商品图片高度 */

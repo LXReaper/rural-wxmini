@@ -1,119 +1,72 @@
 <template>
-  <view>
-    <scroll-view scroll-x="true" bindscroll="handlescroll" scroll-with-animation="true">
-      <view class="category-bar">
-        <view v-for="(category, index) in categories" :key="index" @click="loadProducts(category)">
-          {{ category }}
-        </view>
-      </view>
-      <view class="product-list">
-        <view v-for="(product, index) in products" :key="index" class="product-card">
-          <image :src="product.image" class="product-image" />
-          <view class="product-details">
-            <view class="product-info">
-              <text class="info-label">商品名称：</text>
-              <text class="info-value">{{ product.name }}</text>
-            </view>
-            <view class="product-info">
-              <text class="info-label">商品类型：</text>
-              <text class="info-value">{{ product.type }}</text>
-            </view>
-            <view class="product-info">
-              <text class="info-label">上架时间：</text>
-              <text class="info-value">{{ product.time }}</text>
-            </view>
-            <view class="product-info">
-              <text class="info-label">商品价格：</text>
-              <text class="info-value">{{ product.price }}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    </scroll-view>
+  <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入课程名称或课程编号" clearButton="auto" cancelButton="none" @confirm="search"/>
+  <swiper class="swiper-style" indicator-dots="ture" autoplay="ture" interval="10000" duration="200" circular="ture">
+    <swiper-item class="item">
+      <image src="/static/images/notices/advertisements/大米.jpg" class="image-swiper-style" mode="aspectFill"></image>
+    </swiper-item>
+    <swiper-item class="item">
+      <image src="/static/images/notices/advertisements/盐.jpg" class="image-swiper-style" mode="aspectFill"></image>
+    </swiper-item>
+    <swiper-item class="item">
+      <image src="/static/images/notices/advertisements/金龙鱼油.jpg" class="image-swiper-style" mode="aspectFill"></image>
+    </swiper-item>
+    <swiper-item class="item">
+      <image src="/static/images/notices/advertisements/饲料.jpg" class="image-swiper-style" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+  <!-- 视频卡片容器 -->
+  <view class="video-container">
+    <view class="video-row"
+          v-for="(video, index) in videos"
+          :key="video.id"
+          :class="{ 'right-margin': index % 2 === 0 }">
+      <video-card
+          :id="video.id"
+          :title="video.title"
+          :description="video.description"
+          :thumbnail="video.thumbnail"
+          :date="video.date"
+      />
+    </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import UniSearchBar from '@dcloudio/uni-ui/lib/uni-search-bar/uni-search-bar'
+import VideoCard from '../../components/studyMaterial/VideoCard.vue'
+import { ref } from 'vue'
 
-const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
-const selectedCategory = ref('');
-const products = ref([
-  {
-    image: '/static/images/notices/advertisements/大米.jpg',
-    name: '1',
-    type: '1',
-    time: '1',
-    price: '1'
-  },
-  {
-    image: '/static/images/notices/advertisements/金龙鱼油.jpg',
-    name: '2',
-    type: '2',
-    time: '2',
-    price: '2'
-  },
-  // 添加更多商品数据
-]);
+// 示例视频数据
+const videos = ref([
+  // 填充您的视频对象数组
+  { id: '1', title: '视频标题1', description: '描述1', thumbnail: '/static/images/notices/advertisements/大米.jpg', date: '2023-01-01' }, // 添加日期属性
+  { id: '2', title: '视频标题2', description: '描述2', thumbnail: '/static/images/notices/advertisements/金龙鱼油.jpg', date: '2023-01-02' }, // 添加日期属性
+  // ...
+])
 
-const loadProducts = (category) => {
-  selectedCategory.value = category;
-  // 根据选定的类别加载相应的商品
-  // 这里可以调用相应的方法或接口来加载商品数据
-};
+const search = (res) => {
+  uni.showToast({
+    title: '搜索：' + res.value,
+    icon: 'none'
+  })
+}
 </script>
 
-<style lang="scss">
-.category-bar {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background-color: #f8f8f8;
-}
-
-.category-bar > view {
-  cursor: pointer;
-}
-
-.product-list {
+<style lang="scss" scoped>
+.video-container {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px;
+  margin-top: 10px;
 }
 
-.product-card {
-  width: calc(50% - 10px); /* 让商品卡片占据一行的一半，并留有间隔 */
-  margin-right: 10px;
-  margin-bottom: 20px; /* 添加底部间隔 */
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+.video-row {
+  width: calc(50% - 5px);
+  box-sizing: border-box;
+  padding: 2px;
 
-.product-image {
-  width: 100%;
-  height: 150px; /* 调整商品图片高度 */
-  object-fit: cover;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.product-details {
-  padding: 10px;
-}
-
-.product-info {
-  display: flex;
-  margin-bottom: 5px;
-}
-
-.info-label {
-  font-weight: bold;
-  width: 100px;
-}
-
-.info-value {
-  flex: 1;
-  color: #333;
+  // 为每个奇数卡片（索引为 0, 2, 4...）添加右边距
+  &.right-margin {
+    margin-right: 10px;
+  }
 }
 </style>
