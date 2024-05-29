@@ -14,7 +14,7 @@
     <view style="display:flex" id="button2">
       <button class="button1" style="background-color: #04cefc" @click="LearningCenter">学习中心</button>
       <button class="button2" style="background-color: #4cd964" @click="onMissionCenter">任务中心</button>
-      <button class="button3" style="background-color: #007aff">排行榜</button>
+      <button class="button3" style="background-color: #007aff" @click="navigateToCharts">排行榜 </button>
       <button class="button4" style="background-color: #04fefc">文明家庭</button>
     </view>
     <button class="custom-button" @click="onClick">积分商城</button>
@@ -59,6 +59,13 @@ const navigateToScorePage =()=>{
   uni.navigateTo(
       {
         url:"/pages/score/scoreHomePage"
+      }
+  )
+}
+const navigateToCharts =()=>{
+  uni.navigateTo(
+      {
+        url:"/pages/score/Charts"
       }
   )
 }

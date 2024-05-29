@@ -62,6 +62,13 @@
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
+		},{
+			"path": "pages/score/Charts",
+			"style": {
+				"navigationBarTitleText": "排行榜",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
 		},
       {
   "path": "pages/mine/setting",
