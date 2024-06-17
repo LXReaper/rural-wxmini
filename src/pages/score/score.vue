@@ -3,12 +3,11 @@
     <!-- 圆角矩形容器 -->
     <view class="rounded-container">
       <!-- 六个小按钮 -->
-      <view class="button" style="background-color: #ff0000;">总览</view>
-      <view class="button" style="background-color: #00ff00;">卫生</view>
-      <view class="button" style="background-color: #0000ff;">贡献</view>
-      <view class="button" style="background-color: #ffff00;">任务</view>
-      <view class="button" style="background-color: #ff00ff;">签到</view>
-      <view class="button" style="background-color: #00ffff;">考察</view>
+      <view class="category-bar">
+      <view v-for="(category ,index) in categories" :key="index" @click="selectCategory(category)" :class="{active: category === selectedCategory}">
+        {{category}}
+      </view>
+      </view>
     </view>
     <!--下方四个按钮-->
     <view style="display:flex" id="button2">
@@ -36,6 +35,13 @@
 </template>
 
 <script setup >
+import { ref } from 'vue'
+const categories = ref(['总览','卫生','贡献','任务','签到','考察']);
+//存储选定的状态
+const selectedCategory = ref('总览');
+const selectCategory=(category)=>{
+selectedCategory.value=category;
+};
 // 点击商品卡片跳转到积分商城页面
 const onClick = () => {
   uni.navigateTo({
@@ -72,14 +78,38 @@ const navigateToCharts =()=>{
 </script>
 
 <style scoped lang="scss">
+//上方按钮的样式
+.category-bar{
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color:#f8f8f8;
+}
+.category-bar > view{
+  cursor: pointer;
+  padding: 10px;
+}
 .rounded-container {
-  background-color: #f0f0f0;
   border-radius: 10px;
-  padding: 20px;
-  margin: 10px;
-  display: flex; /* 使用 Flex 布局 */
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+.category-button {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
+.category-button:hover {
+  background-color: #e0e0e0;
+}
+
+.category-button.active {
+  font-weight: bold;
+  color: #007BFF; /* 选中状态颜色 */
+  background-color: #e0e0e0;
+}
 .button {
   width: auto; /* 自适应宽度 */
   height: 30px;

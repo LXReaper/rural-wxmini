@@ -76,16 +76,21 @@
     "navigationBarTitleText": "setting",
     "enablePullDownRefresh": true
   }
-}
-      ,
-      {
+}, {
   "path": "pages/mine/personal-information",
   "style": {
     "navigationBarTitleText": "个人信息",
     "enablePullDownRefresh": true
   }
-},
-    ],
+},{
+			"path": "pages/score/Payment",
+			"style": {
+				"navigationBarTitleText": "支付页面",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
+		},
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
