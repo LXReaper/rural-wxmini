@@ -2,7 +2,7 @@
   <view>
     <scroll-view scroll-y="true" bindscroll="handscroll" scroll-with-animation="true">
       <view class="category-bar">
-        <view v-for="(category, index) in categories" :key="index" @click="loadProducts(category)">
+        <view v-for="(category, index) in categories" :key="index" >
           {{ category }}
         </view>
       </view>
@@ -21,11 +21,15 @@
             </view>
             <view class="product-info">
               <text class="info-label">上架时间：</text>
-              <text class="info-value">{{ product.time }}</text>
+              <text class="info-value">{{ moment(product.time).format("YYYY年MM月DD日") }}</text>
             </view>
             <view class="product-info">
               <text class="info-label">商品价格：</text>
               <text class="info-value">{{ product.price }}</text>
+            </view>
+            <view class="product-info">
+              <text class="info-label">剩余数量：</text>
+              <text class="info-value">{{ product.quantity }}</text>
             </view>
             <view class="cart-controls">
               <button class="cart-btn" v-if="product.cartCount === 0" @click="addToCart(index)">加入购物车</button>
@@ -68,49 +72,51 @@
 </template>
 
 <script setup lang="js">
-import { ref, reactive, computed } from 'vue';
-import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+import { ref, reactive, computed ,onMounted} from 'vue';
+import { makeRequest } from "../../utils/request/requestUtil";
+import {store} from "../../store";
+import moment from "moment";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
-
+import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
-const products = reactive([
-  {
-    image: '/static/images/notices/advertisements/大米.jpg',
-    name: '1',
-    type: '1',
-    time: '1',
-    price: '1',
-    cartCount: 0
-  },
-  {
-    image: '/static/images/notices/advertisements/金龙鱼油.jpg',
-    name: '2',
-    type: '2',
-    time: '2',
-    price: '2',
-    cartCount: 0
-  }
-]);
-
+const products = reactive([]);
+const current = ref('1');
+const pageSize = ref('10')
 const cartProducts = computed(() => products.filter(product => product.cartCount > 0));
 const showCartDrawer = ref(false);
 
-const loadProducts = (category) => {
-  selectedCategory.value = category;
-  const newProducts = [
-    {
-      image: '/static/images/notices/advertisements/金龙鱼油.jpg',
-      name: '新商品',
-      type: '新类型',
-      time: '新时间',
-      price: '新价格',
-      cartCount: 0
-    },
-  ];
-  products.push(...newProducts);
-};
+const loadProducts = async () => {
+  try {
+    const res = await makeRequest(`${backendBaseInfo}/api/products/list/page`, 'POST', {
+      current: current.value ,
+      pageSize: pageSize.value
+    });
 
+    if (res.data.code === 0) {
+      console.log('API Response:', res.data);
+      const { records, total } = res.data.data;
+      products.splice(0, products.length, ...records.map(item => ({
+        // image: item.product_Image || '/static/images/default.jpg', // 使用默认图片或从item中获取
+        name: item.product_name,
+        type: item.product_type,
+        time: item.shelf_time,
+        price: item.price,
+        quantity:item.stock_quantity,
+        cartCount: 0
+      })));
+      console.log('Loaded products:', products);
+    } else {
+      console.error('Failed to load products:', res.data.message);
+    }
+  } catch (error) {
+    console.error('Error loading products:', error);
+  }
+};
+onMounted(() => {
+  loadProducts();
+});
 const addToCart = (index) => {
   products[index].cartCount = 1;
 };
@@ -172,6 +178,7 @@ const onClick = (e) => {
     icon: 'none'
   });
 };
+
 
 </script>
 
