@@ -1,149 +1,102 @@
 <template>
-  <view class="category">
-    <view v-for="(category, index) in categories" :key="index" @click="selectCategory(category)" :class="{ active: category === selectedCategory }">
-      {{ category }}
+  <view class="container">
+    <view class="action-buttons">
+      <button class="action-button" @click="handleButtonOneClick">按钮一</button>
+      <button class="action-button" @click="handlePublishTask">发布任务</button>
     </view>
-  </view>
-  <view class="leaderboard">
-    <view class="title">{{ selectedCategory }}排行榜</view>
-    <view class="top-three">
-      <view v-for="(item, index) in topThree" :key="item.id" class="top-item">
-        <view class="rank">#{{ index + 1 }}</view>
-        <view class="name">{{ item.name }}</view>
-        <view class="score">{{ item.score }}</view>
-      </view>
+    <view class="search-box">
+      <input v-model="searchText" placeholder="搜索任务" @input="handleSearch" />
     </view>
-    <view class="leaderboard-list">
-      <view v-for="(item, index) in remainingItems" :key="item.id" class="leaderboard-item">
-        <view class="rank">{{ index + 4 }}</view><!-- index + 4 因为前三名已经显示，所以从第4开始 -->
-        <view class="name">{{ item.name }}</view>
-        <view class="score">{{ item.score }}</view>
+    <view class="task-list">
+      <view class="task-card" v-for="task in tasks" :key="task.id" @click="handleTaskClick(task.id)">
+        <text class="task-content">{{ task.content }}</text>
+        <text class="task-end-time">{{ task.endTime }}</text>
+        <text class="task-category">{{ task.category }}</text>
+        <button class="claim-button" @click="handleClaimTask(task.id)">领取任务</button>
       </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 
-// 设置分类
-const categories = ref(['总分', '卫生', '考察', '贡献']);
+const tasks = ref([
+  { id: 1, content: '完成项目报告', endTime: '2023-04-30', category: '工作' },
+  { id: 2, content: '购买食材', endTime: '2023-04-25', category: '生活' },
+  // 添加更多任务...
+]);
+const searchText = ref('');
 
-// 设置数据
-const items = ref({
-  '总分': [
-    { id: 1, name: 'Alice', score: 300 },
-    { id: 2, name: 'Bob', score: 250 },
-    { id: 3, name: 'Charlie', score: 200 },
-    { id: 4, name: 'David', score: 150 },
-    { id: 5, name: 'Eve', score: 100 },
-  ],
-  '卫生': [
-    { id: 1, name: 'Frank', score: 280 },
-    { id: 2, name: 'Grace', score: 270 },
-    { id: 3, name: 'Heidi', score: 260 },
-    { id: 4, name: 'Ivan', score: 220 },
-    { id: 5, name: 'Judy', score: 190 },
-  ],
-  '考察':[
-    { id: 1, name: 'Frank', score: 180 },
-    { id: 2, name: 'Grace', score: 270 },
-    { id: 3, name: 'Heidi', score: 60 },
-    { id: 4, name: 'Ivan', score: 370 },
-    { id: 5, name: 'Judy', score: 190 },
-  ],
-  '贡献':[
-    { id: 1, name: 'Frank', score: 10 },
-    { id: 2, name: 'Grace', score: 70 },
-    { id: 3, name: 'Heidi', score: 60 },
-    { id: 4, name: 'Ivan', score: 30 },
-    { id: 5, name: 'Judy', score: 90 },
-  ],
-});
+// 处理按钮点击事件
+function handleButtonOneClick() {
+  console.log('按钮一被点击');
+}
 
-// 存储当前选中的分类
-const selectedCategory = ref('总分');
+// 处理发布任务按钮点击事件
+function handlePublishTask() {
+  console.log('发布任务按钮被点击');
+}
 
-// 切换分类
-const selectCategory = (category) => {
-  selectedCategory.value = category;
-};
+// 处理搜索框输入
+function handleSearch() {
+  // 实现搜索逻辑
+}
 
-// 排序后的数据
-const sortedItems = computed(() => {
-  return items.value[selectedCategory.value].sort((a, b) => b.score - a.score);
-});
+// 处理任务点击事件
+function handleTaskClick(taskId) {
+  console.log('Task clicked with id:', taskId);
+}
 
-// 前三名
-const topThree = computed(() => {
-  return sortedItems.value.slice(0, 3);
-});
-
-// 剩余名次
-const remainingItems = computed(() => {
-  return sortedItems.value.slice(3);
-});
+// 处理领取任务按钮点击事件
+function handleClaimTask(taskId) {
+  console.log('Task claimed with id:', taskId);
+}
 </script>
 
 <style scoped>
-.category {
+.container {
   display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background-color: #f8f8f8;
-}
-.category view {
-  cursor: pointer;
-  padding: 10px;
-}
-.category view.active {
-  font-weight: bold;
-  color: #007BFF; /* 选中状态颜色 */
+  flex-direction: column;
+  align-items: center;
 }
 
-.leaderboard {
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.title {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.top-three, .leaderboard-list {
-  list-style: none;
-  padding: 0;
-}
-
-.top-item, .leaderboard-item {
+.action-buttons {
+  width: 90%;
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+}
+
+.action-button {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.search-box {
+  width: 90%;
+  margin-top: 20px;
+}
+
+.task-list {
+  width: 90%;
+  margin-top: 20px;
+}
+
+.task-card {
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
-.top-item {
-  background-color: #f2f2f2; /* 前三名的背景颜色可以不同 */
+.task-content, .task-end-time, .task-category {
+  margin: 5px 0;
 }
 
-.top-item:last-child, .leaderboard-item:last-child {
-  border-bottom: none;
-}
-
-.rank {
-  font-weight: bold;
-}
-
-.name {
-  flex-grow: 1;
-  margin-left: 10px;
-}
-
-.score {
-  font-weight: bold;
+.claim-button {
+  margin-top: 10px;
 }
 </style>

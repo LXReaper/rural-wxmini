@@ -191,13 +191,12 @@ const getImagesFromFolder = () => {
 </script>
 
 <style lang="scss">
-//轮播图
-.swiper-style{
+.swiper-style {
   height: 300rpx;
-  .item{
+  .item {
     padding: 0 30rpx;
     box-sizing: border-box;
-    image{
+    image {
       border-radius: 50rpx;
       width: 100%;
       height: 300rpx;
@@ -205,23 +204,18 @@ const getImagesFromFolder = () => {
   }
 }
 
-//按钮
-.button1 {/* 初始背景色 */
+.button1 {
   margin: 30rpx 30rpx;
   border-radius: 40rpx;
   box-sizing: border-box;
   background-color: #f59d22;
   box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
 }
-.button1:active {/* 点击后的背景色 */
-  margin: 30rpx 30rpx;
-  border-radius: 40rpx;
-  box-sizing: border-box;
+.button1:active {
   background-color: #f57816;
 }
 
 #button2 {
-  //点击前效果
   .button21 {
     border-radius: 40rpx;
     background-color: #ffff00;
@@ -240,42 +234,32 @@ const getImagesFromFolder = () => {
     height: 150rpx;
     box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
   }
-  //点击后效果
-  .button21:active{
-    border-radius: 40rpx;
+  .button21:active {
     background-color: #cfff00;
-    padding: 5% 0;
-    text-align: center;
-    width: 310rpx;
-    height: 150rpx;
-    box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
   }
-  .button22:active{
-    border-radius: 40rpx;
+  .button22:active {
     background-color: #04cefc;
-    padding: 5% 0;
-    text-align: center;
-    width: 310rpx;
-    height: 150rpx;
-    box-shadow: -5rpx -5rpx 15rpx rgba(0, 0, 0, 0.5);
   }
 }
 
-//推广
 .card-actions {
   display: flex;
-  margin: auto auto;
+  justify-content: space-around;
   align-items: center;
   border-top: 1rpx solid #ccc;
-  .card-actions-item{
-    padding: 20rpx 70.31rpx;
+  padding: 10rpx 0;
+  .card-actions-item {
+    padding: 0 20rpx;
+    .card-actions-item-text {
+      font-size: 20rpx;
+    }
   }
 }
 .recommend-title {
-  font-size: 50rpx;
-  padding-bottom: 20rpx;
+  font-size: 50rpx; // 保持原大小
+  padding-bottom: 20rpx; // 保持原大小
 }
 .recommend-description {
-  font-size: 25rpx;
+  font-size: 25rpx; // 保持原大小
 }
 </style>
