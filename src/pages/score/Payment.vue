@@ -23,20 +23,25 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
+import { makeRequest } from "../../utils/request/requestUtil";
+import { store } from "../../store";
 
-const cartProducts = ref([]);
-const availablePoints = ref(100); // 默认100积分
-const countdown = ref(3);
-const countdownTimer = ref(null); // 引入定时器引用
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+const cartProducts = ref<{ price: number; cartCount: number }[]>([]);
+const availablePoints = ref<number>(100); // 默认100积分
+const countdown = ref<number>(15);
+const countdownTimer = ref<number | null>(null); // 引入定时器引用
+const orderID = ref<string | null>(null);
 
-const totalPoints = computed(() => {
+const totalPoints = computed<number>(() => {
   return cartProducts.value.reduce((total, product) => {
     return total + product.price * product.cartCount;
   }, 0);
 });
+
 const startCountdown = () => {
   countdownTimer.value = setInterval(() => {
     if (countdown.value > 0) {
@@ -47,7 +52,7 @@ const startCountdown = () => {
       const currentPage = getCurrentPages()[getCurrentPages().length - 1];
       const currentRoute = currentPage.route;
 
-// 判断当前页面是否是 'pages/score/Payment'
+      // 判断当前页面是否是 'pages/score/Payment'
       if (currentRoute === 'pages/score/Payment') {
         uni.navigateBack({
           delta: 1 // 返回上一级页面
@@ -74,6 +79,8 @@ const pay = () => {
     });
   } else {
     availablePoints.value -= totalPoints.value; // 扣除积分
+    console.log("调用支付方法");
+    processOrder();
     uni.showToast({
       title: '支付成功',
       icon: 'success',
@@ -86,6 +93,17 @@ const pay = () => {
       });
     }, 1000); // 延迟1秒跳转
     // 处理支付成功的逻辑
+  }
+};
+
+const processOrder = async () => {
+  console.log(orderID.value);
+  const res = await makeRequest(`${backendBaseInfo}/api/transactions/transaction/handle`, 'POST', orderID.value);
+  if (res.data.code === 0) {
+    console.log("处理成功！");
+  } else {
+    console.log("出错", res.data.message);
+    console.log(orderID.value);
   }
 };
 
@@ -106,14 +124,18 @@ onMounted(() => {
 });
 
 // 在页面加载时获取参数
-onLoad((options) => {
+onLoad((options: any) => {
   try {
+    // 解码并解析传递的参数
     cartProducts.value = JSON.parse(decodeURIComponent(options.cartProducts || '[]'));
+    orderID.value = options.orderID;
   } catch (e) {
-    console.error('Failed to parse cartProducts:', e);
+    console.error('Failed to parse cartProducts or orderID:', e);
     cartProducts.value = [];
+    orderID.value = null;
   }
-  availablePoints.value = Number(options.availablePoints) || 100; // 支持传递参数，但默认是100积分
+  // 设置 availablePoints
+  availablePoints.value = Number(options.availablePoints) || 100;
 });
 </script>
 

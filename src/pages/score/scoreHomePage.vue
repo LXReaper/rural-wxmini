@@ -2,14 +2,15 @@
   <view>
     <scroll-view scroll-y="true" bindscroll="handscroll" scroll-with-animation="true">
       <view class="category-bar">
-        <view v-for="(category, index) in categories" :key="index" >
+        <view v-for="(category, index) in categories" :key="index">
           {{ category }}
         </view>
       </view>
-      <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" cancelButton="none" @click="search"></uni-search-bar>
+      <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" cancelButton="none"
+                      @click="search"></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
-          <image :src="product.image" class="product-image" />
+          <image :src="product.image" class="product-image"/>
           <view class="product-details">
             <view class="product-info">
               <text class="info-label">商品名称：</text>
@@ -46,7 +47,8 @@
   </view>
   <view class="uni-container">
     <view class="goods-carts">
-      <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick" @buttonClick="buttonClick" />
+      <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick"
+                     @buttonClick="buttonClick"/>
     </view>
   </view>
   <view v-if="showCartDrawer" class="cart-drawer">
@@ -57,7 +59,7 @@
       </view>
       <view class="cart-drawer-body">
         <view v-for="(product, index) in cartProducts" :key="index" class="cart-product">
-          <image :src="product.image" class="cart-product-image" />
+          <image :src="product.image" class="cart-product-image"/>
           <view class="cart-product-details">
             <view class="cart-product-info">
               <text>{{ product.name }}</text>
@@ -72,12 +74,13 @@
 </template>
 
 <script setup lang="js">
-import { ref, reactive, computed ,onMounted} from 'vue';
-import { makeRequest } from "../../utils/request/requestUtil";
+import {ref, reactive, computed, onMounted} from 'vue';
+import {makeRequest} from "../../utils/request/requestUtil";
 import {store} from "../../store";
 import moment from "moment";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
 const selectedCategory = ref('');
@@ -86,24 +89,28 @@ const current = ref('1');
 const pageSize = ref('10')
 const cartProducts = computed(() => products.filter(product => product.cartCount > 0));
 const showCartDrawer = ref(false);
+const cardProductsID = ref([]);
+const cardProductsQuantity = ref([]);
+const orderID = ref();
 
 const loadProducts = async () => {
   try {
     const res = await makeRequest(`${backendBaseInfo}/api/products/list/page`, 'POST', {
-      current: current.value ,
+      current: current.value,
       pageSize: pageSize.value
     });
 
     if (res.data.code === 0) {
       console.log('API Response:', res.data);
-      const { records, total } = res.data.data;
+      const {records, total} = res.data.data;
       products.splice(0, products.length, ...records.map(item => ({
         // image: item.product_Image || '/static/images/default.jpg', // 使用默认图片或从item中获取
         name: item.product_name,
         type: item.product_type,
         time: item.shelf_time,
         price: item.price,
-        quantity:item.stock_quantity,
+        quantity: item.stock_quantity,
+        productID: item.product_id,
         cartCount: 0
       })));
       console.log('Loaded products:', products);
@@ -118,19 +125,61 @@ onMounted(() => {
   loadProducts();
 });
 const addToCart = (index) => {
-  products[index].cartCount = 1;
+  if (products[index].cartCount === 0) {
+    products[index].cartCount = 1;
+    cardProductsID.value.push(products[index].productID);
+    cardProductsQuantity.value.push(1);
+    console.log("id:" + cardProductsID.value);
+    console.log("数量：" + cardProductsQuantity.value);
+
+  } else {
+    products[index].cartCount++;
+    cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]++;
+    console.log("id:" + cardProductsID.value);
+    console.log("数量：" + cardProductsQuantity.value);
+  }
 };
 
 const increaseQuantity = (index) => {
   products[index].cartCount++;
+  cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]++;
+  console.log("id:" + cardProductsID.value);
+  console.log("数量：" + cardProductsQuantity.value);
 };
 
 const decreaseQuantity = (index) => {
   if (products[index].cartCount > 0) {
     products[index].cartCount--;
+    cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]--;
+    console.log("id:" + cardProductsID.value);
+    console.log("数量：" + cardProductsQuantity.value);
   }
   if (products[index].cartCount === 0) {
     products[index].cartCount = 0;
+  }
+};
+
+const createOrder = async () => {
+  try {
+    const res = await makeRequest(`${backendBaseInfo}/api/transactions/add`, 'POST', {
+      productId: cardProductsID.value,
+      transactionQuantity: cardProductsQuantity.value,
+      user_id: store.state.user.loginUser.villager_id,
+    });
+    if (res.data.code === 0) {
+      orderID.value = res.data.data;
+      console.log(res.data.data);
+      console.log("生成订单成功");
+      const availablePoints = 1000; // 假设用户的可用积分为1000
+      await uni.navigateTo({
+            url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(cartProducts.value))}&availablePoints=${availablePoints}&orderID=${orderID.value}`
+          }
+      );
+    } else {
+      console.error("生成订单失败:", res.data.message || "未知错误");
+    }
+  } catch (error) {
+    console.error("创建订单时发生错误:", error);
   }
 };
 
@@ -162,11 +211,7 @@ const buttonClick = (e) => {
       });
       return; // 阻止进一步执行
     }
-
-    const availablePoints = 1000; // 假设用户的可用积分为1000
-    uni.navigateTo({
-      url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(cartProducts.value))}&availablePoints=${availablePoints}`
-    });
+    createOrder();
   }
 };
 const onClick = (e) => {

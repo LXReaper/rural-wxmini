@@ -12,6 +12,7 @@ export const makeRequest = (url, method, data) => {
             url: url,
             method: method,
             data: data,
+            withCredentials: true,
             success: res => resolve(res),//返回正确响应数据
             fail: err => reject(err)//返回错误响应数据
         });
