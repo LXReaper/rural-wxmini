@@ -24,16 +24,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { onLoad } from '@dcloudio/uni-app';
-import { makeRequest } from "../../utils/request/requestUtil";
-import { store } from "../../store";
+import {ref, onMounted, computed} from 'vue';
+import {onLoad} from '@dcloudio/uni-app';
+import {makeRequest} from "../../utils/request/requestUtil";
+import {store} from "../../store";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const cartProducts = ref<{ price: number; cartCount: number }[]>([]);
 const availablePoints = ref<number>(100); // 默认100积分
 const countdown = ref<number>(15);
-const countdownTimer = ref<number | null>(null); // 引入定时器引用
+const countdownTimer = ref(); // 引入定时器引用
 const orderID = ref<string | null>(null);
 
 const totalPoints = computed<number>(() => {
@@ -98,7 +98,9 @@ const pay = () => {
 
 const processOrder = async () => {
   console.log(orderID.value);
-  const res = await makeRequest(`${backendBaseInfo}/api/transactions/transaction/handle`, 'POST', orderID.value);
+  const res = await makeRequest(`${backendBaseInfo}/api/transactions/transaction/handle`, 'GET', {
+    transactions_Id: orderID.value
+  });
   if (res.data.code === 0) {
     console.log("处理成功！");
   } else {
