@@ -7,7 +7,7 @@
         </view>
       </view>
       <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" cancelButton="none"
-                      @click="search"></uni-search-bar>
+                      @confirm="searchProduct" v-model="searchText"></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
           <image :src="product.image" class="product-image"/>
@@ -92,12 +92,15 @@ const showCartDrawer = ref(false);
 const cardProductsID = ref([]);
 const cardProductsQuantity = ref([]);
 const orderID = ref();
+const searchText = ref('');
+
 
 const loadProducts = async () => {
   try {
     const res = await makeRequest(`${backendBaseInfo}/api/products/list/page`, 'POST', {
       current: current.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value,
+      productName:searchText.value,
     });
 
     if (res.data.code === 0) {
@@ -124,6 +127,10 @@ const loadProducts = async () => {
 onMounted(() => {
   loadProducts();
 });
+const searchProduct =()=>{
+  current.value = 1;
+  loadProducts();
+}
 const addToCart = (index) => {
   if (products[index].cartCount === 0) {
     products[index].cartCount = 1;

@@ -4,14 +4,13 @@
       <button class="action-button" @click="handleButtonOneClick">按钮一</button>
       <button class="action-button" @click="handlePublishTask">发布任务</button>
     </view>
-    <view class="search-box">
-      <input v-model="searchText" placeholder="搜索任务" @input="handleSearch" />
-    </view>
+    <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入任务关键词" clear-button="auto" cancelButton="none"
+                    @confirm="searchTask" v-model="searchText"></uni-search-bar>
     <view class="task-list">
       <view class="task-card" v-for="task in tasks" :key="task.id" @click="handleTaskClick(task.id)">
-        <text class="task-content">{{ task.content }}</text>
-        <text class="task-end-time">{{ task.endTime }}</text>
-        <text class="task-category">{{ task.category }}</text>
+        <text class="task-content">任务内容：{{ task.task_content }}</text>
+        <text class="task-end-time">截至时间：{{ moment(task.deadline).format("YYYY年MM月DD日") }}</text>
+        <text class="task-category">任务id：{{ task.material_id }}</text>
         <button class="claim-button" @click="handleClaimTask(task.id)">领取任务</button>
       </view>
     </view>
@@ -19,14 +18,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted} from 'vue';
+import {makeRequest} from "../../utils/request/requestUtil";
+import {store} from "../../store";
+import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
+import moment from "moment";
 
-const tasks = ref([
-  { id: 1, content: '完成项目报告', endTime: '2023-04-30', category: '工作' },
-  { id: 2, content: '购买食材', endTime: '2023-04-25', category: '生活' },
-  // 添加更多任务...
-]);
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+const tasks = ref([]);
 const searchText = ref('');
+const current = ref('1');
+const pageSize = ref('10');
+const sortOrder = ref('desc');
 
 // 处理按钮点击事件
 function handleButtonOneClick() {
@@ -39,10 +42,28 @@ function handlePublishTask() {
 }
 
 // 处理搜索框输入
-function handleSearch() {
-  // 实现搜索逻辑
+const handleSearch = async () => {
+  await makeRequest(`${backendBaseInfo}/api/tasks/list/page`, 'POST', {
+    current: current.value,
+    pageSize: pageSize.value,
+    sortOrder: sortOrder.value,
+    taskContent:searchText.value
+  }).then((res) => {
+    if (res.data.code === 0) {
+      tasks.value = res.data.data.records;
+      console.log("查询成功！");
+    }
+  }).catch((error)=>{
+    console.log("请求失败",error.message)
+  })
 }
-
+onMounted(()=>{
+  handleSearch();
+} )
+const searchTask =()=>{
+  current.value = 1;
+  handleSearch();
+}
 // 处理任务点击事件
 function handleTaskClick(taskId) {
   console.log('Task clicked with id:', taskId);
