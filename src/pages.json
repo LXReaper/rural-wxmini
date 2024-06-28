@@ -90,6 +90,14 @@
 				"enablePullDownRefresh": true
 			}
 		},
+		{
+			"path": "pages/score/releaseTasks",
+			"style": {
+				"navigationBarTitleText": "发布任务页面",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

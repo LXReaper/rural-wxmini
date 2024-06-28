@@ -10,7 +10,7 @@
       <view class="task-card" v-for="task in tasks" :key="task.id" @click="handleTaskClick(task.id)">
         <text class="task-content">任务内容：{{ task.task_content }}</text>
         <text class="task-end-time">截至时间：{{ moment(task.deadline).format("YYYY年MM月DD日") }}</text>
-        <text class="task-category">任务id：{{ task.material_id }}</text>
+        <text class="task-category">积分：{{ task.points_value }}</text>
         <button class="claim-button" @click="handleClaimTask(task.id)">领取任务</button>
       </view>
     </view>
@@ -39,6 +39,9 @@ function handleButtonOneClick() {
 // 处理发布任务按钮点击事件
 function handlePublishTask() {
   console.log('发布任务按钮被点击');
+  uni.navigateTo({
+    url:"/pages/score/releaseTasks"
+  })
 }
 
 // 处理搜索框输入
