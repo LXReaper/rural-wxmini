@@ -11,6 +11,10 @@ export const makeRequest = (url, method, data) => {
         uni.request({
             url: url,
             method: method,
+            header: {
+                'content-type': 'application/json',
+                'cookie': wx.getStorageSync("cookie")//读取cookie
+            },
             data: data,
             withCredentials: true,
             success: res => resolve(res),//返回正确响应数据
