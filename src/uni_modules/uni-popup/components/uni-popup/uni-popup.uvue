@@ -6,7 +6,7 @@
   </view>
 </template>
 
-<script>
+<script lang="ts">
   type CloseCallBack = ()=> void;
   let closeCallBack:CloseCallBack = () :void => {};
   export default {
