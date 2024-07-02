@@ -1,5 +1,10 @@
 <script>
 
+
+import {store} from "./store";
+import {readStorageData} from "./utils/storage/storageUtils";
+import {onShow} from "@dcloudio/uni-app";
+
 export default {
   onLaunch: function () {
     console.log('App Launch')
@@ -10,8 +15,7 @@ export default {
   onHide: function () {
     console.log('App Hide')
   },
-  onLoad() {
-
+  onLoad: function () {
   },
 }
 </script>

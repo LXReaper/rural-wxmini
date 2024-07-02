@@ -130,7 +130,9 @@ const getUserProfile = () => {
             /**登录成功*/
             // 将Proxy类中的数据转成一个新的JavaScript对象赋值给userData.value
             userData.value = JSON.parse(JSON.stringify(res.data.data));
-            wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
+            console.log(res)
+            // console.log(res.header["Set-Cookie"])
+            if (res.header["Set-Cookie"]) wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
             // console.log(userData.value)//userData中的数据
             uni.hideLoading();//关闭加载
 

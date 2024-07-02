@@ -1,27 +1,40 @@
 import {store} from "../../store";
 import checkAuthority from "../../access/checkAuthority";
 import AuthorityCtrl from "../../access/authorityCtrl";
+import {getLoginUser} from "../request/userServicesUtils";
 
 /**
  * 读取本地缓存的用户数据 和 将用户数据写入本地缓存
  */
-export function readStorageData() {
-    const userInfo = wx.getStorageSync('userInfo');
-    console.log(userInfo.expireTimeStamp + "ms  " + Date.now() + "ms");
-    if (!userInfo) return;
-    if (Number(userInfo.expireTimeStamp) < Number(Date.now())){
-        wx.removeStorage({ key: 'userInfo' });
-        console.log('用户信息数据已过期，已清除');
-    }else {
-        store.dispatch("user/getLoginUser", userInfo).then(r => {
-            console.log('读取数据成功', userInfo);
-            if (checkAuthority(store.state.user.loginUser, AuthorityCtrl.USER)) {
-                uni.switchTab({
-                    url: "/pages/index/index"
-                });
-            }
-        });
+export function readStorageData(path = "/pages/index/index") {
+    let userInfo = wx.getStorageSync('userInfo');
+    console.log(userInfo)
+    // console.log(userInfo.expireTimeStamp + "ms  " + Date.now() + "ms");
+    if (!userInfo) {
+        userInfo = getLoginUser();
+        return userInfo;
     }
+    //获取后端的登录信息
+    getLoginUser().then(res => {
+        userInfo = res.data.data;
+        if (res.data.code !== 0) {
+            wx.removeStorage({key: 'userInfo'});
+            console.log('用户信息数据已过期，已清除');
+            return userInfo;
+        } else {
+            store.dispatch("user/getLoginUser", userInfo).then(r => {
+                console.log('读取数据成功', userInfo);
+                if (checkAuthority(store.state.user.loginUser, AuthorityCtrl.USER)) {
+                    uni.switchTab({
+                        url: path
+                    }).then(r => {
+                        console.log()
+                    });
+                }
+            });
+        }
+        return userInfo;
+    });
     // wx.getStorage({
     //     key: 'userInfo',
     //     success: function (res) {
@@ -74,7 +87,7 @@ export function setStorageData(userData) {
             miniOpenId: userData.value.miniOpenId,
             address: userData.value.address,
             introduction: userData.value.introduction,
-            expireTimeStamp: Date.now() + 24 * 60 * 60 * 1000,//设置过期时间1天
+            expireTimeStamp: Date.now() + 15 * 1000,//设置过期时间1天
         });
     } catch (e) {
         console.error('存储数据失败:', e);

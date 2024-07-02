@@ -35,7 +35,9 @@
 </template>
 
 <script setup >
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
+import {loginIntercept} from "../../utils/loginInterceptUtils";
+import {onShow} from "@dcloudio/uni-app";
 const categories = ref(['总览','卫生','贡献','任务','签到','考察']);
 //存储选定的状态
 const selectedCategory = ref('总览');
@@ -75,6 +77,11 @@ const navigateToCharts =()=>{
       }
   )
 }
+const currentPage = getCurrentPages()[getCurrentPages().length - 1];
+const currentRoute = currentPage.route;
+onShow(()=>{
+  loginIntercept("/"+currentRoute);
+})
 </script>
 
 <style scoped lang="scss">
