@@ -113,15 +113,16 @@ const getUserProfile = () => {
   //再打开微信登录的下方抽屉
   uni.getUserProfile({
     desc: 'WeiXin'
-  }).then(res => {
+  }).then(res1 => {
     //用户点击允许按钮后的操作
-    if (res) {
-      // let userMsgHave = JSON.parse(res.rawData);//用户数据拿到对象
-      // console.log(userMsgHave.avatarUrl);//显示头像微信url
+    if (res1) {
+      let userMsgHave = JSON.parse(res1.rawData);//用户数据拿到对象
+      // console.log(userMsgHave);
+      console.log(userMsgHave.avatarUrl);//显示头像微信url
       uni.showLoading({
         title: '登录加载中'
       });
-      if (res.errMsg.includes("getUserProfile:ok")) {
+      if (res1.errMsg.includes("getUserProfile:ok")) {
         // console.log("codeLogin", code.value);//显示code
         let url = `${backendBaseInfo}/api/user/login/wx_miniApp`;
         //请求后端微信登录接口
@@ -131,6 +132,7 @@ const getUserProfile = () => {
             // 将Proxy类中的数据转成一个新的JavaScript对象赋值给userData.value
             userData.value = JSON.parse(JSON.stringify(res.data.data));
             console.log(res)
+            console.log(res.data.data)
             // console.log(res.header["Set-Cookie"])
             if (res.header["Set-Cookie"]) wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
             // console.log(userData.value)//userData中的数据

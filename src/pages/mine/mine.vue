@@ -9,12 +9,14 @@
   <view class="the-information-buttons">
 
     <view class="half-up">
-      <image class="head" :src="userAvatar" @click="updateAvatar"/>
+      <image class="head"
+             :src="`${store.state.user.loginUser.avatar || 'https://tse1-mm.cn.bing.net/th/id/OIP-C.Wt7U7ijKxRCz4NIIpHzBRAHaHm?rs=1&pid=ImgDetMain'}`"
+             @click="updateAvatar"/>
       <view class="the-text">
-        <text>用户名：{{ userName }}</text>
+        <text>用户名：{{ store.state.user.loginUser.villager_name }}</text>
         <view>
           <text>用户ID:</text>
-          <text class="userId">{{ userId }}</text>
+          <text class="userId">{{ store.state.user.loginUser.villager_id }}</text>
         </view>
         <text>我的积分：114514{{ userIndex }}</text>
       </view>
@@ -22,12 +24,12 @@
     </view>
 
     <view class="two-choice">
-      <button class="index-record" >积分记录</button>
-      <uni-badge v-if="unReadCount>0" type="error" size="small" max-num="99"  :text="unReadCount"  absolute="rightTop"  >
-      <button class="information" @click="toNotice">
-        <uni-icons type="email" size="22"></uni-icons>
-        我的信息
-      </button>
+      <button class="index-record">积分记录</button>
+      <uni-badge v-if="unReadCount>0" type="error" size="small" max-num="99" :text="unReadCount" absolute="rightTop">
+        <button class="information" @click="toNotice">
+          <uni-icons type="email" size="22"></uni-icons>
+          我的信息
+        </button>
       </uni-badge>
     </view>
 
@@ -55,9 +57,6 @@ import {loginOut} from "../../utils/request/userServicesUtils";
 const store = useStore();
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const url = `${backendBaseInfo}/api/user/unBind/miniOpenId`;//解除绑定请求后端url
-const userAvatar = ref(store.state.user.loginUser.avatar || "https://tse1-mm.cn.bing.net/th/id/OIP-C.Wt7U7ijKxRCz4NIIpHzBRAHaHm?rs=1&pid=ImgDetMain");
-const userName = ref(store.state.user.loginUser.villager_name);
-const userId = ref(store.state.user.loginUser.villager_id);
 const unReadCount = ref('100');
 const settingClick = () => {
   uni.navigateTo({
@@ -75,9 +74,9 @@ const updateAvatar = () => {
   console.log()
 }
 
-const toNotice =() =>{
+const toNotice = () => {
   uni.navigateTo({
-    url:`/pages/mine/Notice`
+    url: `/pages/mine/Notice`
   })
 }
 //微信解除绑定
@@ -181,6 +180,7 @@ const unBindWechat = () => {
   line-height: 80rpx;
   color: #eb3a41;
 }
+
 .setting {
   height: 85rpx;
   font-size: 39rpx;
