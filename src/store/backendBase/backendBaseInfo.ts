@@ -9,7 +9,7 @@ import AuthorityCtrl from "../../access/authorityCtrl";
 export const backendBaseInfo = {
     namespaced: true,
     state: () => ({
-        backendBaseUrl: 'http://localhost:8121',
+        backendBaseUrl: 'http://localhost:8021',
     }),
     actions: {
         // actions,触发mutations的修改

@@ -7,6 +7,7 @@
     <view class="input-container">
       <text>积分规则:</text>
       <uni-data-picker
+          v-model="ruleID"
           placeholder="请选择积分规则"
           popup-title="请选择积分规则"
           :clear-icon="true"
@@ -20,6 +21,9 @@
     <text class="text1">积分设置:</text>
     <uni-number-box v-model="taskPoints" type="number" subTitle="请输入积分">积分设置</uni-number-box>
     <view class="input-container">
+      <text class="text1">最大人数:</text>
+      <uni-number-box v-model="peoNumber" type="number" subTitle="请输入最大人数">积分设置</uni-number-box>
+      <view class="input-container">
       <text>截止时间:</text>
       <uni-datetime-picker type="datetime" v-model="deadline" :start="today"/>
     </view>
@@ -40,10 +44,11 @@
       ></uni-popup-dialog>
     </uni-popup>
   </view>
+  </view>
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref , onMounted} from 'vue';
 import UniDatetimePicker
   from "../../uni_modules/uni-datetime-picker/components/uni-datetime-picker/uni-datetime-picker.vue";
 import UniEasyinput from "../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue";
@@ -60,18 +65,15 @@ const taskPoints = ref('');
 const deadline = ref('');
 const popup = ref(null);
 const dialog = ref(null);
-const ruleID = ref('1');
+const ruleID = ref('');
 const selectedRule = ref('');
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
-
+const current = ref('1');
+const pageSize = ref('10')
+const sortOrder = ref('desc')
 const today = new Date().toISOString().split('T')[0];
-
-const rules = [
-  {value: '1', text: '规则1'},
-  {value: '2', text: '规则2'},
-  // 添加更多规则
-];
-
+const rules = ref([]);
+const peoNumber = ref('');
 const confirmPublish = () => {
   if (!taskContent.value || !taskPoints.value || !deadline.value || !selectedRule.value) {
     uni.showToast({
@@ -85,12 +87,34 @@ const confirmPublish = () => {
   popup.value.open();
 };
 
+
+const handleQueryRule =async ()=>{
+  await makeRequest(`${backendBaseInfo}/api/rules/list/page`,'POST',{
+    current:current.value,
+    pageSize:pageSize.value,
+    sortOrder:sortOrder.value,
+  }).then(res =>{
+    if(res.data.code === 0){
+      console.log(res.data.data.records);
+      rules.value = res.data.data.records.map(record => ({
+        text: record.rule_content,
+        value: record.rule_id
+      }));
+    }
+  }).catch(error =>{
+    console.log("error:"+error.message);
+  })
+}
+onMounted(()=>{
+  handleQueryRule();
+})
 const handleConfirm = async () => {
   await makeRequest(`${backendBaseInfo}/api/tasksExamine/add`, 'POST', {
     taskContent: taskContent.value,
     pointsValue: taskPoints.value,
     deadline: deadline.value,
-    ruleId: ruleID.value
+    ruleId: ruleID.value,
+    all_Num:peoNumber.value,
   }).then((res) => {
     if (res.data.code === 0) {
       console.log("上传成功！");
