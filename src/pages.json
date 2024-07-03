@@ -97,6 +97,14 @@
 				"navigationBarBackgroundColor": "#ADFF2F",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/mine/Notice",
+			"style": {
+				"navigationBarTitleText": "通知页面",
+				"navigationBarBackgroundColor": "#ADFF2F",
+				"enablePullDownRefresh": true
+			}
 		}
 	],
 	"globalStyle": {

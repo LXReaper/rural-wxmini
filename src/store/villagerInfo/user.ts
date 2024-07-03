@@ -17,7 +17,7 @@ export const user = {
     actions: {
         // actions,触发mutations的修改
         getLoginUser({commit, state}, payload) {
-            if (payload.userRole === null) {
+            if (!payload || !payload.userRole) {
                 commit("updateUser", {
                     ...state.loginUser,
                     userRole: AuthorityCtrl.NOT_LOGIN,

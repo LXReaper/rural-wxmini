@@ -8,91 +8,75 @@ import {getLoginUser} from "../request/userServicesUtils";
  */
 export function readStorageData(path = "/pages/index/index") {
     let userInfo = wx.getStorageSync('userInfo');
-    console.log(userInfo)
+    console.log("本地用户数据"+userInfo);
     // console.log(userInfo.expireTimeStamp + "ms  " + Date.now() + "ms");
-    if (!userInfo) {
-        userInfo = getLoginUser();
-        return userInfo;
-    }
     //获取后端的登录信息
     getLoginUser().then(res => {
         userInfo = res.data.data;
-        if (res.data.code !== 0) {
-            wx.removeStorage({key: 'userInfo'});
-            console.log('用户信息数据已过期，已清除');
-            return userInfo;
+        if (res.data.code === 0) {
+            // 存本地
+            recordDataLocation(userInfo);
+            // 存Vuex
+            recordDataVuex(userInfo, path);
         } else {
-            store.dispatch("user/getLoginUser", userInfo).then(r => {
-                console.log('读取数据成功', userInfo);
-                if (checkAuthority(store.state.user.loginUser, AuthorityCtrl.USER)) {
-                    uni.switchTab({
-                        url: path
-                    }).then(r => {
-                        console.log()
-                    });
-                }
-            });
+            // 删除本地数据
+            wx.removeStorage({key: 'userInfo'});
+            // 删除vuex数据
+            store.dispatch("user/getLoginUser", null);
+            console.log('用户信息数据已过期，已清除');
         }
         return userInfo;
     });
-    // wx.getStorage({
-    //     key: 'userInfo',
-    //     success: function (res) {
-    //         store.dispatch("user/getLoginUser", res.data).then(r => {
-    //             console.log('读取数据成功', res.data);
-    //             if (checkAuthority(store.state.user.loginUser, AuthorityCtrl.USER)) {
-    //                 uni.switchTab({
-    //                     url: "/pages/index/index"
-    //                 });
-    //             }
-    //         });
-    //     },
-    //     fail: function (res) {
-    //         console.log('读取数据失败');
-    //     },
-    // });
 }
 
+/**
+ * 持久化数据
+ * @param userData
+ */
 export function setStorageData(userData) {
-    // wx.setStorageSync({
-    //     key: 'userInfo', // 设置一个键名
-    //     data: {
-    //         villager_id: userData.value.villager_id,
-    //         villager_name: userData.value.villager_name,
-    //         avatar: userData.value.avatar,
-    //         userRole: userData.value.userRole,
-    //         phone_number: userData.value.phone_number,
-    //         miniOpenId: userData.value.miniOpenId,
-    //         address: userData.value.address,
-    //         introduction: userData.value.introduction,
-    //         expireTimeStamp: Date.now() + 3000,
-    //     },
-    //     success: function () {
-    //         console.log('数据保存成功');
-    //         // 从本地存储中读取数据
-    //         readStorageData();
-    //         //跳转到主页
-    //         uni.switchTab({
-    //             url: "/pages/index/index"
-    //         });
-    //     },
-    // });
     try {
-        wx.setStorageSync('userInfo', {
-            villager_id: userData.value.villager_id,
-            villager_name: userData.value.villager_name,
-            avatar: userData.value.avatar,
-            userRole: userData.value.userRole,
-            phone_number: userData.value.phone_number,
-            miniOpenId: userData.value.miniOpenId,
-            address: userData.value.address,
-            introduction: userData.value.introduction,
-            expireTimeStamp: Date.now() + 15 * 1000,//设置过期时间1天
-        });
+        recordDataLocation(userData.value);
     } catch (e) {
         console.error('存储数据失败:', e);
     }
     console.log('数据保存成功');
     // 从本地存储中读取数据
     readStorageData();
+}
+
+/**
+ * 记录数据到Vuex
+ * @param userInfo
+ * @param path
+ */
+const recordDataVuex = (userInfo, path) => {
+    // 存vuex
+    store.dispatch("user/getLoginUser", userInfo).then(r => {
+        console.log('读取数据成功', userInfo);
+        if (checkAuthority(store.state.user.loginUser, AuthorityCtrl.USER)) {
+            console.log(path)
+            uni.switchTab({
+                url: path
+            }).then(r => {
+                console.log()
+            });
+        }
+    });
+}
+/**
+ * 记录数据到本地
+ * @param userInfo
+ */
+const recordDataLocation = (userInfo) => {
+    wx.setStorageSync('userInfo', {
+        villager_id: userInfo.villager_id,
+        villager_name: userInfo.villager_name,
+        avatar: userInfo.avatar,
+        userRole: userInfo.userRole,
+        phone_number: userInfo.phone_number,
+        miniOpenId: userInfo.miniOpenId,
+        address: userInfo.address,
+        introduction: userInfo.introduction,
+        expireTimeStamp: Date.now() + 15 * 1000,//设置过期时间1天
+    });
 }

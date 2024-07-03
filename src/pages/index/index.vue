@@ -87,6 +87,8 @@
 
 <script setup>
 
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
 </script>
 <style lang="scss">
 .swiper-style {
