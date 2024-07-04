@@ -47,6 +47,7 @@ import {debounce} from "../../utils/debounce_Throttle";
 import {readStorageData, setStorageData} from "../../utils/storage/storageUtils";
 import {store} from "../../store";
 import {makeRequest} from "../../utils/request/requestUtil";
+import {initWebSocket} from "../../utils/socket/websocketConnectionUtil";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const code = ref("");//当前appId拿到的临时code
@@ -72,6 +73,8 @@ const userLogin = () => {
       //登录成功
       wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
       setStorageData(userData);
+      //连接服务器
+      initWebSocket();//连接后端
     } else {
       uni.showToast({
         title: res.data.message,
@@ -88,6 +91,7 @@ const userLoginDebounce = debounce(userLogin, 500);//防抖
 onMounted(() => {
   // 调用函数以读取存储数据
   readStorageData();
+  initWebSocket();//连接后端
 });
 /**
  * 执行登录
@@ -140,6 +144,8 @@ const getUserProfile = () => {
 
             //将数据保存到本地
             setStorageData(userData);
+            //连接服务器
+            if (store.state.user.loginUser?.villager_id) initWebSocket();//连接后端
           } else {
             uni.showToast({
               title: '微信登录失败',
@@ -277,7 +283,8 @@ h3 {
   padding: 0 10rpx;
   display: flex;
   justify-content: space-between;
-  :hover{
+
+  :hover {
     color: #a5e5c5;
   }
 }

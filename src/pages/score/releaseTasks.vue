@@ -121,12 +121,13 @@ const handleConfirm = async () => {
       console.log('任务内容:', taskContent.value);
       console.log('任务积分:', taskPoints.value);
       console.log('截止时间:', deadline.value);
+      console.log('任务规则',ruleID.value);
+      console.log('最大人数',peoNumber.value);
       resetFields();
     }
   }).catch((error) => {
     console.log("error:", error.message)
   })
-
   popup.value.close();
 };
 
@@ -141,6 +142,7 @@ const resetFields = () => {
   ruleID.value = '';
   deadline.value = '';
   selectedRule.value = '';
+  peoNumber.value = '';
 };
 
 const handleRuleChange = (e) => {
