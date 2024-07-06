@@ -65,9 +65,15 @@ const props = defineProps({
 
 .sender {
   font-weight: 500;
+  flex-shrink: 0; /* 防止名字被压缩 */
 }
 
 .time {
   font-weight: 400;
+  flex-shrink: 1; /* 允许日期被压缩 */
+  text-align: right; /* 确保日期右对齐 */
+  white-space: nowrap; /* 防止日期换行 */
+  overflow: hidden; /* 隐藏溢出部分 */
+  text-overflow: ellipsis; /* 使用省略号表示溢出文本 */
 }
 </style>
