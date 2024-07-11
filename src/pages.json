@@ -70,19 +70,19 @@
 				"enablePullDownRefresh": true
 			}
 		},
-      {
-  "path": "pages/mine/setting",
-  "style": {
-    "navigationBarTitleText": "setting",
-    "enablePullDownRefresh": true
-  }
-}, {
-  "path": "pages/mine/personal-information",
-  "style": {
-    "navigationBarTitleText": "个人信息",
-    "enablePullDownRefresh": true
-  }
-},{
+      	{
+		  "path": "pages/mine/setting",
+		  "style": {
+			"navigationBarTitleText": "setting",
+			"enablePullDownRefresh": true
+		  }
+		}, {
+		  "path": "pages/mine/personal-information",
+		  "style": {
+			"navigationBarTitleText": "个人信息",
+			"enablePullDownRefresh": true
+		  }
+		},{
 			"path": "pages/score/Payment",
 			"style": {
 				"navigationBarTitleText": "支付页面",
