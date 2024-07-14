@@ -19,7 +19,7 @@
         </view>
         <text>总积分:{{ userPoint.total_points }}</text>
         <view>
-        <text>剩余积分:{{ userPoint.remaining_points }}</text>
+          <text>剩余积分:{{ userPoint.remaining_points }}</text>
         </view>
       </view>
 
@@ -48,13 +48,14 @@
 </template>
 
 <script setup>
-import {ref,onMounted} from "vue"
+import {ref, onMounted} from "vue"
 import {useStore} from "vuex";
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {makeRequest} from "../../utils/request/requestUtil";
 import UniBadge from "../../uni_modules/uni-badge/components/uni-badge/uni-badge.vue";
 import {loginOut} from "../../utils/request/userServicesUtils";
 import moment from "moment";
+
 const current = ref(1);
 const sortOrder = ref("desc")
 const store = useStore();
@@ -62,7 +63,10 @@ const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const url = `${backendBaseInfo}/api/user/unBind/miniOpenId`;//解除绑定请求后端url
 const unReadCount = ref('');
 const isRead = ref(0);
-const userPoint = ref();
+const userPoint = ref({
+  total_points: "",
+  remaining_points: "",
+});
 const settingClick = () => {
   uni.navigateTo({
     url: "/pages/mine/setting",
@@ -112,7 +116,7 @@ const handleSearch = async () => {
       current: current.value,
       sortOrder: sortOrder.value,
       user_id: store.state.user.loginUser.villager_id,
-      is_read:isRead.value,
+      is_read: isRead.value,
     });
     if (res.data.code === 0) {
       unReadCount.value = res.data.data.total;
@@ -123,17 +127,17 @@ const handleSearch = async () => {
     console.log("请求失败", error.message);
   }
 };
-const searchPoint = async ()=>{
-   await makeRequest(`${backendBaseInfo}/api/points/get/AllPoints`,'GET',{
-    userId:store.state.user.loginUser.villager_id,
-  }).then((res)=>{
+const searchPoint = async () => {
+  await makeRequest(`${backendBaseInfo}/api/points/get/AllPoints`, 'GET', {
+    userId: store.state.user.loginUser.villager_id,
+  }).then((res) => {
     userPoint.value = res.data.data;
     console.log(userPoint.value);
-  }).catch((error)=>{
-    console.log("error:"+error.message);
+  }).catch((error) => {
+    console.log("error:" + error.message);
   })
 }
-onMounted(()=>{
+onMounted(() => {
   handleSearch();
   searchPoint();
 })
