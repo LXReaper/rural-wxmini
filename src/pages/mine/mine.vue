@@ -5,7 +5,6 @@
                @click="personal">个人中心
     </uni-icons>
   </view>
-
   <view class="the-information-buttons">
 
     <view class="half-up">
@@ -18,11 +17,13 @@
           <text>用户ID:</text>
           <text class="userId">{{ store.state.user.loginUser.villager_id }}</text>
         </view>
-        <text>我的积分：114514{{ userIndex }}</text>
+        <text>总积分:{{ userPoint.total_points }}</text>
+        <view>
+        <text>剩余积分:{{ userPoint.remaining_points }}</text>
+        </view>
       </view>
 
     </view>
-
     <view class="two-choice">
       <button class="index-record">积分记录</button>
       <uni-badge v-if="unReadCount>0" type="error" size="small" max-num="99" :text="unReadCount" absolute="rightTop">
@@ -47,17 +48,21 @@
 </template>
 
 <script setup>
-import {ref} from "vue"
+import {ref,onMounted} from "vue"
 import {useStore} from "vuex";
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {makeRequest} from "../../utils/request/requestUtil";
 import UniBadge from "../../uni_modules/uni-badge/components/uni-badge/uni-badge.vue";
 import {loginOut} from "../../utils/request/userServicesUtils";
-
+import moment from "moment";
+const current = ref(1);
+const sortOrder = ref("desc")
 const store = useStore();
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const url = `${backendBaseInfo}/api/user/unBind/miniOpenId`;//解除绑定请求后端url
-const unReadCount = ref('100');
+const unReadCount = ref('');
+const isRead = ref(0);
+const userPoint = ref();
 const settingClick = () => {
   uni.navigateTo({
     url: "/pages/mine/setting",
@@ -100,6 +105,38 @@ const unBindWechat = () => {
     console.log("请求失败，" + error);
   });
 }
+
+const handleSearch = async () => {
+  try {
+    const res = await makeRequest(`${backendBaseInfo}/api/notices/list/page/vo`, 'POST', {
+      current: current.value,
+      sortOrder: sortOrder.value,
+      user_id: store.state.user.loginUser.villager_id,
+      is_read:isRead.value,
+    });
+    if (res.data.code === 0) {
+      unReadCount.value = res.data.data.total;
+      console.log("查询成功！");
+      console.log(unReadCount.value)
+    }
+  } catch (error) {
+    console.log("请求失败", error.message);
+  }
+};
+const searchPoint = async ()=>{
+   await makeRequest(`${backendBaseInfo}/api/points/get/AllPoints`,'GET',{
+    userId:store.state.user.loginUser.villager_id,
+  }).then((res)=>{
+    userPoint.value = res.data.data;
+    console.log(userPoint.value);
+  }).catch((error)=>{
+    console.log("error:"+error.message);
+  })
+}
+onMounted(()=>{
+  handleSearch();
+  searchPoint();
+})
 </script>
 
 <style lang="scss">

@@ -93,6 +93,7 @@ const cardProductsID = ref([]);
 const cardProductsQuantity = ref([]);
 const orderID = ref();
 const searchText = ref('');
+const availablePoints = ref(''); // 假设用户的可用积分为1000
 
 
 const loadProducts = async () => {
@@ -126,6 +127,7 @@ const loadProducts = async () => {
 };
 onMounted(() => {
   loadProducts();
+  searchPoint();
 });
 const searchProduct =()=>{
   current.value = 1;
@@ -177,9 +179,8 @@ const createOrder = async () => {
       orderID.value = res.data.data;
       console.log(res.data.data);
       console.log("生成订单成功");
-      const availablePoints = 1000; // 假设用户的可用积分为1000
       await uni.navigateTo({
-            url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(cartProducts.value))}&availablePoints=${availablePoints}&orderID=${orderID.value}`
+            url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(cartProducts.value))}&availablePoints=${availablePoints.value}&orderID=${orderID.value}`
           }
       );
     } else {
@@ -190,6 +191,16 @@ const createOrder = async () => {
   }
 };
 
+const searchPoint = async ()=>{
+  await makeRequest(`${backendBaseInfo}/api/points/get/RemainingPoints`,'GET',{
+    userId:store.state.user.loginUser.villager_id,
+  }).then((res)=>{
+    availablePoints.value = res.data.data;
+    console.log(availablePoints.value);
+  }).catch((error)=>{
+    console.log("error:"+error.message);
+  })
+}
 const toggleCartDrawer = () => {
   showCartDrawer.value = !showCartDrawer.value;
 };

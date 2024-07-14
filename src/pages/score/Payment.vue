@@ -31,7 +31,7 @@ import {store} from "../../store";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const cartProducts = ref<{ price: number; cartCount: number }[]>([]);
-const availablePoints = ref<number>(100); // 默认100积分
+const availablePoints = ref<number>(0);
 const countdown = ref<number>(15);
 const countdownTimer = ref(); // 引入定时器引用
 const orderID = ref<string | null>(null);
@@ -131,13 +131,15 @@ onLoad((options: any) => {
     // 解码并解析传递的参数
     cartProducts.value = JSON.parse(decodeURIComponent(options.cartProducts || '[]'));
     orderID.value = options.orderID;
+    availablePoints.value = options.availablePoints;
+    console.log(availablePoints.value)
   } catch (e) {
     console.error('Failed to parse cartProducts or orderID:', e);
     cartProducts.value = [];
     orderID.value = null;
   }
   // 设置 availablePoints
-  availablePoints.value = Number(options.availablePoints) || 100;
+  // availablePoints.value = Number(options.availablePoints);
 });
 </script>
 
