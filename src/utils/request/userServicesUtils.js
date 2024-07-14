@@ -18,7 +18,7 @@ export const getLoginUser = (data = {}) => {
                 store.dispatch("user/getLoginUser", res.data.data)
                 resolve(res);
             }).catch(error => {
-            console.log("登录用户获取失败:" + error.message);
+            console.log("登录用户获取请求错误:" + error.message);
             reject(error)
         })
     });
@@ -45,7 +45,7 @@ export const loginOut = (data = {}) => {
                 }
                 resolve(res);
             }).catch(error => {
-            console.log("登录用户获取失败:" + error.message);
+            console.log("登录用户获取请求错误:" + error.message);
             reject(error)
         })
     });
