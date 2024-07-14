@@ -1,146 +1,167 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "登录",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/score/score",
-			"style": {
-				"navigationBarTitleText": "积分",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/notices/notices",
-			"style": {
-				"navigationBarTitleText": "公告",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/mine/mine",
-			"style": {
-				"navigationBarTitleText": "我的",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/score/scoreHomePage",
-			"style": {
-				"navigationBarTitleText": "积分商城",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/score/LearningCenter",
-			"style": {
-				"navigationBarTitleText": "学习中心",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/score/MissionCenter",
-			"style": {
-				"navigationBarTitleText": "任务中心",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/login/losePassword",
-			"style": {
-				"navigationBarTitleText": "忘记密码",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path": "pages/score/Charts",
-			"style": {
-				"navigationBarTitleText": "排行榜",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},
-      	{
-		  "path": "pages/mine/setting",
-		  "style": {
-			"navigationBarTitleText": "setting",
-			"enablePullDownRefresh": true
-		  }
-		}, {
-		  "path": "pages/mine/personal-information",
-		  "style": {
-			"navigationBarTitleText": "个人信息",
-			"enablePullDownRefresh": true
-		  }
-		},{
-			"path": "pages/score/Payment",
-			"style": {
-				"navigationBarTitleText": "支付页面",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/score/releaseTasks",
-			"style": {
-				"navigationBarTitleText": "发布任务页面",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/mine/Notice",
-			"style": {
-				"navigationBarTitleText": "通知页面",
-				"navigationBarBackgroundColor": "#ADFF2F",
-				"enablePullDownRefresh": true
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},"tabBar": {
-		"color" : "#555555",
-		"selectedColor" : "#101010",
-		"backgroundColor": "",
-		"list": [
-		{
-			"pagePath": "pages/index/index",
-			"text": "首页",
-			"iconPath": "/static/images/tabBar/首页 (点击前).png",
-			"selectedIconPath": "/static/images/tabBar/首页 (点击后).png"
-		},
-		{
-			"pagePath": "pages/score/score",
-			"text": "积分",
-			"iconPath": "/static/images/tabBar/积分 (点击前).png",
-			"selectedIconPath": "/static/images/tabBar/积分 (点击后).png"
-		},
-		{
-			"pagePath": "pages/notices/notices",
-			"text": "公告",
-			"iconPath": "/static/images/tabBar/公告 (点击前).png",
-			"selectedIconPath": "/static/images/tabBar/公告 (点击后).png"
-		},
-		{
-			"pagePath": "pages/mine/mine",
-			"text": "我的",
-			"iconPath": "/static/images/tabBar/我的 (点击前).png",
-			"selectedIconPath": "/static/images/tabBar/我的 (点击后).png"
-		}
-		]
-	}
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/score",
+      "style": {
+        "navigationBarTitleText": "积分",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/notices/notices",
+      "style": {
+        "navigationBarTitleText": "公告",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/scoreHomePage",
+      "style": {
+        "navigationBarTitleText": "积分商城",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/LearningCenter",
+      "style": {
+        "navigationBarTitleText": "学习中心",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/MissionCenter",
+      "style": {
+        "navigationBarTitleText": "任务中心",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/login/losePassword",
+      "style": {
+        "navigationBarTitleText": "忘记密码",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/Charts",
+      "style": {
+        "navigationBarTitleText": "排行榜",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mine/setting",
+      "style": {
+        "navigationBarTitleText": "setting",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mine/personal-information",
+      "style": {
+        "navigationBarTitleText": "个人信息",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/Payment",
+      "style": {
+        "navigationBarTitleText": "支付页面",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/score/releaseTasks",
+      "style": {
+        "navigationBarTitleText": "发布任务页面",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mine/Notice",
+      "style": {
+        "navigationBarTitleText": "通知页面",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mine/noticeDetail",
+      "style": {
+        "navigationBarTitleText": "通知详情",
+        "navigationBarBackgroundColor": "#ADFF2F",
+        "enablePullDownRefresh": true
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#555555",
+    "selectedColor": "#101010",
+    "backgroundColor": "",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/tabBar/首页 (点击前).png",
+        "selectedIconPath": "/static/images/tabBar/首页 (点击后).png"
+      },
+      {
+        "pagePath": "pages/score/score",
+        "text": "积分",
+        "iconPath": "/static/images/tabBar/积分 (点击前).png",
+        "selectedIconPath": "/static/images/tabBar/积分 (点击后).png"
+      },
+      {
+        "pagePath": "pages/notices/notices",
+        "text": "公告",
+        "iconPath": "/static/images/tabBar/公告 (点击前).png",
+        "selectedIconPath": "/static/images/tabBar/公告 (点击后).png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "/static/images/tabBar/我的 (点击前).png",
+        "selectedIconPath": "/static/images/tabBar/我的 (点击后).png"
+      }
+    ]
+  }
 }
