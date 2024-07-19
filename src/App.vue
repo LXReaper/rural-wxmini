@@ -21,6 +21,7 @@ export default {
 </script>
 
 <style>
+@import '@tuniao/tn-style/dist/uniapp/index.css';
 /*每个页面公共css */
 page {
   background-color: #EFF3FF;

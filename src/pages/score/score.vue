@@ -10,6 +10,9 @@
       </view>
     </view>
     <!--下方四个按钮-->
+    <view style="display: flex">
+      <view></view>
+    </view>
     <view style="display:flex" id="button2">
       <button class="button1" style="background-color: #04cefc" @click="LearningCenter">学习中心</button>
       <button class="button2" style="background-color: #4cd964" @click="onMissionCenter">任务中心</button>
