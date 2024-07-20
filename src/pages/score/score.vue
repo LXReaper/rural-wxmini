@@ -1,5 +1,9 @@
 <template>
-  <scroll-view scroll-y="true" bindscroll="handleScroll" scroll-with-animation="true"><!--可滑动页面-->
+  <scroll-view
+        scroll-y="true"
+        bindscroll="handleScroll"
+        scroll-with-animation="true"
+  ><!--可滑动页面-->
     <!-- 圆角矩形容器 -->
     <view class="rounded-container">
       <!-- 六个小按钮 -->
@@ -11,76 +15,78 @@
       </view>
     </view>
 
-    <view
-        class="custom-button"
-        @click="onClick"
-    >
-      <view style="display: flex">
-        <view
-            style="
-            width: 13vw;
-            height: 8vh;
-            margin-top: -2vh;
-            background-image: url('https://2021539.s81i.faiusr.com/4/101/AFEIo7F7EAQYACDUksOBBijYz4fMBzA-ODpAZQ.png')
-            "
-        >
-        </view>
-        <view style="margin-left: 4vw">
-          <view style="font-size: 4.7vw;">积分商城</view>
-          <view style="font-size: 3vw">Shop</view>
-        </view>
-      </view>
-    </view>
-    <!--下方四个按钮-->
-    <view style="background-color: white;margin: 1vw 0;height: 32vh;padding-top: 1vh">
-      <view style="display: flex;gap: 5vw;margin-left: 8vw;margin-top: 2vh;">
-        <view class="the-card" style="background: linear-gradient(to bottom, #FFDAB9, #FFC0CB);"
-              @click="LearningCenter">
-          <view class="title-wrap">
-            <view class="main-title">学习中心</view>
-            <view style="font-size: 12px; color: rgb(153, 153, 153);">学习技能</view>
+      <view
+          class="custom-button"
+          @click="onClick"
+      >
+        <view style="display: flex">
+          <view
+              style="
+              width: 13vw;
+              height: 8vh;
+              margin-top: -2vh;
+              border-radius: 7vw;
+              box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.2);
+              background-image: url('https://2021539.s81i.faiusr.com/4/101/AFEIo7F7EAQYACDUksOBBijYz4fMBzA-ODpAZQ.png')
+              "
+          >
           </view>
-          <view class="material-icon"
-                style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAg6sSr3gUo5vCLlwEwUjhS.png');">
-            <view class="circle"/>
-          </view>
-        </view>
-        <view class="the-card" style="background: linear-gradient(to bottom, #FFE4B5, #FFd500);"
-              @click="onMissionCenter">
-          <view class="title-wrap">
-            <view class="main-title">任务中心</view>
-            <view style="font-size: 12px; color: rgb(153, 153, 153);">全部任务</view>
-          </view>
-          <view class="material-icon"
-                style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAgy8Sr3gUomKnhqgcwUjhS.png')">
-            <view class="circle"/>
+          <view style="margin-left: 4vw">
+            <view style="font-size: 4.7vw;">积分商城</view>
+            <view style="font-size: 3vw">Shop</view>
           </view>
         </view>
       </view>
-      <view style="display: flex;gap: 5vw;margin-left: 8vw;margin-top: 2vh;">
-        <view class="the-card" style="background: linear-gradient(to bottom, #9fe148, #78aa48);"
-              @click="navigateToCharts">
-          <view class="title-wrap">
-            <view class="main-title">排行榜&ensp;&ensp;</view>
-            <view style="font-size: 12px; color: rgb(153, 153, 153);">积分排行</view>
+      <!--下方四个按钮-->
+      <view style="background-color: white;margin: 1vw 0;height: 32vh;padding-top: 1vh">
+        <view style="display: flex;gap: 5vw;margin-left: 8vw;margin-top: 2vh;">
+          <view class="the-card" style="background: linear-gradient(to bottom, #FFDAB9, #FFC0CB);"
+                @click="LearningCenter">
+            <view class="title-wrap">
+              <view class="main-title">学习中心</view>
+              <view style="font-size: 12px; color: rgb(153, 153, 153);">学习技能</view>
+            </view>
+            <view class="material-icon"
+                  style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAg6sSr3gUo5vCLlwEwUjhS.png');">
+              <view class="circle"/>
+            </view>
           </view>
-          <view class="material-icon"
-                style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAgh8Wr3gUo8_ODywIwUjhS.png');">
-            <view class="circle"/>
+          <view class="the-card" style="background: linear-gradient(to bottom, #FFE4B5, #FFd500);"
+                @click="onMissionCenter">
+            <view class="title-wrap">
+              <view class="main-title">任务中心</view>
+              <view style="font-size: 12px; color: rgb(153, 153, 153);">全部任务</view>
+            </view>
+            <view class="material-icon"
+                  style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAgy8Sr3gUomKnhqgcwUjhS.png')">
+              <view class="circle"/>
+            </view>
           </view>
         </view>
-        <view class="the-card" style="background: linear-gradient(to bottom, #00FF7F, #40E0D0);">
-          <view class="title-wrap">
-            <view class="main-title">文明家庭</view>
-            <view style="font-size: 12px; color: rgb(153, 153, 153);">优秀家庭</view>
+        <view style="display: flex;gap: 5vw;margin-left: 8vw;margin-top: 2vh;">
+          <view class="the-card" style="background: linear-gradient(to bottom, #9fe148, #78aa48);"
+                @click="navigateToCharts">
+            <view class="title-wrap">
+              <view class="main-title">排行榜&ensp;&ensp;</view>
+              <view style="font-size: 12px; color: rgb(153, 153, 153);">积分排行</view>
+            </view>
+            <view class="material-icon"
+                  style="background-image: url('https://17829202.s61i.faimallusr.com/4/AD0I0prACBAEGAAgh8Wr3gUo8_ODywIwUjhS.png');">
+              <view class="circle"/>
+            </view>
           </view>
-          <view class="material-icon"
-                style="background-image: url('https://1102408.s81i.faiusr.com/4/101/AFEIyKRDEAQYACDhsKbwBSj1gIhaMFo4WkBl.png')">
-            <view class="circle"/>
+          <view class="the-card" style="background: linear-gradient(to bottom, #00FF7F, #40E0D0);">
+            <view class="title-wrap">
+              <view class="main-title">文明家庭</view>
+              <view style="font-size: 12px; color: rgb(153, 153, 153);">优秀家庭</view>
+            </view>
+            <view class="material-icon"
+                  style="background-image: url('https://1102408.s81i.faiusr.com/4/101/AFEIyKRDEAQYACDhsKbwBSj1gIhaMFo4WkBl.png')">
+              <view class="circle"/>
+            </view>
           </view>
         </view>
       </view>
-    </view>
 
     <view class="recommend-text">{{ recommendMessage }}</view>
     <!--    热门商品推荐-->
@@ -88,7 +94,7 @@
       <text class="recommend-title">热门商品推荐</text>
       <!-- 商品卡片 -->
       <!--      点击卡片就进入积分商城页面-->
-      <hot-goods-view/>
+      <hot-goods-view />
       <!-- 添加更多商品卡片 -->
     </view>
   </scroll-view>
@@ -271,6 +277,7 @@ onShow(() => {
   background-color: #04fefc;
 }
 
+/*积分商城*/
 .custom-button {
   margin-top: 20px; /* 调整按钮与上方元素的间距 */
   color: white; /* 按钮文字颜色 */
@@ -278,11 +285,13 @@ onShow(() => {
   padding-left: 27vw;
   padding-top: 0.9vh;
   background-color: #4cd964;
-  border-radius: 45%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 50px;
   width: 90vw;
-  height: 8vh;
+  height: 9vh;
   margin-left: 5vw;
   margin-right: 5vw;
+  position: relative;
 }
 
 .recommend-text {
@@ -300,7 +309,7 @@ onShow(() => {
 .recommend-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 2vh;
 }
 
 </style>

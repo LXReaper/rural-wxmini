@@ -5,9 +5,9 @@
       <text>订单将在 {{ countdown }} 秒后取消</text>
     </view>
     <view class="body">
-      <view class="item" v-for="product in cartProducts" :key="product.name">
-        <text>{{ product.name }} x {{ product.cartCount }}</text>
-        <text>{{ product.price * product.cartCount }} 积分</text>
+      <view class="item" v-for="(product,i) in cartProducts" :key="i">
+        <text>{{ product?.product_name }} x {{ productQuantityList[i] }}</text>
+        <text>{{ product?.price * productQuantityList[i] }} 积分</text>
       </view>
       <view class="total">
         <text>总积分: {{ totalPoints }}</text>
@@ -17,7 +17,7 @@
       </view>
     </view>
     <view class="footer">
-      <button @click="pay">确认支付</button>
+      <button @click="processOrder">确认支付</button>
       <button @click="cancel">取消订单</button>
     </view>
   </view>
@@ -30,18 +30,16 @@ import {makeRequest} from "../../utils/request/requestUtil";
 import {store} from "../../store";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
-const cartProducts = ref<{ price: number; cartCount: number }[]>([]);
+const cartProducts = ref([]);//购物车商品
+const productQuantityList = ref([]);//购物车数量列表
 const availablePoints = ref<number>(0);
 const countdown = ref<number>(15);
 const countdownTimer = ref(); // 引入定时器引用
 const orderID = ref<string | null>(null);
 
-const totalPoints = computed<number>(() => {
-  return cartProducts.value.reduce((total, product) => {
-    return total + product.price * product.cartCount;
-  }, 0);
-});
+const totalPoints = ref(0);
 
+//设置定时器
 const startCountdown = () => {
   countdownTimer.value = setInterval(() => {
     if (countdown.value > 0) {
@@ -71,31 +69,10 @@ const startCountdown = () => {
   }, 1000);
 };
 
-const pay = () => {
-  if (totalPoints.value > availablePoints.value) {
-    uni.showToast({
-      title: '积分不足，无法支付',
-      icon: 'none'
-    });
-  } else {
-    availablePoints.value -= totalPoints.value; // 扣除积分
-    console.log("调用支付方法");
-    processOrder();
-    uni.showToast({
-      title: '支付成功',
-      icon: 'success',
-      duration: 3000
-    });
-    clearInterval(countdownTimer.value);
-    setTimeout(() => {
-      uni.navigateBack({
-        delta: 1
-      });
-    }, 1000); // 延迟1秒跳转
-    // 处理支付成功的逻辑
-  }
-};
-
+/**
+ * 支付
+ */
+//支付请求
 const processOrder = async () => {
   console.log(orderID.value);
   const res = await makeRequest(`${backendBaseInfo}/api/transactions/transaction/handle`, 'GET', {
@@ -103,12 +80,28 @@ const processOrder = async () => {
   });
   if (res.data.code === 0) {
     console.log("处理成功！");
+    await uni.showToast({
+      title: '支付成功',
+      icon: 'success',
+      duration: 3000
+    });
+    clearInterval(countdownTimer.value);//删除定时器
+    setTimeout(() => {
+      uni.navigateBack({
+        delta: 1
+      });
+    }, 1000); // 延迟1秒跳转
+    // 处理支付成功的逻辑
   } else {
-    console.log("出错", res.data.message);
+    await uni.showToast({
+      title: '支付失败，' + res.data.message,
+      icon: 'error',
+      duration: 3000
+    });
     console.log(orderID.value);
   }
 };
-
+//取消订单
 const cancel = () => {
   uni.showToast({
     title: '订单已取消',
@@ -130,14 +123,19 @@ onLoad((options: any) => {
   try {
     // 解码并解析传递的参数
     cartProducts.value = JSON.parse(decodeURIComponent(options.cartProducts || '[]'));
+    productQuantityList.value = JSON.parse(decodeURIComponent(options.productQuantityList || '[]'));
     orderID.value = options.orderID;
     availablePoints.value = options.availablePoints;
     console.log(availablePoints.value)
   } catch (e) {
-    console.error('Failed to parse cartProducts or orderID:', e);
+    console.error('订单参数解析错误', e);
     cartProducts.value = [];
     orderID.value = null;
   }
+
+  totalPoints.value = 0;
+  for (let i=0;i<cartProducts.value.length;++i)
+    totalPoints.value += cartProducts.value[i].price * productQuantityList.value[i];
   // 设置 availablePoints
   // availablePoints.value = Number(options.availablePoints);
 });

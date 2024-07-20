@@ -27,32 +27,32 @@
 
       <div style="display: flex;margin-left: 7vw;margin-top: 3vh;gap: 8vw">
         <view class="circle"
-              style="border-radius: 50%;width: 15vw;height: 10vh;background: linear-gradient(to bottom, #8bd3fb, #4e98f8);padding-top: 2.3vh;">
+              style="background: linear-gradient(to bottom, #8bd3fb, #4e98f8)">
           <view style="margin-left: 4vw">
             <uni-icons type="staff" size="35"/>
           </view>
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">社区活动</view>
         </view>
-        <view
-            style="border-radius: 50%;width: 15vw;height: 10vh;background: linear-gradient(to bottom, #9fe148, #78ca48);padding-top: 2.3vh">
+        <view class="circle"
+            style="background: linear-gradient(to bottom, #9fe148, #78ca48)">
           <view style="margin-left: 4vw">
             <uni-icons type="vip" size="35"/>
           </view>
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">美德银行</view>
         </view>
-        <view
-            style="border-radius: 50%;width: 15vw;height: 10vh;background: linear-gradient(to bottom, #f8de81, #f3b246);padding-top: 2.3vh">
+        <view class="circle"
+            style="background: linear-gradient(to bottom, #f8de81, #f3b246)">
           <view style="margin-left: 4vw">
             <uni-icons type="chat" size="35"/>
           </view>
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">公告咨询</view>
         </view>
-        <view
-            style="border-radius: 50%;width: 15vw;height: 10vh;background: linear-gradient(to bottom, #f3acd1, #ee7a7e);padding-top: 2vh">
+        <view class="circle"
+            style="background: linear-gradient(to bottom, #f3acd1, #ee7a7e)">
           <view style="margin-left: 4vw">
             <uni-icons type="hand-up" size="35"/>
           </view>
-          <view style="font-size: 3vw;margin-left: 1vw;margin-top: 4vh">文明家庭</view>
+          <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">文明家庭</view>
         </view>
       </div>
 
@@ -122,6 +122,15 @@ import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue
       height: 300rpx;
     }
   }
+}
+
+/*圆圈*/
+.circle{
+  border-radius: 50%;
+  width: 15vw;
+  height: 10vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding-top: 2.3vh;
 }
 
 .card-container {

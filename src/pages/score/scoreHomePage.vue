@@ -7,22 +7,26 @@
         </view>
       </view>
       <uni-search-bar class="uni-mt-10" radius="5" placeholder="请输入商品名称" clear-button="auto" cancelButton="none"
-                      @confirm="searchProduct" v-model="searchText"></uni-search-bar>
+                      @confirm="loadProductsDebounce"
+                      @clear="loadProductsDebounce"
+                      @blur="loadProductsDebounce"
+                      v-model="queryParam.productName"
+      ></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
           <image :src="product.image" class="product-image"/>
           <view class="product-details">
             <view class="product-info">
-              <text class="info-label">商品名称：</text>
-              <text class="info-value">{{ product.name }}</text>
+              <text class="info-label">名称：</text>
+              <text class="info-value">{{ product.product_name }}</text>
             </view>
             <view class="product-info">
-              <text class="info-label">商品类型：</text>
-              <text class="info-value">{{ product.type }}</text>
+              <text class="info-label">类型：</text>
+              <text class="info-value">{{ product.product_type }}</text>
             </view>
             <view class="product-info">
               <text class="info-label">上架时间：</text>
-              <text class="info-value">{{ moment(product.time).format("YYYY年MM月DD日") }}</text>
+              <text class="info-value">{{ moment(product.shelf_time).format("YYYY年MM月DD日") }}</text>
             </view>
             <view class="product-info">
               <text class="info-label">商品价格：</text>
@@ -30,14 +34,14 @@
             </view>
             <view class="product-info">
               <text class="info-label">剩余数量：</text>
-              <text class="info-value">{{ product.quantity }}</text>
+              <text class="info-value">{{ product.stock_quantity }}</text>
             </view>
             <view class="cart-controls">
-              <button class="cart-btn" v-if="product.cartCount === 0" @click="addToCart(index)">加入购物车</button>
+              <button class="cart-btn" v-if="!cart.cardProductsQuantity[product.product_id]" @click="addToCart(product.product_id,product)">加入购物车</button>
               <view class="quantity-controls" v-else>
-                <button class="quantity-btn" @click="decreaseQuantity(index)">-</button>
-                <text class="quantity">{{ product.cartCount }}</text>
-                <button class="quantity-btn" @click="increaseQuantity(index)">+</button>
+                <button class="quantity-btn" @click="decreaseQuantity(product.product_id)">-</button>
+                <text class="quantity">{{ cart.cardProductsQuantity[product.product_id] }}</text>
+                <button class="quantity-btn" @click="increaseQuantity(index,product.product_id)">+</button>
               </view>
             </view>
           </view>
@@ -58,13 +62,13 @@
         <button @click="toggleCartDrawer">关闭</button>
       </view>
       <view class="cart-drawer-body">
-        <view v-for="(product, index) in cartProducts" :key="index" class="cart-product">
-          <image :src="product.image" class="cart-product-image"/>
+        <view v-for="(product, i) in productsList" :key="i" class="cart-product">
+          <image :src="product.product_Image" class="cart-product-image"/>
           <view class="cart-product-details">
             <view class="cart-product-info">
-              <text>{{ product.name }}</text>
+              <text>{{ product.product_name }}</text>
               <text>{{ product.price }}</text>
-              <text>数量: {{ product.cartCount }}</text>
+              <text>数量: {{ productQuantityList[i] }}</text>
             </view>
           </view>
         </view>
@@ -80,117 +84,127 @@ import {store} from "../../store";
 import moment from "moment";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+import {listProductsByPageUsingPost} from "../../utils/request/ProductsControllerServiceUtils";
+import {debounce} from "../../utils/debounce_Throttle";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+//查询请求参数
+const queryParam = ref({
+  current: 1,
+  pageSize: 10,
+  price: "",
+  productDescription: "",
+  productId: "",
+  productName: "",
+  productType: "",
+  shelfTime: "",
+  sortField: "",
+  sortOrder: "",
+  stock_quantity: "",
+  updateTime: "",
+});
+//查询得到的商品数据
+const products = ref([]);
 const categories = ref(['首页', '衣服', '生活用品', '待定', '待定', '待定']);
-const selectedCategory = ref('');
-const products = reactive([]);
-const current = ref('1');
-const pageSize = ref('10')
-const cartProducts = computed(() => products.filter(product => product.cartCount > 0));
 const showCartDrawer = ref(false);
-const cardProductsID = ref([]);
-const cardProductsQuantity = ref([]);
-const orderID = ref();
-const searchText = ref('');
+const cart = ref({
+  cardProducts: {},//购物车商品
+  cardProductsQuantity: {},//购物车的商品数量
+});
+const productQuantityList = ref([]);//加入购物车的所有商品数量
+const productsIDList = ref([]);//加入购物车的所有商品id
+const productsList = ref([]);//加入购物车的所有商品
+const orderID = ref();//订单id
 const availablePoints = ref(''); // 假设用户的可用积分为1000
 
-
+/**
+ * 加载数据
+ * @return {Promise<void>}
+ */
 const loadProducts = async () => {
-  try {
-    const res = await makeRequest(`${backendBaseInfo}/api/products/list/page`, 'POST', {
-      current: current.value,
-      pageSize: pageSize.value,
-      productName:searchText.value,
-    });
-
+  listProductsByPageUsingPost(queryParam.value).then(res => {
     if (res.data.code === 0) {
-      console.log('API Response:', res.data);
-      const {records, total} = res.data.data;
-      products.splice(0, products.length, ...records.map(item => ({
-        // image: item.product_Image || '/static/images/default.jpg', // 使用默认图片或从item中获取
-        name: item.product_name,
-        type: item.product_type,
-        time: item.shelf_time,
-        price: item.price,
-        quantity: item.stock_quantity,
-        productID: item.product_id,
-        cartCount: 0
-      })));
-      console.log('Loaded products:', products);
+      products.value = res.data.data.records;
     } else {
-      console.error('Failed to load products:', res.data.message);
+      uni.showToast({
+        title: '商品加载失败',
+        icon: 'error',
+        duration: 2000
+      })
     }
-  } catch (error) {
-    console.error('Error loading products:', error);
-  }
+  })
 };
+//防抖一下
+const loadProductsDebounce = debounce(loadProducts,500);
 onMounted(() => {
   loadProducts();
   searchPoint();
 });
-const searchProduct =()=>{
-  current.value = 1;
-  loadProducts();
-}
-const addToCart = (index) => {
-  if (products[index].cartCount === 0) {
-    products[index].cartCount = 1;
-    cardProductsID.value.push(products[index].productID);
-    cardProductsQuantity.value.push(1);
-    console.log("id:" + cardProductsID.value);
-    console.log("数量：" + cardProductsQuantity.value);
 
-  } else {
-    products[index].cartCount++;
-    cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]++;
-    console.log("id:" + cardProductsID.value);
-    console.log("数量：" + cardProductsQuantity.value);
+/**
+ * 购物车
+ * @param id 商品id
+ * @param product 商品
+ */
+const addToCart = (id,product) => {
+  if (!cart.value.cardProductsQuantity[id]) {
+    cart.value.cardProducts[id] = product;
+    cart.value.cardProductsQuantity[id] = 1;
   }
+  console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
+};
+//添加数量
+const increaseQuantity = (index,id) => {
+  if (cart.value.cardProductsQuantity[id] === products.value[index].stock_quantity) return;//达到上限
+  cart.value.cardProductsQuantity[id]++;
+  console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
+};
+//减少数量
+const decreaseQuantity = (id) => {
+  if (!cart.value.cardProductsQuantity[id]) return ;//购物车该物品的数量已经是0就直接返回
+  if (cart.value.cardProductsQuantity[id] === 1) delete cart.value.cardProducts[id];//数量减少后为0时，该加入购物车的这个商品标记为空
+  cart.value.cardProductsQuantity[id]--;
+  console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
+};
+//购物车抽屉控制开关
+const toggleCartDrawer = () => {
+  showCartDrawer.value = !showCartDrawer.value;
 };
 
-const increaseQuantity = (index) => {
-  products[index].cartCount++;
-  cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]++;
-  console.log("id:" + cardProductsID.value);
-  console.log("数量：" + cardProductsQuantity.value);
-};
-
-const decreaseQuantity = (index) => {
-  if (products[index].cartCount > 0) {
-    products[index].cartCount--;
-    cardProductsQuantity.value[cardProductsID.value.indexOf(products[index].productID)]--;
-    console.log("id:" + cardProductsID.value);
-    console.log("数量：" + cardProductsQuantity.value);
-  }
-  if (products[index].cartCount === 0) {
-    products[index].cartCount = 0;
-  }
-};
-
+/**
+ * 生成订单号
+ * @return {Promise<void>}
+ */
 const createOrder = async () => {
   try {
     const res = await makeRequest(`${backendBaseInfo}/api/transactions/add`, 'POST', {
-      productId: cardProductsID.value,
-      transactionQuantity: cardProductsQuantity.value,
+      productId: productsIDList.value,
+      transactionQuantity: productQuantityList.value,
       user_id: store.state.user.loginUser.villager_id,
     });
     if (res.data.code === 0) {
       orderID.value = res.data.data;
-      console.log(res.data.data);
-      console.log("生成订单成功");
+      cart.value = {
+        cardProducts: {},//购物车商品
+        cardProductsQuantity: {},//购物车的商品数量
+      };
+      console.log("生成订单成功" + orderID.value);
       await uni.navigateTo({
-            url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(cartProducts.value))}&availablePoints=${availablePoints.value}&orderID=${orderID.value}`
+            url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(productsList.value))}&productQuantityList=${encodeURIComponent(JSON.stringify(productQuantityList.value))}&availablePoints=${availablePoints.value}&orderID=${orderID.value}`
           }
       );
     } else {
       console.error("生成订单失败:", res.data.message || "未知错误");
     }
   } catch (error) {
-    console.error("创建订单时发生错误:", error);
+    console.error("订单生成请求错误:", error);
   }
 };
 
+/**
+ * 获取剩余积分
+ * @return {Promise<void>}
+ */
 const searchPoint = async ()=>{
   await makeRequest(`${backendBaseInfo}/api/points/get/RemainingPoints`,'GET',{
     userId:store.state.user.loginUser.villager_id,
@@ -198,18 +212,15 @@ const searchPoint = async ()=>{
     availablePoints.value = res.data.data;
     console.log(availablePoints.value);
   }).catch((error)=>{
-    console.log("error:"+error.message);
+    console.log("获取剩余积分请求错误:"+error.message);
   })
 }
-const toggleCartDrawer = () => {
-  showCartDrawer.value = !showCartDrawer.value;
-};
 
 const options = ref([
   {
     icon: 'cart',
     text: '购物车',
-    info: computed(() => cartProducts.value.length)
+    info: cart.value.cardProducts.length
   }
 ]);
 
@@ -222,7 +233,10 @@ const buttonGroup = ref([
 ]);
 const buttonClick = (e) => {
   if (e.content.text === '立即购买') {
-    if (cartProducts.value.length === 0) {
+    productQuantityList.value = Object.entries(cart.value.cardProductsQuantity).map(([key, productsQuantity]) => (productsQuantity));
+    productsIDList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product.product_id));
+    productsList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product));
+    if (!productsIDList.value.length) {
       uni.showToast({
         title: '购物车为空，无法提交订单',
         icon: 'none'
@@ -241,8 +255,6 @@ const onClick = (e) => {
     icon: 'none'
   });
 };
-
-
 </script>
 
 <style lang="scss">
