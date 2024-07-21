@@ -36,9 +36,18 @@
                 <uni-icons type="cart" size="25" color="#ffffff"></uni-icons>
               </view>
               <view class="quantity-controls" v-else>
-                <view class="quantity-btn" style="padding-left: 2.9vw;" @click="decreaseQuantity(product.product_id)">-</view>
+                <view class="quantity-btn" style="padding-left: 2.9vw;background-color: #ff8a18" @click="decreaseQuantity(product.product_id)">
+                  -
+                </view>
                 <view class="quantity">{{ cart.cardProductsQuantity[product.product_id] }}</view>
-                <view class="quantity-btn" style="padding-left: 2.2vw;" @click="increaseQuantity(index,product.product_id)">+</view>
+                <view class="quantity-btn"
+                      :style="{
+                        paddingLeft: '2.2vw',
+                        backgroundColor: (cart.cardProductsQuantity[product.product_id] === product.stock_quantity ? '#b2b2b2' : '#ff8a18'),
+                      }"
+                      @click="increaseQuantity(index,product.product_id)"
+                >+
+                </view>
               </view>
             </view>
           </view>
@@ -60,20 +69,9 @@
     <view class="cart-drawer-content">
       <view class="cart-drawer-header">
         <text style="font-weight: bolder">购物车</text>
-        <view
-            @click="toggleCartDrawer"
-            style="
-              width: 5vw;
-              height: 3vh;
-              border-radius: 50%;
-              border: 1px solid #2a2a2a;
-              padding-left: 1.1vw;
-              padding-bottom: 1.3vh"
-        >
-          X
-        </view>
+        <uni-icons type="close" size="35" @click="toggleCartDrawer" style="padding-left: 1vw;padding-bottom: 1.3vh" />
       </view>
-      <view class="cart-drawer-body" style="height: 40vh" v-if="productsList && productsList.length">
+      <view class="cart-drawer-body" style="height: 50vh" v-if="productsList && productsList.length">
         <scroll-view scroll-y="true" bindscroll="handscroll" scroll-with-animation="true">
           <view v-for="(product, i) in productsList" :key="i" class="cart-product">
             <image :src="product.product_Image" class="cart-product-image"/>
@@ -94,9 +92,11 @@
               </view>
             </view>
           </view>
+          <!--          空一行-->
+          <view style="height: 2vh"></view>
         </scroll-view>
       </view>
-      <view v-else style="height: 40vh">
+      <view v-else style="height: 50vh">
         <view style="text-align: center;margin-top: 5vh">选择您要兑换的商品</view>
       </view>
     </view>
@@ -185,7 +185,14 @@ const addToCart = (id, product) => {
 };
 //添加数量
 const increaseQuantity = (index, id) => {
-  if (cart.value.cardProductsQuantity[id] === products.value[index].stock_quantity) return;//达到上限
+  if (cart.value.cardProductsQuantity[id] === products.value[index].stock_quantity) {
+    uni.showToast({
+      title: '抱歉，该商品数量已达到库存上限',
+      icon: 'none',
+      duration: 2000
+    })
+    return;
+  }//达到上限
   cart.value.cardProductsQuantity[id]++;
   getValidCartParam();//获取购物车cart的有效参数
   console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
@@ -255,8 +262,10 @@ const options = ref([
   {
     icon: 'cart',
     text: '购物车',
-    info: computed(()=>{
-      return Object.values(cart.value.cardProductsQuantity).reduce((cnt, curVal) => cnt + curVal, 0);
+    info: computed(() => {
+      //添加到购物车的数量
+      let cnt = Object.values(cart.value.cardProductsQuantity).reduce((cnt, curVal) => cnt + curVal, 0);
+      return cnt > 99 ? "99+" : cnt;
     })
   }
 ]);
@@ -292,7 +301,7 @@ const onClick = (e) => {
 /**
  * 获取购物车cart的有效参数
  */
-const getValidCartParam = () =>{
+const getValidCartParam = () => {
   productQuantityList.value = Object.entries(cart.value.cardProductsQuantity).map(([key, productsQuantity]) => (productsQuantity));
   productsIDList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product.product_id));
   productsList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product));
@@ -362,13 +371,13 @@ const getValidCartParam = () =>{
   padding-left: 1.1vw;
   cursor: pointer;
 }
+
 /*购物车以及立即购买栏*/
 .quantity-controls {
   display: flex;
 }
 
 .quantity-btn {
-  background-color: #ff8a18;
   color: #fff;
   font-size: 5vw;
   width: 8vw;
@@ -415,7 +424,6 @@ const getValidCartParam = () =>{
 }
 
 .cart-drawer-body {
-  max-height: 40vh;
   overflow-y: auto;
 }
 

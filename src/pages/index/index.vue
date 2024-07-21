@@ -34,21 +34,21 @@
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">社区活动</view>
         </view>
         <view class="circle"
-            style="background: linear-gradient(to bottom, #9fe148, #78ca48)">
-          <view style="margin-left: 4vw">
+              style="background: linear-gradient(to bottom, #9fe148, #78ca48)">
+          <view style="margin-left: 3.9vw">
             <uni-icons type="vip" size="35"/>
           </view>
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">美德银行</view>
         </view>
         <view class="circle"
-            style="background: linear-gradient(to bottom, #f8de81, #f3b246)">
-          <view style="margin-left: 4vw">
+              style="background: linear-gradient(to bottom, #f8de81, #f3b246)">
+          <view style="margin-left: 3.9vw">
             <uni-icons type="chat" size="35"/>
           </view>
           <view style="font-size: 3vw;margin-left: 1vw;margin-top: 3.7vh">公告咨询</view>
         </view>
         <view class="circle"
-            style="background: linear-gradient(to bottom, #f3acd1, #ee7a7e)">
+              style="background: linear-gradient(to bottom, #f3acd1, #ee7a7e)">
           <view style="margin-left: 4vw">
             <uni-icons type="hand-up" size="35"/>
           </view>
@@ -61,52 +61,28 @@
       <!--任务 -->
       <view style="margin-top: 8vh">
         <!--        标题栏-->
-        <view>
-          <text style="font-weight: bolder;font-size: 5vw">任务列表</text>
-          <text style="margin-left: 65vw;color: rgb(155, 155, 155);">更多</text>
-        </view>
-        <view class="card-container">
-          <view class="card-column">
-            <uni-card class="card">
-              <view class="card-content">
-                <text class="bold-text">活动名称：健康跑</text>
-                <text class="bold-text">公告详情：加入我们的社区健康跑活动，享受运动的乐趣！</text>
-                <text class="bold-text">时间：2023年4月15日 09:00</text>
-              </view>
-            </uni-card>
-            <uni-card class="card">
-              <view class="card-content">
-                <text class="bold-text">活动名称：环保讲座</text>
-                <text class="bold-text">公告详情：了解如何保护我们的环境，参与环保讲座。</text>
-                <text class="bold-text">时间：2023年4月20日 14:00</text>
-              </view>
-            </uni-card>
-          </view>
-          <view class="card-column">
-            <uni-card class="card">
-              <view class="card-content">
-                <text class="bold-text">活动名称：社区清洁日</text>
-                <text class="bold-text">公告详情：一起参与社区清洁日，让我们的家园更美好。</text>
-                <text class="bold-text">时间：2023年4月25日 08:00</text>
-              </view>
-            </uni-card>
-            <uni-card class="card">
-              <view class="card-content">
-                <text class="bold-text">活动名称：文化节</text>
-                <text class="bold-text">公告详情：体验多元文化，参与我们的社区文化节。</text>
-                <text class="bold-text">时间：2023年5月1日 10:00</text>
-              </view>
-            </uni-card>
-          </view>
-        </view>
+        <uni-segmented-control :current="current" :values="items" :style-type="'text'"
+                               :active-color="'#ee7a7e'" @clickItem="(e) => current = current !== e.currentIndex ? e.currentIndex : current" />
+        <index-task-view v-if="current === 0"/>
       </view>
     </scroll-view>
+    <view style="height: 5vh;margin-top: 2vh;text-align: center;color: #999999">
+      积分治理小程序
+    </view>
   </view>
 </template>
 
 <script setup>
+import {ref} from "vue";
 import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
+import IndexTaskView from "../../components/task/IndexTaskView.vue";
+import HomeAnnouncement from "../../components/announcements/HomeAnnouncement.vue";
+
+//标题栏的所有标题名称
+const items = ref(["任务信息","活动信息","文明家庭"]);
+const current = ref(0);//当前标题
+
 </script>
 <style lang="scss">
 .swiper-style {
@@ -125,7 +101,7 @@ import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue
 }
 
 /*圆圈*/
-.circle{
+.circle {
   border-radius: 50%;
   width: 15vw;
   height: 10vh;

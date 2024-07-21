@@ -3,7 +3,7 @@
   <view id="content">
     <view class="bg">
       <view class="loginBox">
-        <h3 style="text-align: center;font-weight: bolder;font-size: 50rpx">登 录</h3>
+        <h3 style="text-align: center;font-weight: bolder;font-size: 7vw">登 录</h3>
         <view class="inputBox">
           <view class="ipt">
             <uni-easyinput :prefixIcon="'contact'" type="text" v-model="userAccount"
@@ -260,7 +260,7 @@ h3 {
   margin-left: 20rpx;
   font-size: 28rpx;
   width: 67vw;
-  box-shadow: 5px 5px 3px rgba(8, 8, 8, 0.25);
+  box-shadow: 0 0.7vh 0.5vw rgba(8, 8, 8, 0.25);
   border-radius: 20%;
 }
 
