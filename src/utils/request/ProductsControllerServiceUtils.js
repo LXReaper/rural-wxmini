@@ -2,7 +2,6 @@ import {makeRequest} from "./requestUtil";
 import {store} from "../../store";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
-const socketTask = store.state.websocketMessageData.websocketMessage.noticeSocket;
 
 /**
  * 分页获取商品列表

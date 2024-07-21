@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view @click="showCartDrawer = false">
     <scroll-view scroll-y="true" bindscroll="handscroll" scroll-with-animation="true">
       <view class="category-bar">
         <view v-for="(category, index) in categories" :key="index">
@@ -14,64 +14,90 @@
       ></uni-search-bar>
       <view class="product-list">
         <view v-for="(product, index) in products" :key="index" class="product-card">
-          <image :src="product.image" class="product-image"/>
+          <image :src="product.product_Image" class="product-image"/>
           <view class="product-details">
             <view class="product-info">
-              <text class="info-label">名称：</text>
-              <text class="info-value">{{ product.product_name }}</text>
+              <text class="info-value" style="font-weight: bolder">{{ product.product_name }}</text>
             </view>
             <view class="product-info">
-              <text class="info-label">类型：</text>
-              <text class="info-value">{{ product.product_type }}</text>
+              <text class="info-value" style="color: rgb(221, 68, 58);">{{ product.price }}分</text>
             </view>
             <view class="product-info">
-              <text class="info-label">上架时间：</text>
-              <text class="info-value">{{ moment(product.shelf_time).format("YYYY年MM月DD日") }}</text>
+              <view class="info-value">
+                <text style="color: #b2b2b2;font-size: 3vw">已兑换{{ product.consumption_Num }}份</text>
+              </view>
+              <view class="info-value">
+                <text style="color: #b2b2b2;font-size: 3vw">剩余{{ product.stock_quantity }}份</text>
+              </view>
             </view>
-            <view class="product-info">
-              <text class="info-label">商品价格：</text>
-              <text class="info-value">{{ product.price }}</text>
-            </view>
-            <view class="product-info">
-              <text class="info-label">剩余数量：</text>
-              <text class="info-value">{{ product.stock_quantity }}</text>
-            </view>
-            <view class="cart-controls">
-              <button class="cart-btn" v-if="!cart.cardProductsQuantity[product.product_id]" @click="addToCart(product.product_id,product)">加入购物车</button>
+            <view>
+              <view class="cart-btn" v-if="!cart.cardProductsQuantity[product.product_id]"
+                    @click="addToCart(product.product_id,product)">
+                <uni-icons type="cart" size="25" color="#ffffff"></uni-icons>
+              </view>
               <view class="quantity-controls" v-else>
-                <button class="quantity-btn" @click="decreaseQuantity(product.product_id)">-</button>
-                <text class="quantity">{{ cart.cardProductsQuantity[product.product_id] }}</text>
-                <button class="quantity-btn" @click="increaseQuantity(index,product.product_id)">+</button>
+                <view class="quantity-btn" style="padding-left: 2.9vw;" @click="decreaseQuantity(product.product_id)">-</view>
+                <view class="quantity">{{ cart.cardProductsQuantity[product.product_id] }}</view>
+                <view class="quantity-btn" style="padding-left: 2.2vw;" @click="increaseQuantity(index,product.product_id)">+</view>
               </view>
             </view>
           </view>
         </view>
       </view>
     </scroll-view>
+    <view style="height: 10vh;text-align: center">
+      <text style="color: #999999">数据已加载完成</text>
+    </view>
   </view>
+  <!--  购物车以及购买-->
   <view class="uni-container">
     <view class="goods-carts">
       <uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" @click="onClick"
                      @buttonClick="buttonClick"/>
     </view>
   </view>
-  <view v-if="showCartDrawer" class="cart-drawer">
+  <view v-if="showCartDrawer" @blur="toggleCartDrawer" class="cart-drawer">
     <view class="cart-drawer-content">
       <view class="cart-drawer-header">
-        <text>购物车</text>
-        <button @click="toggleCartDrawer">关闭</button>
+        <text style="font-weight: bolder">购物车</text>
+        <view
+            @click="toggleCartDrawer"
+            style="
+              width: 5vw;
+              height: 3vh;
+              border-radius: 50%;
+              border: 1px solid #2a2a2a;
+              padding-left: 1.1vw;
+              padding-bottom: 1.3vh"
+        >
+          X
+        </view>
       </view>
-      <view class="cart-drawer-body">
-        <view v-for="(product, i) in productsList" :key="i" class="cart-product">
-          <image :src="product.product_Image" class="cart-product-image"/>
-          <view class="cart-product-details">
-            <view class="cart-product-info">
-              <text>{{ product.product_name }}</text>
-              <text>{{ product.price }}</text>
-              <text>数量: {{ productQuantityList[i] }}</text>
+      <view class="cart-drawer-body" style="height: 40vh" v-if="productsList && productsList.length">
+        <scroll-view scroll-y="true" bindscroll="handscroll" scroll-with-animation="true">
+          <view v-for="(product, i) in productsList" :key="i" class="cart-product">
+            <image :src="product.product_Image" class="cart-product-image"/>
+            <view class="cart-product-details">
+              <view class="cart-product-info">
+                <view style="font-weight: bolder">{{ product.product_name }}</view>
+                <view style="display: flex;margin-top: 4vh">
+                  <text style="color: #ff8a18">{{ product.price }}分</text>
+                  <view style="margin-left: 48vw;position: absolute">
+                    <uni-number-box
+                        v-model="cart.cardProductsQuantity[product.product_id]"
+                        :min="1"
+                        :max="product.stock_quantity"
+                        :step="1"
+                    />
+                  </view>
+                </view>
+              </view>
             </view>
           </view>
-        </view>
+        </scroll-view>
+      </view>
+      <view v-else style="height: 40vh">
+        <view style="text-align: center;margin-top: 5vh">选择您要兑换的商品</view>
       </view>
     </view>
   </view>
@@ -81,11 +107,14 @@
 import {ref, reactive, computed, onMounted} from 'vue';
 import {makeRequest} from "../../utils/request/requestUtil";
 import {store} from "../../store";
-import moment from "moment";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 import UniGoodsNav from "../../uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue";
+import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import UniNumberBox from "../../uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue";
 import {listProductsByPageUsingPost} from "../../utils/request/ProductsControllerServiceUtils";
 import {debounce} from "../../utils/debounce_Throttle";
+import {transactionsAddUsingPost} from "../../utils/request/TransactionsControllerServiceUtils";
+import {getRemainingPointsByUserIdUsingGet} from "../../utils/request/PointsControllerServiceUtils";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 //查询请求参数
@@ -135,7 +164,7 @@ const loadProducts = async () => {
   })
 };
 //防抖一下
-const loadProductsDebounce = debounce(loadProducts,500);
+const loadProductsDebounce = debounce(loadProducts, 500);
 onMounted(() => {
   loadProducts();
   searchPoint();
@@ -146,24 +175,27 @@ onMounted(() => {
  * @param id 商品id
  * @param product 商品
  */
-const addToCart = (id,product) => {
+const addToCart = (id, product) => {
   if (!cart.value.cardProductsQuantity[id]) {
     cart.value.cardProducts[id] = product;
     cart.value.cardProductsQuantity[id] = 1;
+    getValidCartParam();//获取购物车cart的有效参数
   }
   console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
 };
 //添加数量
-const increaseQuantity = (index,id) => {
+const increaseQuantity = (index, id) => {
   if (cart.value.cardProductsQuantity[id] === products.value[index].stock_quantity) return;//达到上限
   cart.value.cardProductsQuantity[id]++;
+  getValidCartParam();//获取购物车cart的有效参数
   console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
 };
 //减少数量
 const decreaseQuantity = (id) => {
-  if (!cart.value.cardProductsQuantity[id]) return ;//购物车该物品的数量已经是0就直接返回
+  if (!cart.value.cardProductsQuantity[id]) return;//购物车该物品的数量已经是0就直接返回
   if (cart.value.cardProductsQuantity[id] === 1) delete cart.value.cardProducts[id];//数量减少后为0时，该加入购物车的这个商品标记为空
   cart.value.cardProductsQuantity[id]--;
+  getValidCartParam();//获取购物车cart的有效参数
   console.log("id:" + id + "数量：" + cart.value.cardProductsQuantity[id]);
 };
 //购物车抽屉控制开关
@@ -176,12 +208,11 @@ const toggleCartDrawer = () => {
  * @return {Promise<void>}
  */
 const createOrder = async () => {
-  try {
-    const res = await makeRequest(`${backendBaseInfo}/api/transactions/add`, 'POST', {
-      productId: productsIDList.value,
-      transactionQuantity: productQuantityList.value,
-      user_id: store.state.user.loginUser.villager_id,
-    });
+  transactionsAddUsingPost({
+    productId: productsIDList.value,
+    transactionQuantity: productQuantityList.value,
+    user_id: store.state.user.loginUser.villager_id,
+  }).then(res => {
     if (res.data.code === 0) {
       orderID.value = res.data.data;
       cart.value = {
@@ -189,38 +220,44 @@ const createOrder = async () => {
         cardProductsQuantity: {},//购物车的商品数量
       };
       console.log("生成订单成功" + orderID.value);
-      await uni.navigateTo({
+      uni.navigateTo({
             url: `/pages/score/Payment?cartProducts=${encodeURIComponent(JSON.stringify(productsList.value))}&productQuantityList=${encodeURIComponent(JSON.stringify(productQuantityList.value))}&availablePoints=${availablePoints.value}&orderID=${orderID.value}`
           }
       );
     } else {
       console.error("生成订单失败:", res.data.message || "未知错误");
     }
-  } catch (error) {
-    console.error("订单生成请求错误:", error);
-  }
+  });
 };
 
 /**
  * 获取剩余积分
  * @return {Promise<void>}
  */
-const searchPoint = async ()=>{
-  await makeRequest(`${backendBaseInfo}/api/points/get/RemainingPoints`,'GET',{
-    userId:store.state.user.loginUser.villager_id,
-  }).then((res)=>{
-    availablePoints.value = res.data.data;
-    console.log(availablePoints.value);
-  }).catch((error)=>{
-    console.log("获取剩余积分请求错误:"+error.message);
+const searchPoint = async () => {
+  getRemainingPointsByUserIdUsingGet({
+    userId: store.state.user.loginUser.villager_id,
+  }).then(res => {
+    if (res.data.code === 0) {
+      availablePoints.value = res.data.data;
+      console.log(availablePoints.value);
+    } else {
+      console.error("查询剩余积分失败:", res.data.message || "未知错误");
+    }
   })
 }
 
+/**
+ * 购物车配置
+ * @type {Ref<UnwrapRef<[{icon: string, text: string, info: number}]>>}
+ */
 const options = ref([
   {
     icon: 'cart',
     text: '购物车',
-    info: cart.value.cardProducts.length
+    info: computed(()=>{
+      return Object.values(cart.value.cardProductsQuantity).reduce((cnt, curVal) => cnt + curVal, 0);
+    })
   }
 ]);
 
@@ -231,11 +268,10 @@ const buttonGroup = ref([
     color: '#fff'
   }
 ]);
+//提交订单，点击立即购买按钮触发
 const buttonClick = (e) => {
   if (e.content.text === '立即购买') {
-    productQuantityList.value = Object.entries(cart.value.cardProductsQuantity).map(([key, productsQuantity]) => (productsQuantity));
-    productsIDList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product.product_id));
-    productsList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product));
+    getValidCartParam();//获取购物车cart的有效参数
     if (!productsIDList.value.length) {
       uni.showToast({
         title: '购物车为空，无法提交订单',
@@ -246,15 +282,21 @@ const buttonClick = (e) => {
     createOrder();
   }
 };
+//打开购物车抽屉
 const onClick = (e) => {
   if (e.content.text === '购物车') {
+    getValidCartParam();//获取购物车cart的有效参数
     toggleCartDrawer();
   }
-  uni.showToast({
-    title: `点击${e.content.text}`,
-    icon: 'none'
-  });
 };
+/**
+ * 获取购物车cart的有效参数
+ */
+const getValidCartParam = () =>{
+  productQuantityList.value = Object.entries(cart.value.cardProductsQuantity).map(([key, productsQuantity]) => (productsQuantity));
+  productsIDList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product.product_id));
+  productsList.value = Object.entries(cart.value.cardProducts).map(([key, product]) => (product));
+}
 </script>
 
 <style lang="scss">
@@ -269,6 +311,7 @@ const onClick = (e) => {
   cursor: pointer;
 }
 
+/*商品列表*/
 .product-list {
   display: flex;
   flex-wrap: wrap;
@@ -281,7 +324,7 @@ const onClick = (e) => {
   margin-bottom: 20px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
 }
 
 .product-image {
@@ -301,50 +344,44 @@ const onClick = (e) => {
   margin-bottom: 5px;
 }
 
-.info-label {
-  font-weight: bold;
-  width: 100px;
-}
-
 .info-value {
   flex: 1;
-  color: #333;
+  color: #000000;
 }
 
 .cart-controls {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
 }
 
 .cart-btn {
-  background-color: #ff8a18;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  background-color: #ff8502;
+  border-radius: 50%;
+  width: 8vw;
+  height: 5vh;
+  padding-top: 0.9vh;
+  padding-left: 1.1vw;
   cursor: pointer;
 }
-
+/*购物车以及立即购买栏*/
 .quantity-controls {
   display: flex;
-  align-items: center;
 }
 
 .quantity-btn {
   background-color: #ff8a18;
   color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  font-size: 5vw;
+  width: 8vw;
+  height: 5vh;
+  border-radius: 50%;
   cursor: pointer;
 }
 
 .quantity {
-  margin: 0 10px;
+  margin: 1vh 3vw;
 }
 
+/*购物车*/
 .goods-carts {
   display: flex;
   flex-direction: column;
@@ -359,7 +396,7 @@ const onClick = (e) => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: #f7f7f7;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
@@ -378,20 +415,27 @@ const onClick = (e) => {
 }
 
 .cart-drawer-body {
-  max-height: 300px;
+  max-height: 40vh;
   overflow-y: auto;
 }
 
 .cart-product {
+  background-color: white;
   display: flex;
-  margin-bottom: 10px;
+  height: 12vh;
+  width: 90vw;
+  margin-left: 0.5vw;
+  border-radius: 10px;
+  box-shadow: 0 0.1vh 1vw rgba(0, 0, 0, 0.2);
+  margin-top: 2vh;
 }
 
 .cart-product-image {
-  width: 60px;
-  height: 60px;
+  width: 15vw;
+  height: 10vh;
   object-fit: cover;
-  margin-right: 10px;
+  margin-left: 2vw;
+  margin-top: 1vh;
 }
 
 .cart-product-details {
@@ -399,7 +443,9 @@ const onClick = (e) => {
 }
 
 .cart-product-info {
-  display: flex;
+  flex-direction: column;
+  margin-left: 2vw;
+  margin-top: 1vh;
   justify-content: space-between;
 }
 </style>

@@ -8,7 +8,7 @@
         <view style="font-size: 4vw;">{{item.product_name}}</view>
         <view style="font-size: 3vw; color: rgb(153, 153, 153);">剩余{{item.stock_quantity}}份</view>
         <view style="display: flex;margin-top: 5vh">
-          <view style="color: #ff4444">
+          <view style="color: #d9a552">
             {{item.price}}分
           </view>
           <view
@@ -17,8 +17,8 @@
                 margin-left: 43vw;
                 padding-left: 2.3vw;
                 padding-top: 0.1vh;
-                border: 1px solid #ff4444;
-                color: #ff4444;
+                border: 1px solid #d9a552;
+                color: #d9a552;
                 border-radius: 20px;
                 height: 4vh;
                 width: 12vw;
