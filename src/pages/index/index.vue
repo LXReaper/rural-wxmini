@@ -78,6 +78,7 @@ import UniIcons from "../../uni_modules/uni-icons/components/uni-icons/uni-icons
 import UniCard from "../../uni_modules/uni-card/components/uni-card/uni-card.vue";
 import IndexTaskView from "../../components/task/IndexTaskView.vue";
 import HomeAnnouncement from "../../components/announcements/HomeAnnouncement.vue";
+import UniEditor from "../../components/Editor/uniEditor.vue";
 
 //标题栏的所有标题名称
 const items = ref(["任务信息","活动信息","文明家庭"]);

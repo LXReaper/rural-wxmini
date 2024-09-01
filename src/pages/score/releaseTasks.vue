@@ -89,7 +89,7 @@ const confirmPublish = () => {
 
 
 const handleQueryRule =async ()=>{
-  await makeRequest(`${backendBaseInfo}/api/rules/list/page`,'POST',{
+  await makeRequest(`${backendBaseInfo}/api/management/rules/list/page`,'POST',{
     current:current.value,
     pageSize:pageSize.value,
     sortOrder:sortOrder.value,

@@ -29,10 +29,13 @@
 import {getCurrentInstance, onMounted, ref} from "vue";
 import {onLoad} from "@dcloudio/uni-app";
 import NotLoginAvatar from "../../components/mine/notLoginAvatar.vue";
+import {store} from "../../store";
 
 const code = ref("");
 const hasLogin = ref(false);
 const phoneModalShow = ref(false);
+const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
+
 
 
 const agreementDetailHandle = () => {
@@ -71,7 +74,7 @@ const getUserProfile = () => {
       });
       if (res.errMsg == "getUserProfile:ok") {
         console.log("codeLogin", code.value);
-        let url = `http://localhost:8121/api/user/login/wx_miniApp`;
+        let url = `${backendBaseInfo}/api/user/login/wx_miniApp`;
         makeRequest(url, "GET", {code: code.value}).then(res => {
           if (res.code == 0) {
             this.userRawData = userMsgHave; // 存储用户信息

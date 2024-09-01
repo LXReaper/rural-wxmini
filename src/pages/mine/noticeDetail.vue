@@ -34,7 +34,7 @@ onLoad((options)=>{
 })
 const handleSearch = async () => {
   try {
-    const res = await makeRequest(`${backendBaseInfo}/api/notices/list/page/vo`, 'POST', {
+    const res = await makeRequest(`${backendBaseInfo}/api/management/notices/list/page/vo`, 'POST', {
       current: current.value,
       user_id: store.state.user.loginUser.villager_id,
       id:id.value,

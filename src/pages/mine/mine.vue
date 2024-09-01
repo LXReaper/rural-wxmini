@@ -112,7 +112,7 @@ const unBindWechat = () => {
 
 const handleSearch = async () => {
   try {
-    const res = await makeRequest(`${backendBaseInfo}/api/notices/list/page/vo`, 'POST', {
+    const res = await makeRequest(`${backendBaseInfo}/api/management/notices/list/page/vo`, 'POST', {
       current: current.value,
       sortOrder: sortOrder.value,
       user_id: store.state.user.loginUser.villager_id,
@@ -128,7 +128,7 @@ const handleSearch = async () => {
   }
 };
 const searchPoint = async () => {
-  await makeRequest(`${backendBaseInfo}/api/points/get/AllPoints`, 'GET', {
+  await makeRequest(`${backendBaseInfo}/api/user/points/get/AllPoints`, 'GET', {
     userId: store.state.user.loginUser.villager_id,
   }).then((res) => {
     userPoint.value = res.data.data;

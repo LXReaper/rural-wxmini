@@ -132,7 +132,7 @@ const categorizeNotices = (noticeList) => {
 };
 const handleSearch = async () => {
   try {
-    const res = await makeRequest(`${backendBaseInfo}/api/notices/list/page/vo`, 'POST', {
+    const res = await makeRequest(`${backendBaseInfo}/api/management/notices/list/page/vo`, 'POST', {
       current: current.value,
       pageSize: pageSize.value,
       sortOrder: sortOrder.value,

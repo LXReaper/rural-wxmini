@@ -21,7 +21,7 @@ export const listAnnouncementsVoByPageUsingPost = (data= {
     user_name: "",
 }) => {
     return new Promise((resolve, reject) => {
-        makeRequest(`${backendBaseInfo}/api/announcements/list/page/vo`, 'POST', data)
+        makeRequest(`${backendBaseInfo}/api/management/announcements/list/page/vo`, 'POST', data)
             .then(res => {
                 resolve(res);
             }).catch(error => {

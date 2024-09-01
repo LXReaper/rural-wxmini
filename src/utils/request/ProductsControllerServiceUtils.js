@@ -22,7 +22,7 @@ export const listProductsByPageUsingPost = (data= {
     updateTime: "",
 }) => {
     return new Promise((resolve, reject) => {
-        makeRequest(`${backendBaseInfo}/api/products/list/page/vo`, 'POST', data)
+        makeRequest(`${backendBaseInfo}/api/marketplace/products/list/page/vo`, 'POST', data)
             .then(res => {
                 resolve(res);
             }).catch(error => {

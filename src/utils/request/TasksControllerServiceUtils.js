@@ -26,7 +26,7 @@ export const listTasksVoByPageUsingPost = (data= {
     userName: "",
 }) => {
     return new Promise((resolve, reject) => {
-        makeRequest(`${backendBaseInfo}/api/tasks/list/page/vo`, 'POST', data)
+        makeRequest(`${backendBaseInfo}/api/task/tasks/list/page/vo`, 'POST', data)
             .then(res => {
                 resolve(res);
             }).catch(error => {

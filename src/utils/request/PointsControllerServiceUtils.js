@@ -11,7 +11,7 @@ export const getRemainingPointsByUserIdUsingGet = (data= {
     userId: "",
 }) => {
     return new Promise((resolve, reject) => {
-        makeRequest(`${backendBaseInfo}/api/points/get/RemainingPoints`, 'GET', data)
+        makeRequest(`${backendBaseInfo}/api/user/points/get/RemainingPoints`, 'GET', data)
             .then(res => {
                 resolve(res);
             }).catch(error => {

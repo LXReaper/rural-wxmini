@@ -75,7 +75,7 @@ const startCountdown = () => {
 //支付请求
 const processOrder = async () => {
   console.log(orderID.value);
-  const res = await makeRequest(`${backendBaseInfo}/api/transactions/transaction/handle`, 'GET', {
+  const res = await makeRequest(`${backendBaseInfo}/api/marketplace/transactions/transaction/handle`, 'GET', {
     transactions_Id: orderID.value
   });
   if (res.data.code === 0) {
