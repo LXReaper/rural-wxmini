@@ -26,6 +26,7 @@ import {store} from "../../store";
 import UniSearchBar from "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue";
 import moment from "moment";
 import {onPageScroll} from "@dcloudio/uni-app";
+import {listTasksVoByPageUsingPost} from "../../utils/request/TasksControllerServiceUtils";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const tasks = ref([]);
@@ -51,7 +52,7 @@ function handlePublishTask() {
 
 // 处理搜索框输入
 const handleSearch = async () => {
-  await makeRequest(`${backendBaseInfo}/api/tasks/list/page/vo`, 'POST', {
+  await listTasksVoByPageUsingPost({
     current: current.value,
     pageSize: pageSize.value,
     sortOrder: sortOrder.value,

@@ -6,13 +6,13 @@
         <h3 style="text-align: center;font-weight: bolder;font-size: 7vw">登 录</h3>
         <view class="inputBox">
           <view class="ipt">
-            <uni-easyinput :prefixIcon="'contact'" type="text" v-model="userAccount"
+            <input :prefixIcon="'contact'" type="text" v-model="userAccount"
                            class="inputEasy"
                            maxlength="50"
                            placeholder="请输入账号或手机号"/>
           </view>
           <view class="ipt">
-            <uni-easyinput :prefixIcon="'eye'" type="password" v-model="userPassword" class="inputEasy"
+            <input type="password" v-model="userPassword" class="inputEasy"
                            placeholder="请输入密码"/>
           </view>
           <view class="forgetPwd">
@@ -91,7 +91,7 @@ const userLoginDebounce = debounce(userLogin, 500);//防抖
 onMounted(() => {
   // 调用函数以读取存储数据
   readStorageData();
-  initWebSocket();//连接后端
+  // initWebSocket();//连接后端
 });
 /**
  * 执行登录
@@ -254,14 +254,14 @@ h3 {
   background: rgba(245, 245, 245, 0);
   border-radius: 10rpx;
   padding-left: 10rpx;
+  z-index: 2;
 }
 
-.ipt .inputEasy {
+.inputEasy {
   margin-left: 20rpx;
   font-size: 28rpx;
   width: 67vw;
   box-shadow: 0 0.7vh 0.5vw rgba(8, 8, 8, 0.25);
-  border-radius: 20%;
 }
 
 .yzm {

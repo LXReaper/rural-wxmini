@@ -10,7 +10,7 @@ const socketTask = store.state.websocketMessageData.websocketMessage.noticeSocke
 export const initWebSocket = () => {
     store.dispatch("websocketMessageData/setNoticeSocket",
         wx.connectSocket({
-            url: `ws://${backendBaseInfo.substring(7)}/api/sendNotices`,
+            url: `ws://${backendBaseInfo.substring(7, backendBaseInfo.length - 4)}8021/api/user/sendNotices`,
             header: {
                 'content-type': 'application/json',
                 'cookie': wx.getStorageSync("cookie") // 读取cookie
