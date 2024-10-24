@@ -15,14 +15,13 @@
         <text>用户名：{{ store.state.user.loginUser.villager_name }}</text>
         <view>
           <text>用户ID:</text>
-          <text class="userId">{{ store.state.user.loginUser.villager_id }}</text>
+          <text>{{ store.state.user.loginUser.villager_id }}</text>
         </view>
         <text>总积分:{{ userPoint.total_points }}</text>
         <view>
           <text>剩余积分:{{ userPoint.remaining_points }}</text>
         </view>
       </view>
-
     </view>
     <view class="two-choice">
       <button class="index-record">积分记录</button>
@@ -41,8 +40,8 @@
       <button class="online-service">在线客服</button>
       <button class="feedback-consultation">咨询和反馈</button>
       <button class="setting" @click="settingClick">设置</button>
-      <button class="loginOut" @click="loginOut">退出登录</button>
     </view>
+    <button class="loginOut" @click="loginOut">退出当前登录</button>
   </view>
 
 </template>
@@ -216,10 +215,20 @@ onMounted(() => {
 }
 
 .loginOut {
-  height: 85rpx;
-  font-size: 39rpx;
-  line-height: 80rpx;
-  color: #eb3a41;
+  height: 40px;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  border: 1px solid #666;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14pt;
+  margin-bottom: 20px;
 }
 
 .setting {
@@ -236,11 +245,21 @@ onMounted(() => {
 }
 
 .half-up {
-  border-radius: 50rpx; /* 设置圆角使其呈现为椭圆形 */
+  width: 120%;
+  height: 160px;
+  background: #64B441;
+  position: relative;
+  left: -10%;
+  border-bottom-left-radius: 45%;
+  border-bottom-right-radius: 45%;
+  overflow: hidden;
+  text-align: center !important;
+  cursor: pointer;
+  //border-radius: 50rpx; /* 设置圆角使其呈现为椭圆形 */
   margin-top: 20rpx; /* 设置距离页面顶部距离 */
-  height: 220rpx;
+  //height: 220rpx;
   display: flex;
-  background-color: white;
+  //background-color: white;
   border: 2rpx solid grey;
 }
 

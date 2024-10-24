@@ -13,7 +13,7 @@ export const transactionsAddUsingPost = (data= {
     user_id: "",
 }) => {
     return new Promise((resolve, reject) => {
-        makeRequest(`${backendBaseInfo}/api/management/transactions/add`, 'POST', data)
+        makeRequest(`${backendBaseInfo}/api/marketplace/transactions/add`, 'POST', data)
             .then(res => {
                 resolve(res);
             }).catch(error => {

@@ -113,6 +113,17 @@ const showMoreData = () => {
 .action-button {
   flex: 1;
   margin-right: 10px;
+  background: #6cb4f7; /* 柔和蓝 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.action-button :hover{
+  background: #5a9bd7;
 }
 
 .search-box {
@@ -126,10 +137,14 @@ const showMoreData = () => {
 }
 
 .task-card {
+  background: rgba(255, 255, 255, 0.3); /* 半透明背景 */
+  border-radius: 15px;
   padding: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px); /* 毛玻璃效果 */
+  text-align: center;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
 }
@@ -140,5 +155,9 @@ const showMoreData = () => {
 
 .claim-button {
   margin-top: 10px;
+  margin-left: 70%;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 </style>
