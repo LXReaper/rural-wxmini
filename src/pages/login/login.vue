@@ -7,13 +7,13 @@
         <view class="inputBox">
           <view class="ipt">
             <input :prefixIcon="'contact'" type="text" v-model="userAccount"
-                           class="inputEasy"
-                           maxlength="50"
-                           placeholder="请输入账号或手机号"/>
+                   class="inputEasy"
+                   maxlength="50"
+                   placeholder="请输入账号或手机号"/>
           </view>
           <view class="ipt">
             <input type="password" v-model="userPassword" class="inputEasy"
-                           placeholder="请输入密码"/>
+                   placeholder="请输入密码"/>
           </view>
           <view class="forgetPwd">
             <span style="cursor: pointer" @click="losePassword">忘记密码</span>
@@ -71,7 +71,10 @@ const userLogin = () => {
     userData.value = res.data.data;
     if (res.data.code === 0) {
       //登录成功
-      wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
+      if (res.header["Set-Cookie"]){
+        console.log(res.header["Set-Cookie"])
+        wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
+      }
       setStorageData(userData);
       //连接服务器
       initWebSocket();//连接后端
