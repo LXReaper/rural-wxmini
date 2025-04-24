@@ -48,6 +48,7 @@ import {readStorageData, setStorageData} from "../../utils/storage/storageUtils"
 import {store} from "../../store";
 import {makeRequest} from "../../utils/request/requestUtil";
 import {initWebSocket} from "../../utils/socket/websocketConnectionUtil";
+import {bindWeChatUser, getLoginUser, registerUser, userLoginUsingPost} from "../../utils/request/userServicesUtils";
 
 const backendBaseInfo = store.getters['backendBaseInfo/getBackendBaseUrl'];
 const code = ref("");//当前appId拿到的临时code
@@ -63,7 +64,8 @@ const userLogin = () => {
     })
     return;
   }
-  makeRequest(`${backendBaseInfo}/api/user/login`, 'POST', {
+
+  userLoginUsingPost({
     userAccount: userAccount.value,
     userPassword: userPassword.value
   }).then((res) => {
@@ -73,7 +75,7 @@ const userLogin = () => {
       //登录成功
       let cookie = res.header["Set-Cookie"];
       if (cookie && !String(cookie).startsWith("SESSION=;")){
-        console.log(res.header["Set-Cookie"])
+        // console.log(cookie)
         wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
       }
       setStorageData(userData);
@@ -127,6 +129,7 @@ const getUserProfile = () => {
       let userMsgHave = JSON.parse(res1.rawData);//用户数据拿到对象
       // console.log(userMsgHave);
       console.log(userMsgHave.avatarUrl);//显示头像微信url
+      console.log(userMsgHave.nickName);
       uni.showLoading({
         title: '登录加载中'
       });
@@ -151,11 +154,110 @@ const getUserProfile = () => {
             //连接服务器
             if (store.state.user.loginUser?.villager_id) initWebSocket();//连接后端
           } else {
-            uni.showToast({
-              title: '微信登录失败',
-              icon: 'none'
+            let account = "村中人："+userMsgHave.nickName;
+            let psd = "12345678";
+            registerUser({
+              userAccount: account,
+              userPassword: psd,
+              checkPassword: psd
+            }).then((res) => {
+              if (res.data.code === 0) {
+                userLoginUsingPost({
+                  userAccount: account,
+                  userPassword: psd
+                }).then((res) => {
+                  //请求成功
+                  userData.value = res.data.data;
+                  if (res.data.code === 0) {
+                    //登录成功
+                    let cookie = res.header["Set-Cookie"];
+                    if (cookie && !String(cookie).startsWith("SESSION=;")){
+                      // console.log(cookie)
+                      wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
+                    }
+                    setStorageData(userData);
+                    //连接服务器
+                    initWebSocket();//连接后端
+
+                    uni.login({
+                      provider: 'weixin',
+                      success: (logRes) => {
+                        code.value = logRes.code
+                        bindWeChatUser({
+                          userId: wx.getStorageSync('userInfo').villager_id,
+                          code: code.value
+                        }).then((e) => {
+                          //绑定成功后先更新数据库中原有的数据
+                          url = `${backendBaseInfo}/api/user/update/my`;
+                          makeRequest(url, "POST", {
+                            userAvatar: userMsgHave.avatarUrl
+                          }).then(r => {
+                            //将数据库中用户数据与微信用户数据同步后才算绑定成功
+                            if (r.data.code === 0) {
+                              getLoginUser().then(r=>{
+                                uni.hideLoading();
+                              });
+                            } else {
+                              uni.showToast({
+                                title: '微信登录失败',
+                                icon: 'none'
+                              })
+                              console.log("用户数据与微信用户数据同步失败");
+                              uni.hideLoading();
+                            }
+                          }).catch(error => {
+                            uni.showToast({
+                              title: '微信登录失败',
+                              icon: 'none'
+                            })
+                            console.error("用户更新请求错误");
+                            uni.hideLoading();
+                          })
+                        }).catch((error) => {
+                          uni.showToast({
+                            title: '微信登录失败',
+                            icon: 'none'
+                          })
+                          console.error("后端请求失败");
+                          uni.hideLoading();
+                        })
+                      }, fail: (error) => {
+                        console.log("code获取失败:", error);
+                      }
+                    });
+
+                  } else {
+                    uni.showToast({
+                      title: '微信登录失败',
+                      icon: 'none'
+                    })
+                    uni.hideLoading();
+                  }
+                }).catch((error) => {
+                  uni.showToast({
+                    title: '微信登录失败',
+                    icon: 'none'
+                  })
+                  //请求失败
+                  console.error('请求错误:', error);
+                  uni.hideLoading();
+                });
+              }else {
+                console.error(res.data.message);
+                uni.showToast({
+                  title: '微信登录失败',
+                  icon: 'none'
+                })
+                uni.hideLoading();//关闭加载
+              }
+            }).catch((error) => {
+              console.error(error);
+              uni.showToast({
+                title: '微信登录失败',
+                icon: 'none'
+              })
+              uni.hideLoading();//关闭加载
             })
-            uni.hideLoading();//关闭加载
           }
         })
       } else {

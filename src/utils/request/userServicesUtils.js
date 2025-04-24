@@ -25,6 +25,71 @@ export const getLoginUser = (data = {}) => {
         })
     });
 }
+
+/**
+ * 注册用户
+ * @param data
+ * @returns {Promise<unknown>}
+ */
+export const registerUser = (data = {
+    userAccount: "",
+    userPassword: "",
+    checkPassword: "",
+}) => {
+    return new Promise((resolve, reject) => {
+        makeRequest(`${backendBaseInfo}/api/user/register`, 'POST', data)
+            .then(res => {
+                if (res.data.code !== 0) {
+                    reject(res)
+                }
+                resolve(res);
+            }).catch(error => {
+            console.log("用户注册请求错误:" + error.message);
+            reject(error)
+        })
+    });
+}
+
+/**
+ * 绑定微信号
+ * @param data
+ * @returns {Promise<unknown>}
+ */
+export const bindWeChatUser = (data = {
+    userId: wx.getStorageSync('userInfo').villager_id,
+    code: '',
+}) => {
+    return new Promise((resolve, reject) => {
+        makeRequest(`${backendBaseInfo}/api/user/bind/miniOpenId`, 'POST', data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+            console.log("用户绑定微信请求错误:" + error.message);
+            reject(error)
+        })
+    });
+}
+
+/**
+ * 用户账号密码登录
+ * @param data
+ * @returns {Promise<unknown>}
+ */
+export const userLoginUsingPost = (data = {
+    userAccount: "",
+    userPassword: ""
+}) => {
+    return new Promise((resolve, reject) => {
+        makeRequest(`${backendBaseInfo}/api/user/login`, 'POST', data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+            console.log("用户登录请求错误:" + error.message);
+            reject(error)
+        })
+    });
+}
+
 /**
  * 退出登录
  * @param data
