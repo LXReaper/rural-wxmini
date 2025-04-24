@@ -71,7 +71,8 @@ const userLogin = () => {
     userData.value = res.data.data;
     if (res.data.code === 0) {
       //登录成功
-      if (res.header["Set-Cookie"]){
+      let cookie = res.header["Set-Cookie"];
+      if (cookie && !String(cookie).startsWith("SESSION=;")){
         console.log(res.header["Set-Cookie"])
         wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
       }

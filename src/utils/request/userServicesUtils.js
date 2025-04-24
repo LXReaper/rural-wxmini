@@ -14,7 +14,8 @@ export const getLoginUser = (data = {}) => {
         makeRequest(`${backendBaseInfo}/api/user/get/login`, 'GET', data)
             .then(res => {
                 // console.log(res.data.data)
-                // if (res.header["Set-Cookie"]) wx.setStorageSync("cookie", res.header["Set-Cookie"]);//存cookie信息
+                let cookie = res.header["Set-Cookie"];
+                if (cookie && !String(cookie).startsWith("SESSION=;")) wx.setStorageSync("cookie", cookie);//存cookie信息
                 if (res.data.code !== 0) wx.removeStorage({key: 'userInfo'});
                 store.dispatch("user/getLoginUser", res.data.data)
                 resolve(res);

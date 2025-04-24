@@ -6,27 +6,29 @@ import {getLoginUser} from "../request/userServicesUtils";
 /**
  * 读取本地缓存的用户数据 和 将用户数据写入本地缓存
  */
-export function readStorageData(path = "/pages/index/index") {
-    let userInfo = wx.getStorageSync('userInfo');
-    console.log("本地用户数据"+userInfo);
-    // console.log(userInfo.expireTimeStamp + "ms  " + Date.now() + "ms");
-    //获取后端的登录信息
-    getLoginUser().then(res => {
-        userInfo = res.data.data;
-        if (res.data.code === 0) {
-            // 存本地
-            recordDataLocation(userInfo);
-            // 存Vuex
-            recordDataVuex(userInfo, path);
-        } else {
-            // 删除本地数据
-            wx.removeStorage({key: 'userInfo'});
-            // 删除vuex数据
-            store.dispatch("user/getLoginUser", null);
-            console.log('用户信息数据已过期，已清除');
-        }
-        return userInfo;
-    });
+export async function readStorageData(path = "/pages/index/index") {
+    return await new Promise((resolve, reject) => {
+        let userInfo = wx.getStorageSync('userInfo');
+        console.log("本地用户数据"+userInfo);
+        // console.log(userInfo.expireTimeStamp + "ms  " + Date.now() + "ms");
+        //获取后端的登录信息
+        getLoginUser().then(res => {
+            userInfo = res.data.data;
+            if (res.data.code === 0) {
+                // 存本地
+                recordDataLocation(userInfo);
+                // 存Vuex
+                recordDataVuex(userInfo, path);
+            } else {
+                // 删除本地数据
+                wx.removeStorage({key: 'userInfo'});
+                // 删除vuex数据
+                store.dispatch("user/getLoginUser", null);
+                console.log('用户信息数据已过期，已清除');
+            }
+            resolve(userInfo);
+        });
+    })
 }
 
 /**

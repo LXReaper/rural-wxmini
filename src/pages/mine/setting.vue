@@ -53,8 +53,8 @@ const bindWechat = () => {
   //先调用微信获取code
   getCode("weixin").then((res) => {
     code.value = res.code;
-  }).catch(() => {
-    console.log("code获取失败")
+  }).catch((error) => {
+    console.log(JSON.stringify(error) + "，code获取失败")
   });
   uni.getUserProfile({
     desc: 'WeiXin'
@@ -64,9 +64,10 @@ const bindWechat = () => {
       uni.showLoading({
         title: '登录加载中'
       });
+      let userInfo = wx.getStorageSync('userInfo')
       //再向后端发送请求
       makeRequest(url, "Post", {
-        userId: store.state.user.loginUser.villager_id,
+        userId: userInfo.villager_id,
         code: code.value,
       }).then((e) => {
         if (e.data.code === 0) {
