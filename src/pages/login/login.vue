@@ -34,7 +34,7 @@
       </view>
 
       <view class="tip">
-        乡村治理小程序 by 102 2024
+        乡村治理积分管理系统 V1.0 by 102 2024
       </view>
     </view>
   </view>
